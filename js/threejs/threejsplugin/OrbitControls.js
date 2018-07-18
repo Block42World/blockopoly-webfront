@@ -26,8 +26,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.target = new THREE.Vector3();
 
 	// How far you can dolly in and out ( PerspectiveCamera only )
-	this.minDistance = 0;
-	this.maxDistance = Infinity;
+	this.minDistance = 10;
+	this.maxDistance = 100;
 
 	// How far you can zoom in and out ( OrthographicCamera only )
 	this.minZoom = 0;
@@ -62,6 +62,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.panSpeed = 1.0;
 	this.panningMode = THREE.ScreenSpacePanning; // alternate THREE.HorizontalPanning
 	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+	this.panMaxHeight = 100;
+	this.panMinHeight = 0;
 
 	// Set to true to automatically rotate around the target
 	// If auto-rotate is enabled, you must call controls.update() in your animation loop
@@ -169,7 +171,15 @@ THREE.OrbitControls = function ( object, domElement ) {
 			spherical.radius = Math.max( scope.minDistance, Math.min( scope.maxDistance, spherical.radius ) );
 
 			// move target to panned location
-			scope.target.add( panOffset );
+			var resultPos = new THREE.Vector3();
+			resultPos.addVectors(scope.target,panOffset);
+			console.log( resultPos.y +" "+(resultPos.y > scope.panMinHeight) +" "+(resultPos.y < scope.panMaxHeight));
+
+			if(resultPos.y > scope.panMinHeight && resultPos.y < scope.panMaxHeight)
+			{
+				scope.target.add( panOffset );
+			}
+			
 
 			offset.setFromSpherical( spherical );
 
@@ -390,9 +400,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 		if ( scope.object.isPerspectiveCamera ) {
 
 			scale /= dollyScale;
-
+			
 		} else if ( scope.object.isOrthographicCamera ) {
-
+		
 			scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom * dollyScale ) );
 			scope.object.updateProjectionMatrix();
 			zoomChanged = true;
@@ -504,7 +514,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	function handleMouseMovePan( event ) {
 
 		//console.log( 'handleMouseMovePan' );
-
+		
 		panEnd.set( event.clientX, event.clientY );
 
 		panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );

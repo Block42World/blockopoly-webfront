@@ -10,7 +10,6 @@
 <script src="js/threejs/threejsplugin/Projector.js"></script>
 <script src="js/threejs/threejsplugin/CanvasRenderer.js"></script>
 <script src="js/threejs/threejsplugin/stats.min.js"></script>
-<script src="js/threejs/threejsplugin/FBXLoader.js"></script>
 <script src="js/threejs/threejsplugin/OBJLoader.js"></script>
 <script src="js/threejs/threejsplugin/MTLLoader.js"></script>
 <script src="js/threejs/threejsplugin/OrbitControls.js"></script>
@@ -30,44 +29,66 @@
 <script src="js/block42/JimThree.js"></script>
 <script src="js/block42/customOutline.js"></script>
 
-<!--vox.js-->
-<script src="js/voxjs/vox.js"></script>
-
 
 <script type="text/javascript">
+
 init();
 
+
+
+
+
+//for sale land
 var poslist = [];
 var id = 0;
 
 for (var xi = 0; xi <10; xi++) {
 	for (var yi = 0; yi <10; yi++) {
 
-		var pos = [xi*128, yi*128];
+		var pos = [xi*126, yi*126];
 		poslist.push(pos);
 
-
+		//Shibuya
 		new THREE.MTLLoader()
 		.setPath("assets/")
-		.load( 'Shibuya.mtl', function ( materials ) {
+		.load( 'Free Land.mtl', function ( materials ) {
 
 			materials.preload();
 
 			new THREE.OBJLoader()
 				.setMaterials( materials )
-				.load( 'assets/Shibuya.obj', function ( object ) {
-					id++;
-
+				.load( 'assets/Free Land.obj', function ( object ) {
+					
 					object.position.x += poslist[id][0];
 					object.position.z += poslist[id][1];
 					scene.add( object );
-					//console.log(poslist[id]);
+					id++;
+					
 				});
-
 		} );
-		
 	}
 }
+
+//central building
+//Shibuya
+new THREE.MTLLoader()
+.setPath("assets/")
+.load( 'Shibuya.mtl', function ( materials ) {
+
+	materials.preload();
+
+	new THREE.OBJLoader()
+		.setMaterials( materials )
+		.load( 'assets/Shibuya.obj', function ( object ) {
+					
+			object.position.x += 126*5;
+			object.position.z += 126*5;
+			scene.add( object );
+			
+		});
+} );
+
+
 
 
 
