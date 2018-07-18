@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>house orbit control</title>
+</head>
+<body>
+
+<script type="text/javascript" src="three.js"></script>
+<!--offical library-->
+<script src="js/Projector.js"></script>
+<script src="js/CanvasRenderer.js"></script>
+<script src="js/stats.min.js"></script>
+<script src="js/FBXLoader.js"></script>
+<script src="js/OBJLoader.js"></script>
+<script src="js/MTLLoader.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/dat.gui.min.js"></script>
+<script src="js/inflate.min.js"></script>
+
+<!--outline-->
+<script src="js/Detector.js"></script>
+<script src="js/CopyShader.js"></script>
+<script src="js/FXAAShader.js"></script>
+<script src="js/EffectComposer.js"></script>
+<script src="js/RenderPass.js"></script>
+<script src="js/ShaderPass.js"></script>
+<script src="js/OutlinePass.js"></script>
+
+<!--the library we write-->
+<script src="JimJs/JimThree.js"></script>
+<script src="JimJs/customOutline.js"></script>
+
+<!--vox.js-->
+<script src="vox.js-master/build/vox.js"></script>
+
+
+<script type="text/javascript">
+init();
+
+var poslist = [];
+var id = 0;
+
+//for (var xi = 0; xi <10; xi++) {
+	//for (var yi = 0; yi <10; yi++) {
+
+		var pos = [xi*128, yi*128];
+		poslist.push(pos);
+
+		var parser = new vox.Parser();
+		parser.parse("Shibuya.vox")
+			.then(function(data) {
+				var builder = new vox.MeshBuilder(data, {
+					voxelSize: 1.0,
+					vertexColor: false,
+					optimizeFaces: true,
+				});
+				var mesh = builder.createMesh();
+				scene.add(mesh);
+			});
+	//}
+//}
+
+
+
+var onProgress = function ( xhr ) {
+
+	if ( xhr.lengthComputable ) {
+
+		var percentComplete = xhr.loaded / xhr.total * 100;
+		console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+
+	}
+
+};
+
+var onError = function ( xhr ) { };
+
+</script>
+</body>
+</html>
