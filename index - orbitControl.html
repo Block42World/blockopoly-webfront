@@ -5,33 +5,33 @@
 </head>
 <body>
 
-<script type="text/javascript" src="three.js"></script>
+<script src="js/threejs/three.js"></script>
 <!--offical library-->
-<script src="js/Projector.js"></script>
-<script src="js/CanvasRenderer.js"></script>
-<script src="js/stats.min.js"></script>
-<script src="js/FBXLoader.js"></script>
-<script src="js/OBJLoader.js"></script>
-<script src="js/MTLLoader.js"></script>
-<script src="js/OrbitControls.js"></script>
-<script src="js/dat.gui.min.js"></script>
-<script src="js/inflate.min.js"></script>
+<script src="js/threejs/threejsplugin/Projector.js"></script>
+<script src="js/threejs/threejsplugin/CanvasRenderer.js"></script>
+<script src="js/threejs/threejsplugin/stats.min.js"></script>
+<script src="js/threejs/threejsplugin/FBXLoader.js"></script>
+<script src="js/threejs/threejsplugin/OBJLoader.js"></script>
+<script src="js/threejs/threejsplugin/MTLLoader.js"></script>
+<script src="js/threejs/threejsplugin/OrbitControls.js"></script>
+<script src="js/threejs/threejsplugin/dat.gui.min.js"></script>
+<script src="js/threejs/threejsplugin/inflate.min.js"></script>
 
 <!--outline-->
-<script src="js/Detector.js"></script>
-<script src="js/CopyShader.js"></script>
-<script src="js/FXAAShader.js"></script>
-<script src="js/EffectComposer.js"></script>
-<script src="js/RenderPass.js"></script>
-<script src="js/ShaderPass.js"></script>
-<script src="js/OutlinePass.js"></script>
+<script src="js/threejs/threejsplugin/Detector.js"></script>
+<script src="js/threejs/threejsplugin/CopyShader.js"></script>
+<script src="js/threejs/threejsplugin/FXAAShader.js"></script>
+<script src="js/threejs/threejsplugin/EffectComposer.js"></script>
+<script src="js/threejs/threejsplugin/RenderPass.js"></script>
+<script src="js/threejs/threejsplugin/ShaderPass.js"></script>
+<script src="js/threejs/threejsplugin/OutlinePass.js"></script>
 
 <!--the library we write-->
-<script src="JimJs/JimThree.js"></script>
-<script src="JimJs/customOutline.js"></script>
+<script src="js/block42/JimThree.js"></script>
+<script src="js/block42/customOutline.js"></script>
 
 <!--vox.js-->
-<script src="vox.js-master/build/vox.js"></script>
+<script src="js/voxjs/vox.js"></script>
 
 
 <script type="text/javascript">
@@ -48,13 +48,14 @@ for (var xi = 0; xi <10; xi++) {
 
 
 		new THREE.MTLLoader()
+		.setPath("assets/")
 		.load( 'Shibuya.mtl', function ( materials ) {
 
 			materials.preload();
 
 			new THREE.OBJLoader()
 				.setMaterials( materials )
-				.load( 'Shibuya.obj', function ( object ) {
+				.load( 'assets/Shibuya.obj', function ( object ) {
 					id++;
 
 					object.position.x += poslist[id][0];
