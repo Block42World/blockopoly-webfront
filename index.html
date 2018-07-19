@@ -10,6 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script src="js/threejs/three.js"></script>
     <!--offical library-->
@@ -33,11 +34,9 @@
     <script src="js/threejs/threejsplugin/OutlinePass.js"></script>
 
     <!--the library we write-->
-    <script src="js/block42/JimThree.js"></script>
+    <script src="js/block42/ThreejsUtility.js"></script>
     <script src="js/block42/customOutline.js"></script>
-
-    <!--vox.js-->
-    <script src="js/voxjs/vox.js"></script>
+    <script src="js/block42/Index.js"></script>
 </head>
 
 <body>
@@ -74,90 +73,58 @@
         </div>
     </nav>
 
+    <div class="right-center">
+        <div class="card mb-4 box-shadow">
+            <h4 class="center">PLOTNAME</h4>
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Free</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">$0
+                    <small class="text-muted">/ mo</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>10 users included</li>
+                    <li>2 GB of storage</li>
+                    <li>Email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Buy / Edit</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="page-footer font-small bg-dark fixed-bottom">
         <div class="container">
             <div class="row">
                 <div class="col-sm">
-                    <p style="color:#f5c347; display: inline;">Bitcoin</p>
-                    <p style="color:azure; display: inline;">$7,305.50</p>
+                    <p class="label-tag">Bitcoin</p>
+                    <p class="label-price">$7,305.50</p>
                 </div>
                 <div class="col-sm">
-                        <p style="color:#f5c347; display: inline;">Ethereum</p>
-                        <p style="color:azure; display: inline;">$485.36</p>
+                    <p class="label-tag">Ethereum</p>
+                    <p class="label-price">$485.36</p>
                 </div>
                 <div class="col-sm">
-                        <p style="color:#f5c347; display: inline;">Bitcoin Cash</p>
-                        <p style="color:azure; display: inline;">$813.01</p>
+                    <p class="label-tag">Bitcoin Cash</p>
+                    <p class="label-price">$813.01</p>
                 </div>
                 <div class="col-sm">
-                        <p style="color:#f5c347; display: inline;">Litecoin</p>
-                        <p style="color:azure; display: inline;">$85.83</p>
+                    <p class="label-tag">Litecoin</p>
+                    <p class="label-price">$85.83</p>
                 </div>
                 <div class="col-sm">
-                        <p style="color:#f5c347; display: inline;">XRP</p>
-                        <p style="color:azure; display: inline;">$0.4657</p>
+                    <p class="label-tag">XRP</p>
+                    <p class="label-price">$0.4657</p>
                 </div>
             </div>
         </div>
     </footer>
     <!-- Footer -->
-
     <script type="text/javascript">
-        init();
-        //for sale land
-        var poslist = [];
-        var id = 0;
-
-        for (var xi = 0; xi < 10; xi++) {
-            for (var yi = 0; yi < 10; yi++) {
-                var pos = [xi * 126, yi * 126];
-                poslist.push(pos);
-
-                //Shibuya
-                new THREE.MTLLoader()
-                    .setPath("assets/")
-                    .load('Free Land.mtl', function (materials) {
-                        materials.preload();
-                        new THREE.OBJLoader()
-                            .setMaterials(materials)
-                            .load('assets/Free Land.obj', function (object) {
-                                object.position.x += poslist[id][0];
-                                object.position.z += poslist[id][1];
-                                scene.add(object);
-                                id++;
-                            });
-                    });
-            }
-        }
-
-        //central building
-        //Shibuya
-        new THREE.MTLLoader()
-            .setPath("assets/")
-            .load('Shibuya.mtl', function (materials) {
-
-                materials.preload();
-
-                new THREE.OBJLoader()
-                    .setMaterials(materials)
-                    .load('assets/Shibuya.obj', function (object) {
-                        object.position.x += 126 * 5;
-                        object.position.z += 126 * 5;
-                        scene.add(object);
-                    });
-            });
-
-        var onProgress = function (xhr) {
-            if (xhr.lengthComputable) {
-
-                var percentComplete = xhr.loaded / xhr.total * 100;
-                console.log(Math.round(percentComplete, 2) + '% downloaded');
-            }
-        };
-        var onError = function (xhr) { };
+        Index.init();
     </script>
-
 </body>
 
 </html>
