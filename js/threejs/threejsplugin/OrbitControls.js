@@ -22,6 +22,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// Set to false to disable this control
 	this.enabled = true;
 
+
 	// "target" sets the location of focus, where the object orbits around
 	this.object.position.set(538,54,718);
 	this.target = new THREE.Vector3(542,54,710);
