@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hello</title>
+
+</head>
+<body>
+
+<!-- Stylesheet -->
+<link href="css/editor.css" rel="stylesheet" type="text/css">
+
+<!--webcraft-->
+<script src="js/webcraft/glMatrix-1.2.min.js" type="text/javascript"></script>
+<script src="js/webcraft/blocks.js" type="text/javascript"></script>
+<script src="js/webcraft/helpers.js" type="text/javascript"></script>
+<script src="js/webcraft/world.js" type="text/javascript"></script>
+<script src="js/webcraft/render.js" type="text/javascript"></script>
+<script src="js/webcraft/physics.js" type="text/javascript"></script>
+<script src="js/webcraft/player.js" type="text/javascript"></script>
+<script src="js/webcraft/sight.js" type="text/javascript"></script>
+<script src="js/webcraft/fullScreen.js" type="text/javascript"></script>
+
+	<!--vox.js-->
+	<script src="js/voxjs/vox.min.js"></script> 
+
+<!-- Render surface -->
+<canvas id="renderSurface"></canvas>
+
+<!-- Material selection -->
+<table id="materialSelector">
+	<tr></tr>
+</table>
+
+<!-- main UI -->
+<div id="blocker">
+
+	<div id="instructions">
+		<span style="font-size:40px" id ="playBtn">Click to play</span>
+		<br />
+		(W, A, S, D = Move, left click to destroy block, right click to place block)
+		<br />
+			<button id="FullScreen">Full Screen </button>
+			<button id="Save">Save </button>
+
+	</div>
+
+</div>
+
+
+
+<!-- cross hair -->
+<div id= 'sight1'></div>A
+<div id= 'sight2'></div>
+
+
+<!-- Initialisation code -->
+<script type="text/javascript">		
+
+	var world;
+	var render;
+	var physics;
+	var player;
+	var isPlaying = false;
+    //init sight script
+    Sight.init();	
+
+	// Create a new flat world
+	world = new World( 128, 128, 128 );
+	world.createFlatWorld( 1 );
+
+	// Set up renderer
+	render = new Renderer( "renderSurface" );
+	render.setWorld( world, 100 );
+	render.setPerspective( 60, 0.01, 200 );
+	
+	// Create physics simulator
+	//physics = new Physics();
+	//physics.setWorld( world );
+	
+	// Create new local player
+	player = new Player();
+	player.setWorld( world );
+	player.setInputCanvas( "renderSurface" );
+	player.setMaterialSelector( "materialSelector" );
+	
+	// Render loop			
+	setInterval( function()
+	{
+		var time = new Date().getTime() / 1000.0;
+		
+		// Simulate physics
+		//physics.simulate();
+		
+		// Update local player
+		player.update();
+		
+		// Build a chunk
+		render.buildChunks( 1 );
+		
+		// Draw world
+		render.setCamera( player.getEyePos().toArray(), player.angles );
+		render.draw();
+		
+		while ( new Date().getTime() / 1000 - time < 0.016 );
+	}, 1 );
+	
+	var myVoxelData;
+	//Shibuya2    chr_rain
+	var parser = new vox.Parser();
+	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
+	    console.log(voxelData);
+		myVoxelData = voxelData;
+
+		for (var i = voxelData.voxels.length - 1; i >= 0; i--) {
+	    	world.blocks[voxelData.voxels[i].x][voxelData.voxels[i].y][voxelData.voxels[i].z] =// blank
+			{
+				id: 19,
+				spawnable: true,
+				transparent: false,
+				selflit: true,
+				gravity: false,
+				fluid: false,
+				isColorful: true,
+				colorID: voxelData.voxels[i].colorIndex,
+				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
+			};
+		}
+
+		//update all chuncks
+		for ( var i = 0; i < render.chunks.length; i++ )
+		{
+			render.chunks[i].dirty = true;
+		}
+	    /*
+	    voxelData.voxels; // voxel position and color data
+	    voxelData.size; // model size
+	    voxelData.palette; // palette data
+	*/
+		
+	});
+</script>
+
+
+
+
+
+
+<script type="text/javascript">	
+
+</script>
+</body>
+</html>
