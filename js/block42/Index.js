@@ -5,19 +5,28 @@ class Index
 	{
 		ThreejsUtility.init();
 
-		//for sale land
-		var poslist = [];
-		var id = 0;
+		var citySizeX = 10;
+		var citySizeY = 10;
 
 
+
+
+		var reomveList = [55, 155, 255, 355];
+
+		//for-sale land
+		var LandPoslist = [];
+		var LandId = 0;
+		
+		//4 lands every block
 		for (var xa = 0; xa < 2; xa++) {
 			for (var ya = 0; ya < 2; ya++) {
-				for (var xi = 0; xi < 10; xi++) {
-					for (var yi = 0; yi < 10; yi++) {
-						var pos = [xi * (126+23*2) + xa*63, yi * (126+23*2)+ya*63];
-						poslist.push(pos);
+				//100 blocks
+				for (var xi = 0; xi < citySizeX; xi++) {
+					for (var yi = 0; yi < citySizeY; yi++) {
+						//record position
+						var pos = [xi * 149 + xa*63, yi * 149+ya*63];//149=126+23
+						LandPoslist.push(pos);
 
-						//Shibuya
 						new THREE.MTLLoader()
 							.setPath("assets/")
 							.load('Free Land.mtl', function (materials) {
@@ -25,11 +34,17 @@ class Index
 								new THREE.OBJLoader()
 									.setMaterials(materials)
 									.load('assets/Free Land.obj', function (object) {
-										object.position.x += poslist[id][0];
-										object.position.z += poslist[id][1];
-										scene.add(object);
-										id++;
-										console.log(id + '% downloaded');
+										object.position.x += LandPoslist[LandId][0];
+										object.position.z += LandPoslist[LandId][1];
+
+										if(!reomveList.includes(LandId))
+											scene.add(object);
+										
+										
+										//object.id = 
+										LandId++;
+										//lands.push(obj);
+										console.log(LandId + '% downloaded');
 									});
 							});
 					}
@@ -37,22 +52,115 @@ class Index
 			}
 		}
 
+
+
+		//121 street
+		var hStPoslist = [];
+		var hStId = 0;
+
+		for (var xi = 0; xi < citySizeX; xi++) {
+			for (var yi = 0; yi < citySizeY+1; yi++) {
+				//record position
+				var pos = [xi * 149+31.5, yi * 149-43];
+				hStPoslist.push(pos);
+
+				new THREE.MTLLoader()
+					.setPath("assets/")
+					.load('Road.mtl', function (materials) {
+						materials.preload();
+						new THREE.OBJLoader()
+							.setMaterials(materials)
+							.load('assets/Road.obj', function (object) {
+								object.position.x += hStPoslist[hStId][0];
+								object.position.z += hStPoslist[hStId][1];
+								object.position.y=-1;
+								scene.add(object);
+								hStId++;
+								console.log(hStId + '% downloaded');
+							});
+					});
+			}
+		}
+		
+		var vStPoslist = [];
+		var vStId = 0;
+
+		//121 street
+
+		for (var xi = 0; xi < citySizeX+1; xi++) {
+			for (var yi = 0; yi < citySizeY; yi++) {
+				//record position
+				var pos = [xi * 149-43, yi * 149+31.5];
+				vStPoslist.push(pos);
+
+				new THREE.MTLLoader()
+					.setPath("assets/")
+					.load('Road.mtl', function (materials) {
+						materials.preload();
+						new THREE.OBJLoader()
+							.setMaterials(materials)
+							.load('assets/Road.obj', function (object) {
+								object.position.x += vStPoslist[vStId][0];
+								object.position.z += vStPoslist[vStId][1];
+								object.position.y=-1;
+								object.rotateY(Math.PI/2);
+								scene.add(object);
+								vStId++;
+								console.log(vStId + '% downloaded');
+							});
+					});
+			}
+		}
+
+		var cPoslist = [];
+		var cId = 0;
+		for (var xi = 0; xi < citySizeX+1; xi++) {
+			for (var yi = 0; yi < citySizeY+1; yi++) {
+				//record position
+				var pos = [xi * 149-43, yi * 149-43];
+				cPoslist.push(pos);
+
+				new THREE.MTLLoader()
+					.setPath("assets/")
+					.load('Road2.mtl', function (materials) {
+						materials.preload();
+						new THREE.OBJLoader()
+							.setMaterials(materials)
+							.load('assets/Road2.obj', function (object) {
+								object.position.x += cPoslist[cId][0];
+								object.position.z += cPoslist[cId][1];
+								object.position.y=-1;
+								object.rotateY(Math.PI/2);
+								scene.add(object);
+								cId++;
+								console.log(cId + '% downloaded');
+							});
+					});
+			}
+		}
+
+
 		//central building
 		//Shibuya
 		new THREE.MTLLoader()
 			.setPath("assets/")
 			.load('Shibuya.mtl', function (materials) {
-
 				materials.preload();
-
 				new THREE.OBJLoader()
 					.setMaterials(materials)
 					.load('assets/Shibuya.obj', function (object) {
-						object.position.x += 126 * 5;
-						object.position.z += 126 * 5;
+						object.position.x += (149) * parseInt(citySizeX/2)+32;
+						object.position.z += (149) * parseInt(citySizeY/2)+32;
 						scene.add(object);
 					});
 			});
+
+
+
+
+
+
+
 
 		var onProgress = function (xhr) {
 			if (xhr.lengthComputable) {

@@ -29,7 +29,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	//this.target.add(this.object.position);
 	// How far you can dolly in and out ( PerspectiveCamera only )
 	this.minDistance = 10;
-	this.maxDistance = 100;
+	this.maxDistance = 300;
 
 	// How far you can zoom in and out ( OrthographicCamera only )
 	this.minZoom = 0;
@@ -741,7 +741,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 	function onMouseMove( event ) {
 
 		if ( scope.enabled === false ) return;
-				console.log(scope.object.position.toArray() );
 				
 		event.preventDefault();
 

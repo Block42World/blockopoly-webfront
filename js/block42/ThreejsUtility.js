@@ -23,7 +23,7 @@ class ThreejsUtility
 
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color('skyblue');
-		camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 2000 );
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
 		
 		controls = new THREE.OrbitControls( camera );
 
