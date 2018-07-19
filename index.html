@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>house orbit control</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+        crossorigin="anonymous">
+
+    <script src="js/threejs/three.js"></script>
+    <!--offical library-->
+    <script src="js/threejs/threejsplugin/Projector.js"></script>
+    <script src="js/threejs/threejsplugin/CanvasRenderer.js"></script>
+    <script src="js/threejs/threejsplugin/stats.min.js"></script>
+    <script src="js/threejs/threejsplugin/FBXLoader.js"></script>
+    <script src="js/threejs/threejsplugin/OBJLoader.js"></script>
+    <script src="js/threejs/threejsplugin/MTLLoader.js"></script>
+    <script src="js/threejs/threejsplugin/OrbitControls.js"></script>
+    <script src="js/threejs/threejsplugin/dat.gui.min.js"></script>
+    <script src="js/threejs/threejsplugin/inflate.min.js"></script>
+
+    <!--outline-->
+    <script src="js/threejs/threejsplugin/Detector.js"></script>
+    <script src="js/threejs/threejsplugin/CopyShader.js"></script>
+    <script src="js/threejs/threejsplugin/FXAAShader.js"></script>
+    <script src="js/threejs/threejsplugin/EffectComposer.js"></script>
+    <script src="js/threejs/threejsplugin/RenderPass.js"></script>
+    <script src="js/threejs/threejsplugin/ShaderPass.js"></script>
+    <script src="js/threejs/threejsplugin/OutlinePass.js"></script>
+
+    <!--the library we write-->
+    <script src="js/block42/JimThree.js"></script>
+    <script src="js/block42/customOutline.js"></script>
+
+    <!--vox.js-->
+    <script src="js/voxjs/vox.js"></script>
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="https://www.block42.world/">
+            <img src="assets\img\logo.png" width="35" height="35" alt="Block42">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto ">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Main
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="build-tab" href="#">Build</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Buy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Play</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark fixed-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <p style="color:#f5c347; display: inline;">Bitcoin</p>
+                    <p style="color:azure; display: inline;">$7,305.50</p>
+                </div>
+                <div class="col-sm">
+                        <p style="color:#f5c347; display: inline;">Ethereum</p>
+                        <p style="color:azure; display: inline;">$485.36</p>
+                </div>
+                <div class="col-sm">
+                        <p style="color:#f5c347; display: inline;">Bitcoin Cash</p>
+                        <p style="color:azure; display: inline;">$813.01</p>
+                </div>
+                <div class="col-sm">
+                        <p style="color:#f5c347; display: inline;">Litecoin</p>
+                        <p style="color:azure; display: inline;">$85.83</p>
+                </div>
+                <div class="col-sm">
+                        <p style="color:#f5c347; display: inline;">XRP</p>
+                        <p style="color:azure; display: inline;">$0.4657</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer -->
+
+    <script type="text/javascript">
+        init();
+        //for sale land
+        var poslist = [];
+        var id = 0;
+
+        for (var xi = 0; xi < 10; xi++) {
+            for (var yi = 0; yi < 10; yi++) {
+                var pos = [xi * 126, yi * 126];
+                poslist.push(pos);
+
+                //Shibuya
+                new THREE.MTLLoader()
+                    .setPath("assets/")
+                    .load('Free Land.mtl', function (materials) {
+                        materials.preload();
+                        new THREE.OBJLoader()
+                            .setMaterials(materials)
+                            .load('assets/Free Land.obj', function (object) {
+                                object.position.x += poslist[id][0];
+                                object.position.z += poslist[id][1];
+                                scene.add(object);
+                                id++;
+                            });
+                    });
+            }
+        }
+
+        //central building
+        //Shibuya
+        new THREE.MTLLoader()
+            .setPath("assets/")
+            .load('Shibuya.mtl', function (materials) {
+
+                materials.preload();
+
+                new THREE.OBJLoader()
+                    .setMaterials(materials)
+                    .load('assets/Shibuya.obj', function (object) {
+                        object.position.x += 126 * 5;
+                        object.position.z += 126 * 5;
+                        scene.add(object);
+                    });
+            });
+
+        var onProgress = function (xhr) {
+            if (xhr.lengthComputable) {
+
+                var percentComplete = xhr.loaded / xhr.total * 100;
+                console.log(Math.round(percentComplete, 2) + '% downloaded');
+            }
+        };
+        var onError = function (xhr) { };
+    </script>
+
+</body>
+
+</html>
