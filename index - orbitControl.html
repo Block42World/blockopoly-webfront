@@ -4,114 +4,85 @@
 	<title>house orbit control</title>
 </head>
 <body>
+	<script src="js/threejs/three.js"></script>
+	<!--offical library-->
+	<script src="js/threejs/threejsplugin/Projector.js"></script>
+	<script src="js/threejs/threejsplugin/CanvasRenderer.js"></script>
+	<script src="js/threejs/threejsplugin/stats.min.js"></script>
+	<script src="js/threejs/threejsplugin/OBJLoader.js"></script>
+	<script src="js/threejs/threejsplugin/MTLLoader.js"></script>
+	<script src="js/threejs/threejsplugin/OrbitControls.js"></script>
+	<script src="js/threejs/threejsplugin/dat.gui.min.js"></script>
+	<script src="js/threejs/threejsplugin/inflate.min.js"></script>
 
-<script src="js/threejs/three.js"></script>
-<!--offical library-->
-<script src="js/threejs/threejsplugin/Projector.js"></script>
-<script src="js/threejs/threejsplugin/CanvasRenderer.js"></script>
-<script src="js/threejs/threejsplugin/stats.min.js"></script>
-<script src="js/threejs/threejsplugin/OBJLoader.js"></script>
-<script src="js/threejs/threejsplugin/MTLLoader.js"></script>
-<script src="js/threejs/threejsplugin/OrbitControls.js"></script>
-<script src="js/threejs/threejsplugin/dat.gui.min.js"></script>
-<script src="js/threejs/threejsplugin/inflate.min.js"></script>
+	<!--outline-->
+	<script src="js/threejs/threejsplugin/Detector.js"></script>
+	<script src="js/threejs/threejsplugin/CopyShader.js"></script>
+	<script src="js/threejs/threejsplugin/FXAAShader.js"></script>
+	<script src="js/threejs/threejsplugin/EffectComposer.js"></script>
+	<script src="js/threejs/threejsplugin/RenderPass.js"></script>
+	<script src="js/threejs/threejsplugin/ShaderPass.js"></script>
+	<script src="js/threejs/threejsplugin/OutlinePass.js"></script>
 
-<!--outline-->
-<script src="js/threejs/threejsplugin/Detector.js"></script>
-<script src="js/threejs/threejsplugin/CopyShader.js"></script>
-<script src="js/threejs/threejsplugin/FXAAShader.js"></script>
-<script src="js/threejs/threejsplugin/EffectComposer.js"></script>
-<script src="js/threejs/threejsplugin/RenderPass.js"></script>
-<script src="js/threejs/threejsplugin/ShaderPass.js"></script>
-<script src="js/threejs/threejsplugin/OutlinePass.js"></script>
+	<!--the library we write-->
+	<script src="js/block42/JimThree.js"></script>
+	<script src="js/block42/customOutline.js"></script>
 
-<!--the library we write-->
-<script src="js/block42/JimThree.js"></script>
-<script src="js/block42/customOutline.js"></script>
+	<script type="text/javascript">
+		init();
 
+		//for sale land
+		var poslist = [];
+		var id = 0;
 
-<script type="text/javascript">
+		for (var xi = 0; xi < 10; xi++) {
+			for (var yi = 0; yi < 10; yi++) {
+				var pos = [xi * 126, yi * 126];
+				poslist.push(pos);
 
-init();
+				//Shibuya
+				new THREE.MTLLoader()
+					.setPath("assets/")
+					.load('Free Land.mtl', function (materials) {
+						materials.preload();
+						new THREE.OBJLoader()
+							.setMaterials(materials)
+							.load('assets/Free Land.obj', function (object) {
+								object.position.x += poslist[id][0];
+								object.position.z += poslist[id][1];
+								scene.add(object);
+								id++;
+							});
+					});
+			}
+		}
 
-
-
-
-
-//for sale land
-var poslist = [];
-var id = 0;
-
-for (var xi = 0; xi <10; xi++) {
-	for (var yi = 0; yi <10; yi++) {
-
-		var pos = [xi*126, yi*126];
-		poslist.push(pos);
-
+		//central building
 		//Shibuya
 		new THREE.MTLLoader()
-		.setPath("assets/")
-		.load( 'Free Land.mtl', function ( materials ) {
+			.setPath("assets/")
+			.load('Shibuya.mtl', function (materials) {
 
-			materials.preload();
+				materials.preload();
 
-			new THREE.OBJLoader()
-				.setMaterials( materials )
-				.load( 'assets/Free Land.obj', function ( object ) {
-					
-					object.position.x += poslist[id][0];
-					object.position.z += poslist[id][1];
-					scene.add( object );
-					id++;
-					
-				});
-		} );
-	}
-}
+				new THREE.OBJLoader()
+					.setMaterials(materials)
+					.load('assets/Shibuya.obj', function (object) {
+						object.position.x += 126 * 5;
+						object.position.z += 126 * 5;
+						scene.add(object);
+					});
+			});
 
-//central building
-//Shibuya
-new THREE.MTLLoader()
-.setPath("assets/")
-.load( 'Shibuya.mtl', function ( materials ) {
+		var onProgress = function (xhr) {
+			if (xhr.lengthComputable) {
 
-	materials.preload();
+				var percentComplete = xhr.loaded / xhr.total * 100;
+				console.log(Math.round(percentComplete, 2) + '% downloaded');
+			}
+		};
+		var onError = function (xhr) { };
+	</script>
 
-	new THREE.OBJLoader()
-		.setMaterials( materials )
-		.load( 'assets/Shibuya.obj', function ( object ) {
-					
-			object.position.x += 126*5;
-			object.position.z += 126*5;
-			scene.add( object );
-			
-		});
-} );
-
-
-
-
-
-var onProgress = function ( xhr ) {
-
-	if ( xhr.lengthComputable ) {
-
-		var percentComplete = xhr.loaded / xhr.total * 100;
-		console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
-
-	}
-
-};
-
-var onError = function ( xhr ) { };
-
-
-
-
-
-
-
-
-</script>
 </body>
 </html>
