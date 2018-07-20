@@ -23,7 +23,6 @@ class Land
         });
         console.log(Land.landsOb);
         myLandsJson.forEach(jsonElement => {
-            print(jsonElement.x + "|" + jsonElement.y);
             if (Land.landsOb[[jsonElement.x, jsonElement.y]] !== undefined)
                 Land.myLands.push(jsonElement);
         });
