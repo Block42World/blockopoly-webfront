@@ -6,7 +6,8 @@ module.exports=[
 		"w": 10,
 		"h": 10,
 		"owned": true,
-		"sale": false
+		"sale": false,
+		"description": "Follow the Seed"
 	},
 	{
 		"x": -7.5,
@@ -86,5 +87,13 @@ var myLandsJson = require('./block42/mylands.json')
 
 Land.init(landsJson, myLandsJson);
 
+// console.log(Land.lands);
+
 console.log(Land.getLand(0,0));
+
+console.log(Land.myLands);
+
+console.log(Land.getLand(-8, 1));
+
+console.log(Land.isMyLandByPos(-8, 1));
 },{"./block42/lands.json":1,"./block42/mylands.json":2}]},{},[3]);
