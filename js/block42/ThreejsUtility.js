@@ -52,13 +52,7 @@ class ThreejsUtility {
     );
     camera.position.set(576, 99, 867); // Set our position to look at the main building
 
-    //controls = new THREE.OrbitControls( camera );
-    controls = new THREE.FirstPersonControls(camera);
-    controls.target = new THREE.Vector3(661, 65, 824);
-    controls.movementSpeed = 20;
-    controls.lookSpeed = 0.05;
-    controls.lookVertical = true;
-    controls.update(0);
+    //
 
     var ambientLight = new THREE.AmbientLight(0xcccccc, 0.8);
     scene.add(ambientLight);
