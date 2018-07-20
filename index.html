@@ -10,7 +10,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script src="js/threejs/three.js"></script>
@@ -25,6 +24,7 @@
     <script src="js/threejs/threejsplugin/FirstPersonControls.js"></script>
     <script src="js/threejs/threejsplugin/dat.gui.min.js"></script>
     <script src="js/threejs/threejsplugin/inflate.min.js"></script>
+    <script src="js/threejs/threejsplugin/Sky.js"></script>
 
     <!--outline-->
     <script src="js/threejs/threejsplugin/Detector.js"></script>
@@ -77,7 +77,7 @@
         </div>
     </nav>
 
-    <div class="right-center" id="land-info">
+    <div class="right-center" id="land-info" style="display: none">
         <button type="button" class="close" aria-label="Close" onclick="hideElementById('land-info')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -87,38 +87,35 @@
         </div>
         <div>
             <p class="center">Owned by:
-                <span class="glyphicon glyphicon-user"></span>
+                <span><img src="img/default-user.png" alt="John" class="inline-icon"></span>
             </p>
-        </div>
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">&lt;Transaction History&gt;</h4>
             </div>
-            <div>
-                <div class="card-body">
-                    <table class="table no-border">
-                        <tbody>
-                            <tr>
-                                <td>100,000,000</td>
-                                <td>1 month ago</td>
-                            </tr>
-                            <tr>
-                                <td>75,000</td>
-                                <td>5 months ago</td>
-                            </tr>
-                            <tr>
-                                <td>1,000</td>
-                                <td>1 year ago</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="grey-box">
+                <div class="card-header">
+                    <h6 class="my-0 font-weight-normal">&lt;Transaction History&gt;</h4>
                 </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>100,000,000</td>
+                            <td>1 month ago</td>
+                        </tr>
+                        <tr>
+                            <td>75,000</td>
+                            <td>5 months ago</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>1 year ago</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
             </div>
-        </div>
-        <div>
-            <a href="#"><p class="center">View Full History</p></a>
+            
         </div>
         <div class="text-center">
+            <a href="#"><p class="center">View Full History</p></a>
             <img src="img/money.png" alt="$" width="35px" height="35px" style="vertical-align: middle; max-height: 35px; max-width: 35px;">
             <h2 class="inline-header text-primary text-center align-middle">9,999</span>
         </div>
