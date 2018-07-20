@@ -7,7 +7,7 @@ class ObjLoaderUtils {
                 objTexture.wrapS = objTexture.wrapT = THREE.RepeatWrapping;
                 objTexture.anistropy = 16;
 
-                var objMaterial = new THREE.MeshToonMaterial({
+                var objMaterial = new THREE.MeshLambertMaterial({
                     map: objTexture,
                     color: 0xffffff
                 });

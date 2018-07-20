@@ -1,11 +1,19 @@
 class Index {
   static init() {
+    Index.worldLoaded = false;
+
     ThreejsUtility.init();
 
     var citySizeX = 10;
     var citySizeY = 10;
 
     var reomveList = [55, 155, 255, 355];
+
+    // var geometry = new THREE.PlaneGeometry(2000,2000,2,2)
+    // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    // var plane = new THREE.Mesh( geometry, material );
+    // plane.rotation.set(new THREE.Euler(-90,0,0,'XYZ'));
+    // scene.add(plane);
 
     //for-sale land
     var LandPoslist = [];
@@ -35,15 +43,14 @@ class Index {
               objPosition,
               function(object) {
                 if (!reomveList.includes(loadedLandCount)) {
-				  scene.add(object);
-				}
-				console.log(loadedLandCount + "% downloaded");
-				loadedLandCount++;
+                  scene.add(object);
+                }
+                console.log(loadedLandCount + "% downloaded");
+                loadedLandCount++;
               }
             );
 
             LandId++;
-            
           }
         }
       }
@@ -59,16 +66,21 @@ class Index {
         var pos = [xi * 149 + 31.5, yi * 149 - 43];
         hStPoslist.push(pos);
 
-		var objPosition = new THREE.Vector3(
-			hStPoslist[hStId][0],
-			-1,
-			hStPoslist[hStId][1]
-		  );
+        var objPosition = new THREE.Vector3(
+          hStPoslist[hStId][0],
+          -1,
+          hStPoslist[hStId][1]
+        );
 
-		ObjLoaderUtils.SpawnObjAtPosition("assets/Road.obj", "assets/Road.png",objPosition,function(object){
-				scene.add(object);
-		});
-		hStId++;
+        ObjLoaderUtils.SpawnObjAtPosition(
+          "assets/Road.obj",
+          "assets/Road.png",
+          objPosition,
+          function(object) {
+            scene.add(object);
+          }
+        );
+        hStId++;
       }
     }
 
@@ -83,17 +95,22 @@ class Index {
         var pos = [xi * 149 - 43, yi * 149 + 31.5];
         vStPoslist.push(pos);
 
-		var objPosition = new THREE.Vector3(
-			vStPoslist[vStId][0],
-			-1,
-			vStPoslist[vStId][1]
-		  );
+        var objPosition = new THREE.Vector3(
+          vStPoslist[vStId][0],
+          -1,
+          vStPoslist[vStId][1]
+        );
 
-		ObjLoaderUtils.SpawnObjAtPosition("assets/Road.obj", "assets/Road.png",objPosition,function(object){
-				object.rotateY(Math.PI / 2);
-				scene.add(object);
-		});
-		vStId++;
+        ObjLoaderUtils.SpawnObjAtPosition(
+          "assets/Road.obj",
+          "assets/Road.png",
+          objPosition,
+          function(object) {
+            object.rotateY(Math.PI / 2);
+            scene.add(object);
+          }
+        );
+        vStId++;
       }
     }
 
@@ -105,51 +122,58 @@ class Index {
         var pos = [xi * 149 - 43, yi * 149 - 43];
         cPoslist.push(pos);
 
-		var objPosition = new THREE.Vector3(
-			cPoslist[cId][0],
-			-1,
-			cPoslist[cId][1]
-		  );
+        var objPosition = new THREE.Vector3(
+          cPoslist[cId][0],
+          -1,
+          cPoslist[cId][1]
+        );
 
-		ObjLoaderUtils.SpawnObjAtPosition("assets/Road2.obj", "assets/Road2.png",objPosition,function(object){
-				object.rotateY(Math.PI / 2);
-				scene.add(object);
-		});
-		cId++;
+        ObjLoaderUtils.SpawnObjAtPosition(
+          "assets/Road2.obj",
+          "assets/Road2.png",
+          objPosition,
+          function(object) {
+            object.rotateY(Math.PI / 2);
+            scene.add(object);
+          }
+        );
+        cId++;
       }
     }
 
     //central building
-	//Shibuya
-	var objPosition = new THREE.Vector3(
-		149 * parseInt(citySizeX / 2) + 32,
-		0,
-		149 * parseInt(citySizeY / 2) + 32
-	  );
+    //Shibuya
+    var objPosition = new THREE.Vector3(
+      149 * parseInt(citySizeX / 2) + 32,
+      0,
+      149 * parseInt(citySizeY / 2) + 32
+    );
 
-	ObjLoaderUtils.SpawnObjAtPosition("assets/Shibuya.obj", "assets/Shibuya.png",objPosition,function(object){
-			scene.add(object);
-	});
+    ObjLoaderUtils.SpawnObjAtPosition(
+      "assets/Shibuya.obj",
+      "assets/Shibuya.png",
+      objPosition,
+      function(object) {
+        scene.add(object);
+      }
+    );
 
+    Index.worldLoaded = true;
 
-
-
-
-		var onProgress = function (xhr) {
-			if (xhr.lengthComputable) {
-
-				var percentComplete = xhr.loaded / xhr.total * 100;
-				console.log(Math.round(percentComplete, 2) + '% downloaded');
-			}
-		};
-		var onError = function (xhr) { };
-	}
+    var onProgress = function(xhr) {
+      if (xhr.lengthComputable) {
+        var percentComplete = (xhr.loaded / xhr.total) * 100;
+        console.log(Math.round(percentComplete, 2) + "% downloaded");
+      }
+    };
+    var onError = function(xhr) {};
+  }
 }
 
 function showElementById(id) {
-	document.getElementById(id).style.display = 'block';
+  document.getElementById(id).style.display = "block";
 }
 
 function hideElementById(id) {
-	document.getElementById(id).style.display = 'none';
+  document.getElementById(id).style.display = "none";
 }
