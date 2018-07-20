@@ -5,39 +5,52 @@ class Index {
     var citySizeX = 10;
     var citySizeY = 10;
 
-    var reomveList = [55, 155, 255, 355];
+		var reomveList = [
+			 55, 155, 255, 355
+			,54, 154, 254, 354
+			,45, 145, 245, 345
+			,44, 144, 244, 344
+		];
 
     //for-sale land
     var LandPoslist = [];
     var LandId = 0;
-
-    var loadedLandCount = 0;
-
+	var loadedLandCount = 0;
     //4 lands every block
     for (var xa = 0; xa < 2; xa++) {
       for (var ya = 0; ya < 2; ya++) {
         //100 blocks
         for (var xi = 0; xi < citySizeX; xi++) {
           for (var yi = 0; yi < citySizeY; yi++) {
-            //record position
-            var pos = [xi * 149 + xa * 63, yi * 149 + ya * 63]; //149=126+23
-            LandPoslist.push(pos);
+
+
+			if(reomveList.includes(LandId))
+			{
+				LandId++;
+				continue;
+			}
 
             var objPosition = new THREE.Vector3(
-              LandPoslist[LandId][0],
+              xi * 149 + xa * 63,
               0,
-              LandPoslist[LandId][1]
+              yi * 149 + ya * 63
             );
 
+			var fileName;
+			if(Math.random()> 0.3)
+			{ fileName = "Land+4+sale";
+			}else{ 
+			fileName = "Apartment+combine";
+			}
+
             ObjLoaderUtils.SpawnObjAtPosition(
-              "assets/Free Land.obj",
-              "assets/Free Land.png",
+			  "assets/"+fileName+".obj",
+              "assets/"+fileName+".png",
               objPosition,
               function(object) {
-                if (!reomveList.includes(loadedLandCount)) {
 				  scene.add(object);
-				}
-				console.log(loadedLandCount + "% downloaded");
+
+				console.log(loadedLandCount + "/400 loaded");
 				loadedLandCount++;
               }
             );
@@ -132,17 +145,63 @@ class Index {
 	});
 
 
+	//Sweaty Chair Building
+	var objPosition = new THREE.Vector3(
+		(149) * parseInt(citySizeX/2-1)+31.5,
+		0,
+		(149) * parseInt(citySizeY/2)+31.5,
+	  );
+
+	ObjLoaderUtils.SpawnObjAtPosition("assets/SweatyChair.obj", "assets/SweatyChair.png",objPosition,function(object){
+			scene.add(object);
+	});
 
 
+	//Block 42 Building base
+	var objPosition = new THREE.Vector3(
+		(149) * parseInt(citySizeX/2-1)+31.5,
+		0,
+		(149) * parseInt(citySizeY/2-1)+31.5,
+	  );
 
-		var onProgress = function (xhr) {
-			if (xhr.lengthComputable) {
+	ObjLoaderUtils.SpawnObjAtPosition("assets/Block+42.obj", "assets/Block+42.png",objPosition,function(object){
+			scene.add(object);
+	});
 
-				var percentComplete = xhr.loaded / xhr.total * 100;
-				console.log(Math.round(percentComplete, 2) + '% downloaded');
-			}
-		};
-		var onError = function (xhr) { };
+	//Block 42 Building top
+	var objPosition = new THREE.Vector3(
+		(149) * parseInt(citySizeX/2-1)+31.5,
+		126,
+		(149) * parseInt(citySizeY/2-1)+31.5,
+	  );
+
+	ObjLoaderUtils.SpawnObjAtPosition("assets/Block+42_2.obj", "assets/Block+42_2.png",objPosition,function(object){
+			scene.add(object);
+	});
+
+
+	//ugly Building base
+	var objPosition = new THREE.Vector3(
+		(149) * parseInt(citySizeX/2)+31.5,
+		0,
+		(149) * parseInt(citySizeY/2-1)+31.5,
+	  );
+
+	ObjLoaderUtils.SpawnObjAtPosition("assets/city+ugly.obj", "assets/city+ugly.png",objPosition,function(object){
+			scene.add(object);
+	});
+
+	//ugly Building top
+	var objPosition = new THREE.Vector3(
+		(149) * parseInt(citySizeX/2)+31.5,
+		126,
+		(149) * parseInt(citySizeY/2-1)+31.5,
+	  );
+
+	ObjLoaderUtils.SpawnObjAtPosition("assets/ugly+building+2.obj", "assets/ugly+building+2.png",objPosition,function(object){
+			scene.add(object);
+	});
+
 	}
 }
 
