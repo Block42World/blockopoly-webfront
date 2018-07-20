@@ -131,12 +131,25 @@ class Index {
 			scene.add(object);
 	});
 
-    var onProgress = function(xhr) {
-      if (xhr.lengthComputable) {
-        var percentComplete = (xhr.loaded / xhr.total) * 100;
-        console.log(Math.round(percentComplete, 2) + "% downloaded");
-      }
-    };
-    var onError = function(xhr) {};
-  }
+
+
+
+
+		var onProgress = function (xhr) {
+			if (xhr.lengthComputable) {
+
+				var percentComplete = xhr.loaded / xhr.total * 100;
+				console.log(Math.round(percentComplete, 2) + '% downloaded');
+			}
+		};
+		var onError = function (xhr) { };
+	}
+}
+
+function showElementById(id) {
+	document.getElementById(id).style.display = 'block';
+}
+
+function hideElementById(id) {
+	document.getElementById(id).style.display = 'none';
 }

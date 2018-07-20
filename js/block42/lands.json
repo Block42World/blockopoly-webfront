@@ -1,0 +1,74 @@
+[
+	{
+		"x": 0,
+		"y": 0,
+		"w": 10,
+		"h": 10,
+		"owned": true,
+		"sale": false
+	},
+	{
+		"x": -7.5,
+		"y": 2.5,
+		"w": 5,
+		"h": 5,
+		"owned": true,
+		"sale": false
+	},
+	{
+		"x": -7.5,
+		"y": -2.5,
+		"w": 5,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": 7.5,
+		"y": 2.5,
+		"w": 5,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": 7.5,
+		"y": -2.5,
+		"w": 5,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": -7.5,
+		"y": 5,
+		"w": 10,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": 7.5,
+		"y": 5,
+		"w": 10,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": -7.5,
+		"y": -5,
+		"w": 10,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	},
+	{
+		"x": 7.5,
+		"y": -5,
+		"w": 10,
+		"h": 5,
+		"owned": false,
+		"sale": true
+	}
+]
