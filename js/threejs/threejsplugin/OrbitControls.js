@@ -64,7 +64,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.panSpeed = 1.0;
 	this.panningMode = THREE.ScreenSpacePanning; // alternate THREE.HorizontalPanning
 	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
-	this.panMaxHeight = 100;
+	this.panMaxHeight = 300;
 	this.panMinHeight = 0;
 
 	// Set to true to automatically rotate around the target

@@ -56,9 +56,9 @@ Player.prototype.setInputCanvas = function( id )
 
 	var t = this;
 	console.log(isPlaying);
-	if(isPlaying){
-		document.addEventListener("click",  function( e ) { t.onMouseEvent( window.innerWidth/2, window.innerHeight/2, MOUSE.UP, e.which == 3 ); });
-	}
+
+	document.addEventListener("click",  function( e ) { t.onMouseEvent( window.innerWidth/2, window.innerHeight/2, MOUSE.UP, e.which == 3 ); });
+
 	document.onkeydown = function( e ) { if ( e.target.tagName != "INPUT" ) { t.onKeyEvent( e.keyCode, true ); return false; } }
 	document.onkeyup = function( e ) { if ( e.target.tagName != "INPUT" ) { t.onKeyEvent( e.keyCode, false ); return false; } }
 	//canvas.onmousedown = function( e ) { t.onMouseEvent( e.clientX, e.clientY, MOUSE.DOWN, e.which == 3 ); return false; }
@@ -136,6 +136,8 @@ Player.prototype.onKeyEvent = function( keyCode, down )
 
 Player.prototype.onMouseEvent = function( x, y, type, rmb )
 {
+
+
 	if ( type == MOUSE.UP ) {
 		this.doBlockAction( x, y, !rmb );
 		this.dragging = false;
