@@ -5,7 +5,8 @@
 		"w": 10,
 		"h": 10,
 		"owned": true,
-		"sale": false
+		"sale": false,
+		"description": "Follow the Seed"
 	},
 	{
 		"x": -7.5,
