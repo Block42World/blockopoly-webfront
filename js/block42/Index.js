@@ -173,3 +173,11 @@ class Index
 		var onError = function (xhr) { };
 	}
 }
+
+function showElementById(id) {
+	document.getElementById(id).style.display = 'block';
+}
+
+function hideElementById(id) {
+	document.getElementById(id).style.display = 'none';
+}
