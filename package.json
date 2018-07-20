@@ -1,0 +1,33 @@
+{
+  "name": "world-webfront",
+  "version": "1.0.0",
+  "description": "A light web app version that allow players to buy and sell sell lands (a non-fungible token), customize their own buildings, and browse around the city.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run open",
+    "open": "concurrently \"http-server -a localhost -p 3000\" \"open http://localhost:3000\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Block42World/world-frontend.git"
+  },
+  "keywords": [
+    "BLock42",
+    "World",
+    "Editor",
+    "Ethereum",
+    "Land",
+    "Non"
+  ],
+  "author": "Richard Fu",
+  "license": "ISC", 
+  "bugs": {
+    "url": "https://github.com/Block42World/world-frontend/issues"
+  },
+  "homepage": "https://github.com/Block42World/world-frontend#readme",
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "web3": "^1.0.0-beta.34"
+  }
+}

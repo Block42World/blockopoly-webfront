@@ -13,6 +13,7 @@ class Index
 
 		var reomveList = [55, 155, 255, 355];
 
+		// DEV: variable use camelCase
 		//for-sale land
 		var LandPoslist = [];
 		var LandId = 0;
@@ -133,7 +134,7 @@ class Index
 								object.rotateY(Math.PI/2);
 								scene.add(object);
 								cId++;
-								console.log(cId + '% downloaded');
+								// console.log(cId + '% downloaded');
 							});
 					});
 			}

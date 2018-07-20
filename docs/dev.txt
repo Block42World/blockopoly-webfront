@@ -1,0 +1,22 @@
+Install Node.js
+https://nodejs.org/en/download/
+
+Install global components
+npm install -g browserify
+npm install -g watchify
+npm install -g http-server -g
+npm install -g concurrently
+
+Install dependencies
+npm i
+
+Watch and bundle JavaScript
+watchify js/main.js -o js/bundle.js
+
+Start web server in localhost
+npm start
+
+
+
+https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072
+http://jasonwatmore.com/post/2016/06/22/nodejs-setup-simple-http-server-local-web-server
