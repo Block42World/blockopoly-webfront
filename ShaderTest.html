@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <title>ShaderTesting - Basic Scene</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            background: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />Please Standby...</div>
+
+    <!-- ThreeJS Scripts -->
+    <script src="js/threejs/three.js"></script>
+    <script src="js/threejs/threejsplugin/Detector.js"></script>
+    <script src="js/threejs/threejsplugin/stats.min.js"></script>
+
+    <!-- Block42 Scripts-->
+    <script src="js/block42/ShaderTesting.js"></script>
+
+
+    <script type="text/javascript">
+        //First we check if our user has WebGL on thier machine.
+        if (!Detector.webgl) {
+            Detector.addGetWebGLMessage();
+            document.getElementById('container').innerHTML = "";
+        }
+
+        Initialize();
+        Render();
+    </script>
+</body>
+
+</html>
