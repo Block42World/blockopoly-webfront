@@ -10,6 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script src="js/threejs/three.js"></script>
@@ -65,32 +66,60 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Play</a>
                 </li>
+                <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showElementById('land-info')">Info</a>
+                    </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
         </div>
     </nav>
 
-    <div class="right-center">
+    <div class="right-center" id="land-info">
+        <button type="button" class="close" aria-label="Close" onclick="hideElementById('land-info')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div>
+            <h2 class="center">PLOTNAME</h4>
+
+        </div>
+        <div>
+            <p class="center">Owned by:
+                <span class="glyphicon glyphicon-user"></span>
+            </p>
+        </div>
         <div class="card mb-4 box-shadow">
-            <h4 class="center">PLOTNAME</h4>
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Free</h4>
+                <h4 class="my-0 font-weight-normal">&lt;Transaction History&gt;</h4>
             </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">$0
-                    <small class="text-muted">/ mo</small>
-                </h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>10 users included</li>
-                    <li>2 GB of storage</li>
-                    <li>Email support</li>
-                    <li>Help center access</li>
-                </ul>
-                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Buy / Edit</button>
+            <div>
+                <div class="card-body">
+                    <table class="table no-border">
+                        <tbody>
+                            <tr>
+                                <td>100,000,000</td>
+                                <td>1 month ago</td>
+                            </tr>
+                            <tr>
+                                <td>75,000</td>
+                                <td>5 months ago</td>
+                            </tr>
+                            <tr>
+                                <td>1,000</td>
+                                <td>1 year ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+        <div>
+            <a href="#"><p class="center">View Full History</p></a>
+        </div>
+        <div class="text-center">
+            <img src="img/money.png" alt="$" width="35px" height="35px" style="vertical-align: middle; max-height: 35px; max-width: 35px;">
+            <h2 class="inline-header text-primary text-center align-middle">9,999</span>
+        </div>
+        <div class="button">
+            <button type="button" class="btn btn-lg btn-block btn-dark">Buy / Edit</button>
         </div>
     </div>
 

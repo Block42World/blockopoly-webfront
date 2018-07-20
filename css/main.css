@@ -17,16 +17,25 @@ p.label-price {
 }
 
 div.right-center {
+    border-radius: 25px;
     background-color: azure;
 	position: fixed;
     width: 300px;
-    height: 550px;
+    height: 475px;
     top: 40%;
     right: 35px;
     margin-top: -150px;
     padding: 10px;
 }
 
+div.button {
+    margin: 15px;
+}
+
 .table.no-border tr td, .table.no-border tr th {
     border-width: 0;
+}
+
+h2.inline-header {
+    display: inline;
 }
