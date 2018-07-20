@@ -32,8 +32,13 @@ div.button {
     margin: 15px;
 }
 
-.table.no-border tr td, .table.no-border tr th {
-    border-width: 0;
+div.grey-box {
+    border: 1px solid grey;
+}
+
+img.inline-icon {
+    width: 35px;
+    height: 35px;
 }
 
 h2.inline-header {
