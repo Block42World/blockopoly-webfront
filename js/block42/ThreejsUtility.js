@@ -78,8 +78,8 @@ class ThreejsUtility {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    stats = new Stats();
-    container.appendChild(stats.dom);
+    //stats = new Stats();
+    //container.appendChild(stats.dom);
 
     //init the outline feature
     initOutline();
@@ -99,7 +99,7 @@ class ThreejsUtility {
     }
 
     //
-    stats.update();
+    //stats.update();
     ThreejsUtility.render();
     requestAnimationFrame(ThreejsUtility.animate);
     lastTime = time;
