@@ -22,12 +22,14 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// Set to false to disable this control
 	this.enabled = true;
 
-	// "target" sets the location of focus, where the object orbits around
-	this.target = new THREE.Vector3();
 
+	// "target" sets the location of focus, where the object orbits around
+	this.object.position.set(538,54,718);
+	this.target = new THREE.Vector3(542,54,710);
+	//this.target.add(this.object.position);
 	// How far you can dolly in and out ( PerspectiveCamera only )
 	this.minDistance = 10;
-	this.maxDistance = 100;
+	this.maxDistance = 300;
 
 	// How far you can zoom in and out ( OrthographicCamera only )
 	this.minZoom = 0;
@@ -125,7 +127,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	// this method is exposed, but perhaps it would be better if we can make it private...
 	this.update = function () {
-
+	
 		var offset = new THREE.Vector3();
 
 		// so camera.up is the orbit axis
@@ -173,7 +175,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 			// move target to panned location
 			var resultPos = new THREE.Vector3();
 			resultPos.addVectors(scope.target,panOffset);
-			console.log( resultPos.y +" "+(resultPos.y > scope.panMinHeight) +" "+(resultPos.y < scope.panMaxHeight));
 
 			if(resultPos.y > scope.panMinHeight && resultPos.y < scope.panMaxHeight)
 			{
@@ -189,7 +190,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 			position.copy( scope.target ).add( offset );
 
 			scope.object.lookAt( scope.target );
-
+			
 			if ( scope.enableDamping === true ) {
 
 				sphericalDelta.theta *= ( 1 - scope.dampingFactor );
@@ -356,7 +357,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	// deltaX and deltaY are in pixels; right and down are positive
 	var pan = function () {
-
+	
 		var offset = new THREE.Vector3();
 
 		return function pan( deltaX, deltaY ) {
@@ -484,7 +485,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 		rotateStart.copy( rotateEnd );
 
 		scope.update();
-
 	}
 
 	function handleMouseMoveDolly( event ) {
@@ -741,7 +741,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	function onMouseMove( event ) {
 
 		if ( scope.enabled === false ) return;
-
+				
 		event.preventDefault();
 
 		switch ( state ) {
