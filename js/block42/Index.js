@@ -230,6 +230,7 @@ class Index {
 			scene.add(object);
 	});
 
+  }
 }
 
 function showElementById(id) {
