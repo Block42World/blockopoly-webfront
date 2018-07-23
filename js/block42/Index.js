@@ -1,24 +1,14 @@
+var player;
+
 class Index {
 
 	static init()
 	{
 		ThreejsUtility.init();
 		ModelBuilder.build();
-		Player.initFly();
-	}
 
-	static initOrbitControl()
-	{
-		ThreejsUtility.init();
-		ModelBuilder.build();
-		Player.initOrbitControl();
-	}
-
-	static initFPS()
-	{
-		ThreejsUtility.init();
-		ModelBuilder.build();
-		Player.initFly();
+		player = new Block42.Player(camera,ControlTypeEnum.Flight);
+		player.Initialize();
 	}
 }
 

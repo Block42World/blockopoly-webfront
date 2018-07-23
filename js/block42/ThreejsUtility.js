@@ -1,7 +1,6 @@
 //Author: Jim
 //this code is for basic three.js set up
 var container, stats;
-var controls;
 var camera, scene, renderer;
 var lastTime = 0;
 var gridHelper;
@@ -15,24 +14,6 @@ var distance = 400000;
 var inclination = 0;
 
 class ThreejsUtility {
-
-  static UpdateSky() {
-    //inclination += (deltatime * 0.25);
-
-    var uniforms = sky.material.uniforms;
-    uniforms.turbidity.value = 10;
-    uniforms.rayleigh.value = 0.65;
-    uniforms.luminance.value = 0.8;
-    uniforms.mieCoefficient.value = 0.000;
-    uniforms.mieDirectionalG.value = 0.8;
-    var theta = Math.PI * (inclination - 0.5);
-    var phi = 2 * Math.PI * (0.25 - 0.5);
-    sunSphere.position.x = 40000 * Math.cos(phi);
-    sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
-    sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
-    sunSphere.visible = true;
-    uniforms.sunPosition.value.copy(sunSphere.position);
-  }
 
   static init() {
     // build up the threejs environment
@@ -88,7 +69,7 @@ class ThreejsUtility {
     deltatime = time - lastTime;
 
     if (Index.worldLoaded == true) {
-      controls.update(deltatime); //Update our controls using a deltatime
+      player.Update(deltatime); //Update our controls using a deltatime
       ThreejsUtility.UpdateSky();
     }
 
@@ -105,22 +86,44 @@ class ThreejsUtility {
     //renderer.render( scene, camera );
   }
 
-  static InitSky() {
-    //Add Sky
-    sky = new THREE.Sky();
-    sky.scale.setScalar(450000);
-    scene.add(sky);
+//#region Skybox
 
-    // Add Sun Helper
-    sunSphere = new THREE.Mesh(
-      new THREE.SphereBufferGeometry(20000, 16, 8),
-      new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-    sunSphere.position.y = -700000;
-    sunSphere.visible = false;
-    scene.add(sunSphere);
-  }
+static InitSky() {
+  //Add Sky
+  sky = new THREE.Sky();
+  sky.scale.setScalar(450000);
+  scene.add(sky);
+
+  // Add Sun Helper
+  sunSphere = new THREE.Mesh(
+    new THREE.SphereBufferGeometry(20000, 16, 8),
+    new THREE.MeshBasicMaterial({ color: 0xffffff })
+  );
+  sunSphere.position.y = -700000;
+  sunSphere.visible = false;
+  scene.add(sunSphere);
 }
+
+static UpdateSky() {
+  var uniforms = sky.material.uniforms;
+  uniforms.turbidity.value = 10;
+  uniforms.rayleigh.value = 0.65;
+  uniforms.luminance.value = 0.8;
+  uniforms.mieCoefficient.value = 0.000;
+  uniforms.mieDirectionalG.value = 0.8;
+  var theta = Math.PI * (inclination - 0.5);
+  var phi = 2 * Math.PI * (0.25 - 0.5);
+  sunSphere.position.x = 40000 * Math.cos(phi);
+  sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
+  sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+  sunSphere.visible = true;
+  uniforms.sunPosition.value.copy(sunSphere.position);
+}
+
+//#endregion
+
+}
+
 
 window.onresize = function() {
   camera.aspect = window.innerWidth / window.innerHeight;

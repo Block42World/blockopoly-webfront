@@ -10,7 +10,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/ethereum/web3.js/1.0/dist/web3.min.js"></script>
 
     <script src="js/threejs/three.js"></script>
     <!--offical library-->
@@ -36,6 +42,8 @@
     <script src="js/threejs/threejsplugin/OutlinePass.js"></script>
 
     <!--the library we write-->
+    <script src="js/Block42.js"></script>
+    
     <script src="js/block42/ThreejsUtility.js"></script>
     <script src="js/block42/customOutline.js"></script>
     <script src="js/block42/Index.js"></script>
@@ -43,13 +51,15 @@
 	<script src="js/block42/ModelBuilder.js"></script>
 	<script src="js/block42/Player.js"></script>
     <script src="js/block42/Land.js"></script>
+
     <script src="js/bundle.js"></script>
 </head>
 
 <body>
+
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="https://www.block42.world/">
-            <img src="assets\img\logo.png" width="35" height="35" alt="Block42">
+            <img src="assets/img/logo.png" width="35" height="35" alt="Block42">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -82,6 +92,23 @@
         </div>
     </nav>
 
+    <!-- Alerts-->
+    <div id="alerts">
+        <div id="no-metamask-alert" class="alert alert-warning alert-dismissible mb-0" role="alert" style="display:none">
+            <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            Install and login
+            <strong>
+                <a href="https://metamask.io/" target="_blank">MetaMask</a>
+            </strong>
+            to enable buy / sell lands.
+        </div>
+        <div id="no-mainnet-alert" class="alert alert-danger alert-dismissible mb-0" role="alert" style="display:none">
+                <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            <span id="no-mainnet-alert-text"></span>
+        </div>
+    </div>
+
+    <!-- Land info box -->
     <div class="right-center" id="land-info" style="display: none">
         <button type="button" class="close" aria-label="Close" onclick="hideElementById('land-info')">
             <span aria-hidden="true">&times;</span>
@@ -162,15 +189,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm">
-                    <p class="label-tag">Bitcoin</p>
+                    <p class="label-tag"><i class="fab fa-btc"></i> Bitcoin</p>
                     <p class="label-price">$7,305.50</p>
                 </div>
                 <div class="col-sm">
-                    <p class="label-tag">Ethereum</p>
+                    <p class="label-tag"><i class="fab fa-ethereum"></i> Ethereum</p>
                     <p class="label-price">$485.36</p>
                 </div>
                 <div class="col-sm">
-                    <p class="label-tag">Bitcoin Cash</p>
+                    <p class="label-tag"><i class="fab fa-bitcoin"></i> Bitcoin Cash</p>
                     <p class="label-price">$813.01</p>
                 </div>
                 <div class="col-sm">
@@ -184,7 +211,7 @@
             </div>
         </div>
     </footer>
-    <!-- Footer -->
+    
     <script type="text/javascript">
         Index.init();
     </script>

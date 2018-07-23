@@ -3,7 +3,9 @@
 # Block42 web client frontend
 
 ## About
-A light web app version that allow players to buy and sell sell lands, customize their own buildings, and browse around the city.
+A light web app version that allow players to buy and sell lands, customize their own buildings, and just browse around the city in Block42, which players build togather.
+
+A client version will provide more interactive functionalities and MMO-gameplay, using the same assets built by players in the web app version.
 
 Please note that this is still in prototype and under heavy development. The final product may be subject to a number of quality assurance tests to verify conformance with specifications.
 

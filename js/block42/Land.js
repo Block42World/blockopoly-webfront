@@ -1,3 +1,4 @@
+
 // Land
 //
 // Control lands
@@ -14,9 +15,16 @@ class Land
         this._description = description;
     }
 
+    static init()
+    {
+        var fs = require('fs');
+        var data = fs.readFileSync('js/block42/lands.json');
+        console.log(data);
+    }
+
+    // Load the lands info from JSON, this will be replaced by Blockchain call later
     static init(landsJson, myLandsJson)
 	{
-        // Load the lands info from JSON, this will be replaced by Blockchain call later
         landsJson.forEach(jsonElement => {
             var land = new Land(jsonElement.x, jsonElement.y, jsonElement.w, jsonElement.h, jsonElement.owned, jsonElement.sale, jsonElement.description);
             Land.lands.push(land);
@@ -27,6 +35,8 @@ class Land
                 Land.myLands.push(Land.landsOb[[jsonElement.x, jsonElement.y]]);
         });
     }
+
+    /* Lands info */
 
     // Get the land at (x,y), return undefined if no land at that point
     static getLand(x, y)
@@ -44,6 +54,15 @@ class Land
         return result;
     }
 
+    /* Buy and sell */
+
+    static buyLand(land)
+    {
+
+    }
+
+    /* My lands */
+
     // Check if a given Land object is mine
     static isMyLand(land)
     {
@@ -60,6 +79,8 @@ class Land
         }
         return false;
     }
+
+    /* Debug print */
 
     // Debug print all lands
     static printLands()

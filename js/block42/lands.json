@@ -9,66 +9,66 @@
 		"description": "Follow the Seed"
 	},
 	{
-		"x": -7.5,
-		"y": 2.5,
-		"w": 5,
-		"h": 5,
+		"x": -8,
+		"y": 3,
+		"w": 6,
+		"h": 6,
 		"owned": true,
 		"sale": false
 	},
 	{
-		"x": -7.5,
-		"y": -2.5,
-		"w": 5,
-		"h": 5,
+		"x": -8,
+		"y": -3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": 2.5,
-		"w": 5,
-		"h": 5,
+		"x": 8,
+		"y": 3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": -2.5,
-		"w": 5,
-		"h": 5,
+		"x": 8,
+		"y": -3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": -7.5,
-		"y": 5,
-		"w": 10,
-		"h": 5,
+		"x": -2,
+		"y": 7,
+		"w": 6,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": 5,
-		"w": 10,
-		"h": 5,
+		"x": 3,
+		"y": 7,
+		"w": 4,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": -7.5,
-		"y": -5,
-		"w": 10,
-		"h": 5,
+		"x": -3,
+		"y": -7,
+		"w": 4,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": -5,
-		"w": 10,
-		"h": 5,
+		"x": 2,
+		"y": -7,
+		"w": 6,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	}
