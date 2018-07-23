@@ -1,7 +1,6 @@
 //Author: Jim
 //this code is for basic three.js set up
 var container, stats;
-var controls;
 var camera, scene, renderer;
 var lastTime = 0;
 var gridHelper;
@@ -88,7 +87,7 @@ class ThreejsUtility {
     deltatime = time - lastTime;
 
     if (Index.worldLoaded == true) {
-      controls.update(deltatime); //Update our controls using a deltatime
+      player.Update(deltatime); //Update our controls using a deltatime
       ThreejsUtility.UpdateSky();
     }
 
