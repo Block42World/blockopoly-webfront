@@ -73,8 +73,11 @@
                     <a class="nav-link" href="#">Play</a>
                 </li>
                 <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showElementById('news-popup')">News</a>
+                </li>
+                <li class="nav-item">
                         <a class="nav-link" href="#" onclick="showElementById('land-info')">Info</a>
-                    </li>
+                </li>
             </ul>
         </div>
     </nav>
@@ -123,6 +126,34 @@
         </div>
         <div class="button">
             <button type="button" class="btn btn-lg btn-block btn-dark">Buy / Edit</button>
+        </div>
+    </div>
+
+    <div class="news-popup" id="news-popup" style="display: none">
+        <button type="button" class="close" aria-label="Close" onclick="hideElementById('news-popup')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="single_left_coloum_wrapper">
+            <h2 class="title">From Around The World</h2>
+            <a class="more" href="#">more</a>
+            <div class="single_left_coloum floatleft">
+                <img src="img/news1.jpg" alt="" class="news"/>
+                <h3 class="news_coloum">Bitcoin's Price Sets Sights on $8K</h3>
+                <p>Bitcoin's price continues to hold ground amid a market sell-off, with growing momentum building to take out its next target of $8,000.</p>
+                <a class="readmore" target="_blank" href="https://www.coindesk.com/bitcoins-price-sets-sights-on-8k-after-sunday-sell-off/">read more</a>
+            </div>
+            <div class="single_left_coloum floatleft">
+                <img src="img/single_featured.png" alt=""  class="news"/>
+                <h3 class="news_coloum">Bitcoin's Future Looks Bright for the First Time in 2018</h3>
+                <p>Catalysts can lead any currency higher. However, in the cryptocurrency market, Bitcoin is the ‘peg’ for other currencies when it comes to trading. BTC also dominates the market cap of the total cryptocurrency space while being the only cryptocurrency futures are traded for through major commodity exchanges like the CBOE. This week saw Bitcoin hover in the low $6,000 range before mysteriously popping to above $7,500.</p>
+                <a class="readmore" target="_blank" href="https://bitcoinist.com/bitcoins-future-looks-bright-for-the-first-time-in-2018/">read more</a>
+            </div>
+            <div class="single_left_coloum floatleft">
+                <img src="img/news2.jpg" alt=""  class="news"/>
+                <h3 class="news_coloum">Is This Bitcoin Rally For Real?</h3>
+                <p>I have been bearish on cryptocurrencies for a number of months now.  I was feeling good about that view as Bitcoin flirted with breaking $6,000 again as recently as July 12th.  Then it took off.  It went from $6,185, to $6,662, to $7,314 in just 2 days (according to Bloomberg data).</p>
+                <a class="readmore" target="_blank" href="https://www.forbes.com/sites/petertchir/2018/07/22/is-this-bitcoin-rally-for-real/#774e38bd3b3b">read more</a>
+            </div>
         </div>
     </div>
 
