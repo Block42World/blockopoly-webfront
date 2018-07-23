@@ -32,13 +32,25 @@ Block42.Player = function(cameraObject, controllerType) {
 
 	//#endregion
 
+	//#region User input
+
+	document.onkeypress = function(e) {
+		e = e || window.event;
+
+		if (e.code == "KeyP") {
+			player.IncrementControlType();
+		}
+	};
+
+	//#endregion
+
 	//#region Controller Methods
 
 	//#region Set Control
 
 	this.SetControlType = function(controlType) {
 		//Set our control type
-		this.controlType = controllerType;
+		this.controlType = controlType;
 		switch (this.controlType) {
 			default:
 			case ControlTypeEnum.Flight:
@@ -60,7 +72,7 @@ Block42.Player = function(cameraObject, controllerType) {
 	this.IncrementControlType = function() {
 		var tempControlType = this.controlType;
 		tempControlType = (tempControlType % 3) + 1; //Since our enum is in the value range of 1-3 we can simply modulo our number to get its value plus 1
-		SetControlType(tempControlType);
+		this.SetControlType(tempControlType);
 	};
 
 	//#endregion
@@ -117,7 +129,7 @@ Block42.Player = function(cameraObject, controllerType) {
 
 	//#endregion
 
-	//#region Hide Show Land
+	//#region Land Methods
 
 	this.GetLandsAroundPlayer = function() {
 		//Not implemented Yet. Need a good way to use Land.js with this too. Get all lands within the player area
