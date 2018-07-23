@@ -36,7 +36,7 @@ function startApp(){
         if (netId === 3) {
             // tokenContractAddress = tokenContractAddressRopsten;
             // crowdsaleContractAddress = crowdsaleContractAddressRopsten;
-            $('#no-mainnet-alert-text').html("Currently in Ropsten <b>Testnet</b>. Change to mainnet for valid transactions.");
+            $('#no-mainnet-alert-text').html("Currently in <b>Ropsten Test Network</b>. Change to <b>Main Ethereum Network</b> for valid transactions.");
         } else {
             $('#no-mainnet-alert-text').html("You're not connected! Open MetaMask and make sure you are on the Main Ethereum Network.");
         }

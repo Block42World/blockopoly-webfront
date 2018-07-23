@@ -10,66 +10,66 @@ module.exports=[
 		"description": "Follow the Seed"
 	},
 	{
-		"x": -7.5,
-		"y": 2.5,
-		"w": 5,
-		"h": 5,
+		"x": -8,
+		"y": 3,
+		"w": 6,
+		"h": 6,
 		"owned": true,
 		"sale": false
 	},
 	{
-		"x": -7.5,
-		"y": -2.5,
-		"w": 5,
-		"h": 5,
+		"x": -8,
+		"y": -3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": 2.5,
-		"w": 5,
-		"h": 5,
+		"x": 8,
+		"y": 3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": -2.5,
-		"w": 5,
-		"h": 5,
+		"x": 8,
+		"y": -3,
+		"w": 6,
+		"h": 6,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": -7.5,
-		"y": 5,
-		"w": 10,
-		"h": 5,
+		"x": -2,
+		"y": 7,
+		"w": 6,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": 5,
-		"w": 10,
-		"h": 5,
+		"x": 3,
+		"y": 7,
+		"w": 4,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": -7.5,
-		"y": -5,
-		"w": 10,
-		"h": 5,
+		"x": -3,
+		"y": -7,
+		"w": 4,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	},
 	{
-		"x": 7.5,
-		"y": -5,
-		"w": 10,
-		"h": 5,
+		"x": 2,
+		"y": -7,
+		"w": 6,
+		"h": 4,
 		"owned": false,
 		"sale": true
 	}
@@ -120,7 +120,7 @@ function startApp(){
         if (netId === 3) {
             // tokenContractAddress = tokenContractAddressRopsten;
             // crowdsaleContractAddress = crowdsaleContractAddressRopsten;
-            $('#no-mainnet-alert-text').html("Currently in Ropsten <b>Testnet</b>. Change to mainnet for valid transactions.");
+            $('#no-mainnet-alert-text').html("Currently in <b>Ropsten Test Network</b>. Change to <b>Main Ethereum Network</b> for valid transactions.");
         } else {
             $('#no-mainnet-alert-text').html("You're not connected! Open MetaMask and make sure you are on the Main Ethereum Network.");
         }

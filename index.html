@@ -10,6 +10,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -49,6 +51,7 @@
 	<script src="js/block42/ModelBuilder.js"></script>
 	<script src="js/block42/Player.js"></script>
     <script src="js/block42/Land.js"></script>
+
     <script src="js/bundle.js"></script>
 </head>
 
@@ -86,6 +89,7 @@
         </div>
     </nav>
 
+    <!-- Alerts-->
     <div id="alerts">
         <div id="no-metamask-alert" class="alert alert-warning alert-dismissible mb-0" role="alert" style="display:none">
             <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
@@ -101,6 +105,7 @@
         </div>
     </div>
 
+    <!-- Land info box -->
     <div class="right-center" id="land-info" style="display: none">
         <button type="button" class="close" aria-label="Close" onclick="hideElementById('land-info')">
             <span aria-hidden="true">&times;</span>
@@ -153,15 +158,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm">
-                    <p class="label-tag">Bitcoin</p>
+                    <p class="label-tag"><i class="fab fa-btc"></i> Bitcoin</p>
                     <p class="label-price">$7,305.50</p>
                 </div>
                 <div class="col-sm">
-                    <p class="label-tag">Ethereum</p>
+                    <p class="label-tag"><i class="fab fa-ethereum"></i> Ethereum</p>
                     <p class="label-price">$485.36</p>
                 </div>
                 <div class="col-sm">
-                    <p class="label-tag">Bitcoin Cash</p>
+                    <p class="label-tag"><i class="fab fa-bitcoin"></i> Bitcoin Cash</p>
                     <p class="label-price">$813.01</p>
                 </div>
                 <div class="col-sm">
@@ -175,7 +180,6 @@
             </div>
         </div>
     </footer>
-    <!-- Footer End -->
     
     <script type="text/javascript">
         Index.init();
