@@ -44,3 +44,9 @@ img.inline-icon {
 h2.inline-header {
     display: inline;
 }
+
+#alerts {
+    position: fixed;
+    top: 60px;
+    width: 100%;
+}

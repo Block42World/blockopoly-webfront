@@ -12,6 +12,10 @@
         crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/ethereum/web3.js/1.0/dist/web3.min.js"></script>
+
     <script src="js/threejs/three.js"></script>
     <!--offical library-->
     <script src="js/threejs/threejsplugin/Projector.js"></script>
@@ -47,9 +51,10 @@
 </head>
 
 <body>
+
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="https://www.block42.world/">
-            <img src="assets\img\logo.png" width="35" height="35" alt="Block42">
+            <img src="assets/img/logo.png" width="35" height="35" alt="Block42">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -78,6 +83,21 @@
             </ul>
         </div>
     </nav>
+
+    <div id="alerts">
+        <div id="no-metamask-alert" class="alert alert-warning alert-dismissible mb-0" role="alert" style="display:none">
+            <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            Install and login
+            <strong>
+                <a href="https://metamask.io/" target="_blank">MetaMask</a>
+            </strong>
+            to enable buy / sell lands.
+        </div>
+        <div id="no-mainnet-alert" class="alert alert-danger alert-dismissible mb-0" role="alert" style="display:none">
+                <span class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            <span id="no-mainnet-alert-text"></span>
+        </div>
+    </div>
 
     <div class="right-center" id="land-info" style="display: none">
         <button type="button" class="close" aria-label="Close" onclick="hideElementById('land-info')">
@@ -153,7 +173,8 @@
             </div>
         </div>
     </footer>
-    <!-- Footer -->
+    <!-- Footer End -->
+    
     <script type="text/javascript">
         Index.init();
     </script>
