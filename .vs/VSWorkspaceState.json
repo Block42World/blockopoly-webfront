@@ -2,11 +2,13 @@
   "ExpandedNodes": [
     "",
     "\\css",
+    "\\img",
     "\\js",
     "\\js\\block42",
     "\\js\\threejs",
-    "\\js\\voxjs"
+    "\\js\\threejs\\threejsplugin",
+    "\\js\\webcraft"
   ],
-  "SelectedNode": "\\js\\webcraft",
+  "SelectedNode": "\\js\\block42\\ThreejsUtility.js",
   "PreviewInSolutionExplorer": false
 }

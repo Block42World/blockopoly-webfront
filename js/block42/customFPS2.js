@@ -1,6 +1,6 @@
 
 
-var controls;
+//var controls;
 
 var objects = [];
 
@@ -17,8 +17,6 @@ var sight2 = document.getElementById( 'sight2' );
 // http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
-
-
 
 if ( havePointerLock ) {
 
@@ -62,7 +60,7 @@ if ( havePointerLock ) {
 	document.addEventListener( 'pointerlockerror', pointerlockerror, false );
 	document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
 	document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-
+	console.log(instructions);
 	instructions.addEventListener( 'click', function ( event ) {
 
 		instructions.style.display = 'none';
@@ -101,7 +99,8 @@ function initFPS2(theHigh, walkSpeed)
 	speed = walkSpeed;
 	camera.position.set(0,high,0);
 	controls = new THREE.PointerLockControls( camera );
-	scene.add( controls.getObject() );
+	console.log(controls);
+	//scene.add( controls.getObject() );
 
 	var onKeyDown = function ( event ) {
 

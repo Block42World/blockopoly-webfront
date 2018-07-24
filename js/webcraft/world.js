@@ -96,16 +96,33 @@ World.prototype.setBlock = function( x, y, z, type )
 //
 // Returns a string representation of this world.
 
-World.prototype.toNetworkString = function()
+World.prototype.ToVoxelData = function()
 {
-	var blockArray = [];
 	
-	for ( var x = 0; x < this.sx; x++ )
-		for ( var y = 0; y < this.sy; y++ )
-			for ( var z = 0; z < this.sz; z++ )
-				blockArray.push( String.fromCharCode( 97 + this.blocks[x][y][z].id ) );
+	//clone new VoxelData object
+	var newVoxelData =  Object.assign({}, myVoxelData);
+	newVoxelData.voxels = [];
 	
-	return blockArray.join( "" );
+	//go through every blocks
+	for ( var x = 0; x < this.sx; x++ ){
+		for ( var y = 0; y < this.sy; y++ ){
+			for ( var z = 0; z < this.sz; z++ ){
+
+				// filter out the air blocks
+				if(world.blocks[x][y][z] == BLOCK.AIR){continue;}
+
+				newVoxelData.voxels.push({
+                x: x,
+                y: y,
+                z: z,
+                colorIndex: this.blocks[x][y][z].colorID,
+				});
+
+			}
+		}
+	}
+	
+	return newVoxelData;
 }
 
 

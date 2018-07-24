@@ -40,7 +40,7 @@
 		(W, A, S, D = Move, left click to destroy block, right click to place block)
 		<br />
 			<button id="FullScreen">Full Screen </button>
-			<button id="Save">Save </button>
+			<button id="Save" onclick="OnBtnSave()">Save </button>
 
 	</div>
 
@@ -61,12 +61,14 @@
 	var physics;
 	var player;
 	var isPlaying = false;
+	var myVoxelData;
     //init sight script
     Sight.init();	
 
+
 	// Create a new flat world
 	world = new World( 128, 128, 128 );
-	world.createFlatWorld( 1 );
+	world.createFlatWorld( 0 );
 
 	// Set up renderer
 	render = new Renderer( "renderSurface" );
@@ -104,10 +106,10 @@
 		while ( new Date().getTime() / 1000 - time < 0.016 );
 	}, 1 );
 	
-	var myVoxelData;
+
 	//Shibuya2    chr_rain
 	var parser = new vox.Parser();
-	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
+	parser.parse("assets/Road.vox").then(function(voxelData) {
 	    console.log(voxelData);
 		myVoxelData = voxelData;
 
@@ -122,8 +124,12 @@
 				fluid: false,
 				isColorful: true,
 				colorID: voxelData.voxels[i].colorIndex,
+				x:voxelData.voxels[i].x,
+				y:voxelData.voxels[i].y,
+				z:voxelData.voxels[i].z,
 				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
 			};
+			
 		}
 
 		//update all chuncks
@@ -138,6 +144,128 @@
 	*/
 		
 	});
+
+
+
+	var orginArray;
+	function OnBtnSave()
+	{
+		myVoxelData = world.ToVoxelData();
+		console.log(myVoxelData);
+
+		var encoder = new TextEncoder("utf-8");
+		
+		//"VOX "
+		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
+		//version
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(150));
+		
+		//main
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));//num bytes of chunk content (N)
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte((myVoxelData.voxels.length+ 9)*4));//num bytes of children chunks (M)
+
+		/* optional
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("PACK"));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(4));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1));
+		*/
+		//size
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(12));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.x));//x 
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.y));//y
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.z));//z
+		
+		//xyzi
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("XYZI"));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length*4));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length));
+		for (var i = 0; i < myVoxelData.voxels.length; i++) {
+			uint8Array = addUint8Arrays(uint8Array, [
+			myVoxelData.voxels[i].x, 
+			myVoxelData.voxels[i].y, 
+			myVoxelData.voxels[i].z, 
+			myVoxelData.voxels[i].colorIndex]);
+		}
+		/*
+		//rgba
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("RGBA"));
+		
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1024));
+		
+		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		
+		for (var i = myVoxelData.palette.length; i <=0; i--) {
+			uint8Array = addUint8Arrays(uint8Array, [
+			myVoxelData.palette[i].r, 
+			myVoxelData.palette[i].g, 
+			myVoxelData.palette[i].b, 
+			myVoxelData.palette[i].a]);
+		}
+		*/
+		
+		
+		//end
+		//uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		
+		/*
+		for(var i = 0; i < uint8Array.length; i++)
+		{
+			if(orginArray[i]!= uint8Array[i])
+			{
+
+				console.log(i+" "+orginArray[i] +" "+uint8Array[i]);
+				//uint8Array[i] = orginArray[i];
+			}
+		}
+		*/
+		
+		download(uint8Array, "test.vox", vox);
+		console.log(orginArray);
+		console.log(uint8Array);
+	}
+
+	function addUint8Arrays(a, b) {
+		var c = new Uint8Array(a.length + b.length);
+		c.set(a, 0);
+		c.set(b, a.length);
+		return c;
+	}
+
+	function intTo4byte(number)
+	{
+		return [number, 
+		number/Math.pow(256, 1), 
+		number/Math.pow(256, 2), 
+		number/Math.pow(256, 3)]
+	}
+
+
+
+	// Function to download data to a file
+	function download(data, filename, type) {
+		var file = new Blob([data], {type: type});
+		if (window.navigator.msSaveOrOpenBlob) // IE10+
+			window.navigator.msSaveOrOpenBlob(file, filename);
+		else { // Others
+			var a = document.createElement("a"),
+					url = URL.createObjectURL(file);
+			a.href = url;
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			setTimeout(function() {
+				document.body.removeChild(a);
+				window.URL.revokeObjectURL(url);  
+			}, 0); 
+		}
+	}
+
+
 </script>
 
 
