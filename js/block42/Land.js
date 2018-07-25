@@ -28,11 +28,11 @@ class Land
         landsJson.forEach(jsonElement => {
             var land = new Land(jsonElement.x, jsonElement.y, jsonElement.w, jsonElement.h, jsonElement.owned, jsonElement.sale, jsonElement.description);
             Land.lands.push(land);
-            Land.landsOb[[land._x, land._y]] = land;
+            Land.landsDict[[land._x, land._y]] = land;
         });
         myLandsJson.forEach(jsonElement => {
-            if (Land.landsOb[[jsonElement.x, jsonElement.y]] !== undefined)
-                Land.myLands.push(Land.landsOb[[jsonElement.x, jsonElement.y]]);
+            if (Land.landsDict[[jsonElement.x, jsonElement.y]] !== undefined)
+                Land.myLands.push(Land.landsDict[[jsonElement.x, jsonElement.y]]);
         });
     }
 
@@ -100,6 +100,9 @@ class Land
 
 }
 
+// Array of all lands
 Land.lands = [];
-Land.landsOb = {};
+// Dictionary of all lands with (x,y) as key, for faster searching with known (x,y)
+Land.landsDict = {};
+// Array of all my lands
 Land.myLands = [];
