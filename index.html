@@ -121,7 +121,6 @@
             <p class="center">Owned by:
                 <span><img src="img/default-user.png" alt="John" class="inline-icon"></span>
             </p>
-            </div>
             <div class="grey-box">
                 <div class="card-header">
                     <h6 class="my-0 font-weight-normal">&lt;Transaction History&gt;</h4>
@@ -142,9 +141,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div>
             </div>
-            
         </div>
         <div class="text-center">
             <a href="#"><p class="center">View Full History</p></a>
@@ -184,33 +181,71 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="page-footer font-small bg-dark fixed-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <p class="label-tag"><i class="fab fa-btc"></i> Bitcoin</p>
-                    <p class="label-price">$7,305.50</p>
-                </div>
-                <div class="col-sm">
-                    <p class="label-tag"><i class="fab fa-ethereum"></i> Ethereum</p>
-                    <p class="label-price">$485.36</p>
-                </div>
-                <div class="col-sm">
-                    <p class="label-tag"><i class="fab fa-bitcoin"></i> Bitcoin Cash</p>
-                    <p class="label-price">$813.01</p>
-                </div>
-                <div class="col-sm">
-                    <p class="label-tag">Litecoin</p>
-                    <p class="label-price">$85.83</p>
-                </div>
-                <div class="col-sm">
-                    <p class="label-tag">XRP</p>
-                    <p class="label-price">$0.4657</p>
-                </div>
+
+    <div id="price-bar">
+        <div id="scroll-content">
+            <div class="price-block">
+                <span class="price-label">
+                    <i class="fab fa-btc"></i> Bitcoin:&nbsp;
+                </span>
+                <span class="price-tag red">+2.59%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    <i class="fab fa-ethereum"></i> Ethereum:&nbsp;
+                </span>
+                <span class="price-tag green">-1.34%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    Litecoin:&nbsp;
+                </span>
+                <span class="price-tag green">-2.34%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    XRP:&nbsp;
+                </span>
+                <span class="price-tag red">+9.86%</span>
+            </div>
+            <div class="price-block">
+                    <span class="price-label">
+                        Cubik:&nbsp;
+                    </span>
+                    <span class="price-tag red">+99.86%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    BCD:&nbsp;
+                </span>
+                <span class="price-tag green">-1.62%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    ELF:&nbsp;
+                </span>
+                <span class="price-tag red">+0.59%</span>
+            </div>
+            <div class="price-block">
+                <span class="price-label">
+                    TNB:&nbsp;
+                </span>
+                <span class="price-tag red">+6.22%</span>
             </div>
         </div>
+        <div id="scroll-content-copy">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark fixed-bottom">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-1">© 2018 Copyright:
+            <a target="_blank" href="https://www.block42.world/"><span class="text-white pre"> block42.com</span></a>
+        </div>
+        <!-- Copyright -->
     </footer>
+    <!-- Footer -->
     
     <script type="text/javascript">
         Index.init();
