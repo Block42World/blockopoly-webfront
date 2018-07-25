@@ -137,4 +137,13 @@ Block42.Player = function(cameraObject, controllerType) {
 	};
 
 	//#endregion
+
+	//#region click event
+	document.addEventListener("click",  function( e ) 
+	{
+		console.log("click");
+		//this is the highlighted obj
+		console.log(outlinePass.selectedObjects[0]);
+	});
+	//#endregion
 };
