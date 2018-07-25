@@ -125,6 +125,10 @@ img.news {
     max-height: 52px;
 }
 
+.footer-copyright {
+    color: rgba(255, 255, 255, 0.6)
+}
+
 .title {
     border-bottom:4px solid #CF0000; 
     font-family:'bebasregular'; 
@@ -140,3 +144,54 @@ img.news {
     top: 60px;
     width: 100%;
 }
+
+#price-bar {
+    width: 100%;
+    height: 26px;
+    position: fixed;
+    background-color: #202021;
+    bottom: 32px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#scroll-content {
+    margin-left: 0px;
+    display: inline;
+}
+
+#scroll-content-copy {
+    margin-left: 0px;
+    display: inline;
+}
+
+div.price-block {
+    margin-right: 50px;
+    display: inline-block;
+}
+
+.price-block p {
+    display: block;
+}
+
+.red {
+    background-color: #CF0000;
+    border-radius: 4px;
+}
+
+.green {
+    background-color: green;
+    border-radius: 4px;
+}
+
+span.price-label {
+   color: #f5c347;
+}
+
+span.price-tag {
+    color: #FFF;
+    font-size: 11px;
+}
+
+
+
