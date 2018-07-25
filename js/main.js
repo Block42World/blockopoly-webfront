@@ -1,4 +1,4 @@
-// Get info of lands, this will be replaced by blockchain get later
+// Get info of lands, this will be replaced by blockchain getLands() later
 var landsJson = require('./block42/lands.json')
 var myLandsJson = require('./block42/mylands.json')
 
