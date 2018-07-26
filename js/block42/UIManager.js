@@ -1,28 +1,7 @@
-var player;
-
-// DEV: move main logic to main.js
-
-var area;
-var content;
-var mytimer;
-
-class Index {
-
-	static init()
-	{
-		ThreejsUtility.init();
-		ModelBuilder.buildFromData(Land.lands);
-		player = new Block42.Player(camera,ControlTypeEnum.Flight);
-		player.Initialize();
-	}
-}
-
-// DEV: use JQuery - $('#id').show()
 function showElementById(id) {
   document.getElementById(id).style.display = "block";
 }
 
-// DEV: use JQuery - $('#id').hide()
 function hideElementById(id) {
   document.getElementById(id).style.display = "none";
 }
@@ -53,3 +32,15 @@ function SetPriceScroll() {
 $(document).ready(function(){
 	SetPriceScroll();
 });
+
+function ShowInfoBox(land)
+{
+	if(typeof land === "undefined")
+	{
+		$("#land-info").hide();
+		$("#plotname").text("N/A");
+	}else{
+		$("#land-info").show();
+		$("#plotname").text(land._description);
+	}
+}

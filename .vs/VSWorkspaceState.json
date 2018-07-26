@@ -1,14 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\css",
-    "\\img",
+    "\\docs",
     "\\js",
     "\\js\\block42",
-    "\\js\\threejs",
-    "\\js\\threejs\\threejsplugin",
-    "\\js\\webcraft"
+    "\\js\\threejs\\threejsplugin"
   ],
-  "SelectedNode": "\\js\\block42\\ThreejsUtility.js",
+  "SelectedNode": "\\index - fromdata.html",
   "PreviewInSolutionExplorer": false
 }

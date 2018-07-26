@@ -1,5 +1,5 @@
 // Get info of lands from local JSON, this will be replaced by blockchain getLands() later
-var landsJson = require('./block42/lands.json')
+var landsJson = require('./block42/Lands-auto-generated.json')
 var myLandsJson = require('./block42/mylands.json')
 Land.init(landsJson, myLandsJson)
 
