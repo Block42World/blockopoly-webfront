@@ -20,3 +20,10 @@ npm start
 Reference:
 https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072
 http://jasonwatmore.com/post/2016/06/22/nodejs-setup-simple-http-server-local-web-server
+
+
+
+.vox format explanation
+https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
+.obj format explanation(Chinese)
+https://blog.csdn.net/shenshen211/article/details/51740988

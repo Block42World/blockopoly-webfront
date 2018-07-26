@@ -109,7 +109,7 @@
 
 	//Shibuya2    chr_rain
 	var parser = new vox.Parser();
-	parser.parse("assets/Road.vox").then(function(voxelData) {
+	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
 	    console.log(voxelData);
 		myVoxelData = voxelData;
 
@@ -155,13 +155,14 @@
 
 		var encoder = new TextEncoder("utf-8");
 		
+		//https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
 		//"VOX "
 		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
 		//version
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte(150));
 		
 		//main
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
+		uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));//num bytes of chunk content (N)
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte((myVoxelData.voxels.length+ 9)*4));//num bytes of children chunks (M)
 

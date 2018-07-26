@@ -18,4 +18,10 @@ class Editor
 			};
 		}
 	}
+
+
+	static SaveToObj()
+	{
+		
+	}
 }
