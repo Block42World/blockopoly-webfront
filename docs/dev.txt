@@ -1,5 +1,5 @@
-Install Node.js
-https://nodejs.org/en/download/
+Install Node.js 10.x.x
+https://nodejs.org/en/download/current/
 
 Install global components
 npm install -g browserify
@@ -17,6 +17,6 @@ Start web server in localhost
 npm start
 
 
-
+Reference:
 https://medium.com/jeremy-keeshin/hello-world-for-javascript-with-npm-modules-in-the-browser-6020f82d1072
 http://jasonwatmore.com/post/2016/06/22/nodejs-setup-simple-http-server-local-web-server

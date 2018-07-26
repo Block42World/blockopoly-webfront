@@ -1,5 +1,7 @@
 var player;
 
+// DEV: move main logic to main.js
+
 var area;
 var content;
 var mytimer;
@@ -16,10 +18,12 @@ class Index {
 	}
 }
 
+// DEV: use JQuery - $('#id').show()
 function showElementById(id) {
   document.getElementById(id).style.display = "block";
 }
 
+// DEV: use JQuery - $('#id').hide()
 function hideElementById(id) {
   document.getElementById(id).style.display = "none";
 }

@@ -1,11 +1,7 @@
-// Get info of lands, this will be replaced by blockchain get later
+// Get info of lands from local JSON, this will be replaced by blockchain getLands() later
 var landsJson = require('./block42/lands.json')
 var myLandsJson = require('./block42/mylands.json')
-
-// Init the land, will be replaced by Blockchain later
 Land.init(landsJson, myLandsJson)
-
-// var Web3 = require('web3')
 
 var netId
 var web3js
