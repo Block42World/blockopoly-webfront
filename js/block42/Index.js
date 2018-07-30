@@ -56,9 +56,8 @@ function loadPrices() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 			var coins = JSON.parse(this.responseText);
-			console.log("coins.length: " + coins.data.length);
       for (i = 0; i < coins.data.length; ++i) {
-				document.getElementById("currency" + i).innerHTML += coins.data[i].symbol + ":";
+				document.getElementById("currency" + i).innerHTML = coins.data[i].symbol + ":";
 				var price = coins.data[i].quotes.USD.percent_change_24h;
 				var priceTag = document.getElementById("currency" + i + "-price");
 				priceTag.innerText = price + "%";
