@@ -21,13 +21,12 @@ class ModelBuilder
 		    var data = [];
 		}
 
-
 		Index.worldLoaded = false;
-
-		ModelBuilder.buildStreet(citySizeX, citySizeY);
 
 		var citySizeX = 10;
 		var citySizeY = 10;
+
+		ModelBuilder.buildStreet(citySizeX, citySizeY);
 
 			var reomveList = [
 				 55, 155, 255, 355
@@ -164,9 +163,9 @@ class ModelBuilder
 		});
 
 	  
-	  	console.log(data);
-		var myJSON = JSON.stringify(data);
-		console.log(myJSON);
+	  	//console.log(data);
+		//var myJSON = JSON.stringify(data);
+		//console.log(myJSON);
 		//download(myJSON, "Lands-auto-generated.json", JSON);
 		
 	}
@@ -174,7 +173,7 @@ class ModelBuilder
 
 	static buildStreet(citySizeX, citySizeY)
 	{
-	
+		console.log("buildStreet"+citySizeX);
 		//121 street
 		var hStPoslist = [];
 		var hStId = 0;

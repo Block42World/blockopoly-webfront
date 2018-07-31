@@ -9,9 +9,18 @@ class Index {
 	static init()
 	{
 		ThreejsUtility.init();
-		ModelBuilder.build();
-
+		//ModelBuilder.build();
+		ModelBuilder.buildFromData(Land.lands)
 		player = new Block42.Player(camera,ControlTypeEnum.Flight);
+		player.Initialize();
+	}
+
+	static initOrbit()
+	{
+		ThreejsUtility.init();
+		//ModelBuilder.build();
+		ModelBuilder.buildFromData(Land.lands)
+		player = new Block42.Player(camera,ControlTypeEnum.Orbit);
 		player.Initialize();
 	}
 }
