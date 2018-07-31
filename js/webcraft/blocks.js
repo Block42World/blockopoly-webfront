@@ -66,17 +66,14 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	var blocks = world.blocks;
 	var blockLit = z >= lightmap[x][y];
 	var block = blocks[x][y][z];
-	var bH = block.fluid && ( z == world.sz - 1 || !blocks[x][y][z+1].fluid ) ? 0.9 : 1.0;
 	
-	
-
 	//console.log(x+" "+y+" "+z);
 	var r = myVoxelData.palette[block.colorID].r/255;
 	var g = myVoxelData.palette[block.colorID].g/255;
 	var b = myVoxelData.palette[block.colorID].b/255;
 	//console.log(blocks[x][y][z].colorID);
 	// Top
-	if ( z == world.sz - 1 || world.blocks[x][y][z+1].transparent || block.fluid )
+	if ( z == world.sz - 1 || world.blocks[x][y][z+1].transparent)
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.UP );
 		

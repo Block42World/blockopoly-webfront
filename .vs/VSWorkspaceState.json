@@ -3,9 +3,8 @@
     "",
     "\\docs",
     "\\js",
-    "\\js\\block42",
-    "\\js\\threejs\\threejsplugin"
+    "\\js\\mikolalysenko(optMesh)"
   ],
-  "SelectedNode": "\\index - fromdata.html",
+  "SelectedNode": "\\editor.html",
   "PreviewInSolutionExplorer": false
 }

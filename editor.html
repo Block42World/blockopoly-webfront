@@ -19,6 +19,8 @@
 <script src="js/webcraft/player.js" type="text/javascript"></script>
 <script src="js/webcraft/sight.js" type="text/javascript"></script>
 <script src="js/webcraft/fullScreen.js" type="text/javascript"></script>
+<script src="js/block42/Editor.js" type="text/javascript"></script>
+<script src="js/mikolalysenko(optMesh)/greedy.js" type="text/javascript"></script>
 
 	<!--vox.js-->
 	<script src="js/voxjs/vox.min.js"></script> 
@@ -107,7 +109,7 @@
 	}, 1 );
 	
 
-	//Shibuya2    chr_rain
+	//Shibuya2    chr_rain   Road X
 	var parser = new vox.Parser();
 	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
 	    console.log(voxelData);
@@ -150,8 +152,9 @@
 	var orginArray;
 	function OnBtnSave()
 	{
+	/*
 		myVoxelData = world.ToVoxelData();
-		console.log(myVoxelData);
+		//console.log(myVoxelData);
 
 		var encoder = new TextEncoder("utf-8");
 		
@@ -172,6 +175,7 @@
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1));
 		*/
+		/*
 		//size
 		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
 		uint8Array = addUint8Arrays(uint8Array, intTo4byte(12));
@@ -225,9 +229,13 @@
 		}
 		*/
 		
-		download(uint8Array, "test.vox", vox);
-		console.log(orginArray);
-		console.log(uint8Array);
+		//download(uint8Array, "test.vox", "text/plain");
+		//console.log(orginArray);
+		//console.log(uint8Array);
+		
+		Editor.SaveToObj();
+
+		download(Editor.vertexsOutput + Editor.FacesOutput, "city.obj", "text/plain");
 	}
 
 	function addUint8Arrays(a, b) {
