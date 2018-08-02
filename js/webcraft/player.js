@@ -171,7 +171,15 @@ Player.prototype.doBlockAction = function( x, y, destroy )
 		if ( destroy )
 			obj.setBlock( block.x, block.y, block.z, BLOCK.AIR );
 		else
-			obj.setBlock( block.x + block.n.x, block.y + block.n.y, block.z + block.n.z, this.buildMaterial );
+			obj.setBlock( block.x + block.n.x, block.y + block.n.y, block.z + block.n.z, {
+				id: 19,
+				isColorful: true,
+				colorID: JPixels.colorID,
+				x:block.x + block.n.x,
+				y:block.y + block.n.y,
+				z:block.z + block.n.z,
+				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
+			});
 	}
 }
 

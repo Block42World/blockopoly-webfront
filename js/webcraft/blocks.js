@@ -78,9 +78,10 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.UP );
 		
-		var lightMultiplier = z >= lightmap[x][y] ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
-		
+		//var lightMultiplier = z >= lightmap[x][y] ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier = 1.0;
+
 		pushQuad(
 			vertices,
 			[ x,    y,    z+ 1, c[0], c[1], r*lightMultiplier, g*lightMultiplier, b*lightMultiplier, 1.0 ],
@@ -95,7 +96,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.DOWN );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier =0.75;// block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,							
@@ -111,8 +112,8 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.FORWARD );
 		
-		var lightMultiplier = ( y == 0 || z >= lightmap[x][y-1] ) ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier =0.95;// ( y == 0 || z >= lightmap[x][y-1] ) ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
 		
 		pushQuad(
 			vertices,
@@ -128,7 +129,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.BACK );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier = 0.8;//block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,
@@ -144,7 +145,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.LEFT );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier =0.9;// block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,
@@ -160,8 +161,8 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.RIGHT );
 		
-		var lightMultiplier = ( x == world.sx - 1 || z >= lightmap[x+1][y] ) ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier =0.85;// ( x == world.sx - 1 || z >= lightmap[x+1][y] ) ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
 		
 		pushQuad(
 			vertices,

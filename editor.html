@@ -20,18 +20,13 @@
 <script src="js/webcraft/sight.js" type="text/javascript"></script>
 <script src="js/webcraft/fullScreen.js" type="text/javascript"></script>
 <script src="js/block42/Editor.js" type="text/javascript"></script>
-<script src="js/mikolalysenko(optMesh)/monotone.js" type="text/javascript"></script>
+<script src="js/block42/Palette.js" type="text/javascript"></script>
 
 <!--vox.js-->
 <script src="js/voxjs/vox.min.js"></script> 
 
 <!-- Render surface -->
 <canvas id="renderSurface"></canvas>
-
-<!-- Material selection -->
-<table id="materialSelector">
-	<tr></tr>
-</table>
 
 <!-- main UI -->
 <div id="blocker">
@@ -51,12 +46,15 @@
 
 
 <!-- cross hair -->
-<div id= 'sight1'></div>A
+<div id= 'sight1'></div>
 <div id= 'sight2'></div>
 
 
 <!-- Initialisation code -->
 <script type="text/javascript">		
+
+
+	Palette.init(8, 32, 10, true);
 
 	var world;
 	var render;
@@ -85,8 +83,8 @@
 	player = new Player();
 	player.setWorld( world );
 	player.setInputCanvas( "renderSurface" );
-	player.setMaterialSelector( "materialSelector" );
-	
+	//player.setMaterialSelector( "materialSelector" );
+
 	// Render loop			
 	setInterval( function()
 	{
@@ -108,7 +106,7 @@
 		while ( new Date().getTime() / 1000 - time < 0.016 );
 	}, 1 );
 	
-
+			
 	//Shibuya2    chr_rain   Road X
 	var parser = new vox.Parser();
 	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
@@ -121,7 +119,6 @@
 				id: 19,
 				spawnable: true,
 				transparent: false,
-				selflit: true,
 				gravity: false,
 				fluid: false,
 				isColorful: true,
@@ -139,15 +136,15 @@
 		{
 			render.chunks[i].dirty = true;
 		}
-	    /*
-	    voxelData.voxels; // voxel position and color data
-	    voxelData.size; // model size
-	    voxelData.palette; // palette data
-	*/
+	    
+	    //voxelData.voxels; // voxel position and color data
+	    //voxelData.size; // model size
+	    //voxelData.palette; // palette data
+	
 		
 	});
 
-
+	
 
 	var orginArray;
 	function OnBtnSave()
