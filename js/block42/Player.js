@@ -143,8 +143,9 @@ Block42.Player = function(cameraObject, controllerType) {
 	{
 		console.log("click");
 		//this is the highlighted obj
-		console.log(outlinePass.selectedObjects[0].parent.userData);
-		ShowInfoBox(outlinePass.selectedObjects[0].parent.userData.land);
+		console.log(outlinePass.selectedObjects[0].userData);
+		ShowInfoBox(outlinePass.selectedObjects[0].userData.land);
+		console.log(camera.position);
 	});
 	//#endregion
 };

@@ -3,8 +3,13 @@
     "",
     "\\docs",
     "\\js",
-    "\\js\\mikolalysenko(optMesh)"
+    "\\js\\block42",
+    "\\js\\mikolalysenko(optMesh)",
+    "\\js\\threejs",
+    "\\js\\threejs\\threejsplugin",
+    "\\js\\voxjs",
+    "\\js\\webcraft"
   ],
-  "SelectedNode": "\\editor.html",
+  "SelectedNode": "\\js\\threejs\\threejsplugin\\OBJLoader.js",
   "PreviewInSolutionExplorer": false
 }

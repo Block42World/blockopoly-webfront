@@ -23,6 +23,16 @@ class Index {
 		player = new Block42.Player(camera,ControlTypeEnum.Orbit);
 		player.Initialize();
 	}
+
+	static initVox()
+	{
+		ThreejsUtility.init();
+		//ModelBuilder.build();
+		
+		ModelBuilder.buildFromVox(Land.lands)
+		player = new Block42.Player(camera,ControlTypeEnum.Orbit);
+		player.Initialize();
+	}
 }
 
 function showElementById(id) {

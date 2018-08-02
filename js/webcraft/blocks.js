@@ -18,6 +18,7 @@ BLOCK = {};
 // Air
 BLOCK.AIR = {
 	id: 0,
+	colorID: -1,
 	spawnable: false,
 	transparent: true
 };

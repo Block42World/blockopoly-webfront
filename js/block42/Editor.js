@@ -9,18 +9,41 @@ class Editor
 		Editor.vertexsOutput = '';
 		Editor.FacesOutput = '';
 		Editor.volume = [];
+		Editor.color = [];
 
 		for ( var x = 0; x < world.sx; x++ ){
 			for ( var y = 0; y < world.sy; y++ ){
 				for ( var z = 0; z < world.sz; z++ ){
-					Editor.volume.push(world.blocks[x][y][z] != BLOCK.AIR);
-					
+					/*
+					console.log(x+" "+y+" "+z+" "+ world.blocks[x][y][z].colorID);
+					if(typeof world.blocks[x][y][z].colorID === "undefined")
+						Editor.volume[world.blocks[x][y][z].colorID].push(false);
+					else
+						Editor.volume[world.blocks[x][y][z].colorID].push(true);
+					*/
+					var color = vox.defaultPalette[world.blocks[x][y][z].colorID];
+					//console.log(color);
+
+					if(typeof color === "undefined")
+						Editor.volume.push(0);
+					else
+						Editor.volume.push(color.r+color.g*256+color.b*256*256);
+					//Editor.volume.push(world.blocks[x][y][z] != BLOCK.AIR);
 					//Editor.OnBlock(x, y, z);
 				}
 			}
 		}
-		
-		console.log(Editor.volume);
+
+
+		var result = MonotoneMesh(Editor.volume, [world.sx, world.sy, world.sz]);
+
+		for(var i=0; i<result.vertices.length; ++i)
+			Editor.vertexsOutput +='v ' + result.vertices[i][0] + ' ' + result.vertices[i][1] + ' ' + result.vertices[i][2] + "\n";
+
+		for(var i=0; i<result.faces.length; ++i) 
+			Editor.FacesOutput +='f ' + (result.faces[i][0]+1) + ' ' + (result.faces[i][1]+1) + ' ' + (result.faces[i][2]+1) + "\n";
+
+		/*
 		var result = GreedyMesh(Editor.volume, [world.sx, world.sy, world.sz]);
 
 		for(var i=0; i<result.length; ++i) {
@@ -31,10 +54,15 @@ class Editor
 			}
 			Editor.FacesOutput +='f ' + (i*4+1) + ' ' + (i*4+2) + ' ' + (i*4+3) +' '+ (i*4+4) + "\n";
 		}
+		*/
 		console.log(Editor.vertexsOutput + Editor.FacesOutput);
 		//console.log(Editor.allvertexs.length);
-		console.log(Editor.faces);
+		//console.log(Editor.faces);
 	}
+
+
+
+
 
 	static OnBlock(x, y, z)
 	{
@@ -170,9 +198,6 @@ class Editor
 	}
 
 
-	static OptimiseFaces(faces)
-	{
-		
-	}
+	static OptimiseFaces(faces){}
 	
 }

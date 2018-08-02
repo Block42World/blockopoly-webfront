@@ -1,5 +1,22 @@
 class ModelBuilder
 {
+
+	static buildFromVox(lands)
+	{
+		var citySizeX = 10;
+		var citySizeY = 10;
+		Index.worldLoaded = false;
+		
+		for(var i = 0; i < lands.length; i++){
+		
+			ObjLoaderUtils.SpawnObjFromVox(lands[i]);
+		}
+		ModelBuilder.buildStreet(citySizeX, citySizeY);
+
+		Index.worldLoaded = true;
+	}
+
+
 	static buildFromData(lands)
 	{
 		var citySizeX = 10;
@@ -242,7 +259,7 @@ class ModelBuilder
 				);
 
 				ObjLoaderUtils.SpawnObjAtPosition("assets/Road2.obj",objPosition,function(object) {
-					object.rotateY(Math.PI / 2);
+
 					scene.add(object);
 					}
 				);
