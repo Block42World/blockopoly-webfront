@@ -1,5 +1,57 @@
 class Editor
 {
+	static SaveToVox(data)
+	{
+		var encoder = new TextEncoder("utf-8");
+		
+		//https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
+	//VOX
+		var header = new Uint8Array(8);
+		header.set(encoder.encode("VOX "),				0);//"VOX "
+		header.set(ToUint8(150),						4);//version
+		
+	//SIZE
+		var size = new Uint8Array(24);
+		size.set(encoder.encode("SIZE"),				0);//"SIZE"
+		size.set(ToUint8(12),							4);//num bytes of chunk content (N)
+		size.set(ToUint8(0),							8);//num bytes of children chunks (M)
+		size.set(ToUint8(data.size.x),					12);//x 
+		size.set(ToUint8(data.size.y),					16);//y
+		size.set(ToUint8(data.size.z),					20);//z
+
+	//XYZI
+		var xyzi = new Uint8Array((data.voxels.length+ 4)*4);
+		xyzi.set(encoder.encode("XYZI"),				0);//"XYZI"
+		xyzi.set(ToUint8((data.voxels.length+ 1)*4),	4);//num bytes of chunk content (N)
+		xyzi.set(ToUint8(0),							8);//num bytes of children chunks (M)
+		xyzi.set(ToUint8(data.voxels.length),			12);//num bytes of children chunks (M)
+		for (var i = 0; i < data.voxels.length; i++) 
+		{
+			xyzi.set([
+				data.voxels[i].x,			
+				data.voxels[i].y,
+				data.voxels[i].z,
+				data.voxels[i].colorIndex
+			],											16 + i*4);
+		}
+
+	//MAIN
+		var main = new Uint8Array(12);
+		main.set(encoder.encode("MAIN"),				0);//"MAIN"
+		main.set(ToUint8(0),							4);//num bytes of chunk content (N)
+		main.set(ToUint8(size.length + xyzi.length),			8);//num bytes of children chunks (M)
+
+
+		var result = addUint8Arrays(header, main);
+		console.log(result);
+		result = addUint8Arrays(result, size);
+		result = addUint8Arrays(result, xyzi);
+		return result;
+	}
+
+	
+
+
 	static SaveToObj()
 	{
 		
@@ -23,11 +75,11 @@ class Editor
 					*/
 					var color = vox.defaultPalette[world.blocks[x][y][z].colorID];
 					//console.log(color);
-
+					
 					if(typeof color === "undefined")
-						Editor.volume.push(0);
-					else
-						Editor.volume.push(color.r+color.g*256+color.b*256*256);
+						console.error("color undefined")
+
+					Editor.volume.push(color.r+color.g*256+color.b*256*256);
 					//Editor.volume.push(world.blocks[x][y][z] != BLOCK.AIR);
 					//Editor.OnBlock(x, y, z);
 				}
@@ -59,9 +111,6 @@ class Editor
 		//console.log(Editor.allvertexs.length);
 		//console.log(Editor.faces);
 	}
-
-
-
 
 
 	static OnBlock(x, y, z)
@@ -200,4 +249,40 @@ class Editor
 
 	static OptimiseFaces(faces){}
 	
+}
+
+function addUint8Arrays(a, b) {
+	var c = new Uint8Array(a.length + b.length);
+	c.set(a, 0);
+	c.set(b, a.length);
+	return c;
+}
+
+function ToUint8(number)
+{
+	return [number, 
+	number/Math.pow(256, 1), 
+	number/Math.pow(256, 2), 
+	number/Math.pow(256, 3)]
+}
+
+
+
+// Function to download data to a file
+function download(data, filename, type) {
+	var file = new Blob([data], {type: type});
+	if (window.navigator.msSaveOrOpenBlob) // IE10+
+		window.navigator.msSaveOrOpenBlob(file, filename);
+	else { // Others
+		var a = document.createElement("a"),
+				url = URL.createObjectURL(file);
+		a.href = url;
+		a.download = filename;
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(function() {
+			document.body.removeChild(a);
+			window.URL.revokeObjectURL(url);  
+		}, 0); 
+	}
 }

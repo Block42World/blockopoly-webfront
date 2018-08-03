@@ -53,7 +53,7 @@
 <!-- Initialisation code -->
 <script type="text/javascript">		
 
-
+	var fileName = "Shibuya";
 	Palette.init(8, 32, 10, true);
 
 	var world;
@@ -109,7 +109,7 @@
 			
 	//Shibuya2    chr_rain   Road X
 	var parser = new vox.Parser();
-	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
+	parser.parse("assets/"+fileName+".vox").then(function(voxelData) {
 	    console.log(voxelData);
 		myVoxelData = voxelData;
 
@@ -149,57 +149,20 @@
 	var orginArray;
 	function OnBtnSave()
 	{
-	/*
+	
 		myVoxelData = world.ToVoxelData();
-		//console.log(myVoxelData);
-
-		var encoder = new TextEncoder("utf-8");
+		console.log(myVoxelData);
 		
-		//https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
-		//"VOX "
-		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
-		//version
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(150));
 		
-		//main
-		uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));//num bytes of chunk content (N)
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte((myVoxelData.voxels.length+ 9)*4));//num bytes of children chunks (M)
-
-		/* optional
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("PACK"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(4));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1));
-		*/
-		/*
-		//size
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(12));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.x));//x 
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.y));//y
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.z));//z
+		var result = Editor.SaveToVox(myVoxelData);
 		
-		//xyzi
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("XYZI"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length*4));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length));
-		for (var i = 0; i < myVoxelData.voxels.length; i++) {
-			uint8Array = addUint8Arrays(uint8Array, [
-			myVoxelData.voxels[i].x, 
-			myVoxelData.voxels[i].y, 
-			myVoxelData.voxels[i].z, 
-			myVoxelData.voxels[i].colorIndex]);
-		}
 		/*
 		//rgba
 		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("RGBA"));
 		
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1024));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(1024));
 		
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
 		
 		for (var i = myVoxelData.palette.length; i <=0; i--) {
 			uint8Array = addUint8Arrays(uint8Array, [
@@ -209,67 +172,49 @@
 			myVoxelData.palette[i].a]);
 		}
 		*/
-		
-		
-		//end
-		//uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		
-		/*
-		for(var i = 0; i < uint8Array.length; i++)
-		{
-			if(orginArray[i]!= uint8Array[i])
-			{
-
-				console.log(i+" "+orginArray[i] +" "+uint8Array[i]);
-				//uint8Array[i] = orginArray[i];
-			}
-		}
-		*/
-		
-		//download(uint8Array, "test.vox", "text/plain");
+		console.log("finished encoding");
+		download(result, fileName+".vox", "text/plain");
 		//console.log(orginArray);
 		//console.log(uint8Array);
 		
-		Editor.SaveToObj();
-
-		download(Editor.vertexsOutput + Editor.FacesOutput, "city.obj", "text/plain");
+		//Editor.SaveToObj();
+		//download(Editor.vertexsOutput + Editor.FacesOutput, "city.obj", "text/plain");
 	}
 
-	function addUint8Arrays(a, b) {
-		var c = new Uint8Array(a.length + b.length);
-		c.set(a, 0);
-		c.set(b, a.length);
-		return c;
-	}
+	
 
-	function intTo4byte(number)
-	{
-		return [number, 
-		number/Math.pow(256, 1), 
-		number/Math.pow(256, 2), 
-		number/Math.pow(256, 3)]
-	}
+	/*
+	//VOX
+		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(150));		//version
+	
 
-
-
-	// Function to download data to a file
-	function download(data, filename, type) {
-		var file = new Blob([data], {type: type});
-		if (window.navigator.msSaveOrOpenBlob) // IE10+
-			window.navigator.msSaveOrOpenBlob(file, filename);
-		else { // Others
-			var a = document.createElement("a"),
-					url = URL.createObjectURL(file);
-			a.href = url;
-			a.download = filename;
-			document.body.appendChild(a);
-			a.click();
-			setTimeout(function() {
-				document.body.removeChild(a);
-				window.URL.revokeObjectURL(url);  
-			}, 0); 
+	//main
+		uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));//num bytes of chunk content (N)
+		uint8Array = addUint8Arrays(uint8Array, ToUint8((myVoxelData.voxels.length+ 10)*4));//num bytes of children chunks (M)
+	
+	//size
+		uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(12));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.x));//x 
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.y));//y
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.z));//z
+	
+	//xyzi
+		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("XYZI"));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.voxels.length*4));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
+		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.voxels.length));
+		for (var i = 0; i < myVoxelData.voxels.length; i++) {
+			uint8Array = addUint8Arrays(uint8Array, [
+			myVoxelData.voxels[i].x, 
+			myVoxelData.voxels[i].y, 
+			myVoxelData.voxels[i].z, 
+			myVoxelData.voxels[i].colorIndex]);
 		}
-	}
+	*/
 
 
 </script>

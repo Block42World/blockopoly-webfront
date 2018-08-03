@@ -4,12 +4,10 @@
     "\\docs",
     "\\js",
     "\\js\\block42",
-    "\\js\\mikolalysenko(optMesh)",
-    "\\js\\threejs",
     "\\js\\threejs\\threejsplugin",
     "\\js\\voxjs",
     "\\js\\webcraft"
   ],
-  "SelectedNode": "\\js\\threejs\\threejsplugin\\OBJLoader.js",
+  "SelectedNode": "\\docs\\dev.txt",
   "PreviewInSolutionExplorer": false
 }

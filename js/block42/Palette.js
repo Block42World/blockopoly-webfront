@@ -2,21 +2,19 @@ class Palette
 {
 	static init(colX, rowY, cellSize, haveLine)
 	{
-	console.log("sdseas");
+
 		this.cellSize = cellSize;
-		this.haveLine = false
 		//rowY = Math.round(getPageX() / cellSize);
 		//colX = Math.round(getPageY() / cellSize);
 
 		//alert(document.documentElement.clientHeight +" "+document.documentElement.clientWidth+" "+rowY+" "+ colX);
-
-		Palette.BG_COLOR = "#00ffff";//LightBlue
+		
 		Palette.palette= document.createElement("div");
 		Palette.tab = document.createElement("table");
 		Palette.palette.appendChild(Palette.tab);
 		document.body.appendChild(Palette.palette);
 
-
+		Palette.colorID = 0;
 		//tab.border = "0px";
 		Palette.tab.style.width = "200px";
 		Palette.tab.style.height = "500px";
@@ -52,11 +50,6 @@ class Palette
 		Palette.div.style.width = "100px";
 		Palette.div.style.height = "100px";
 		console.log();
-	}
-
-	static rgb(color)
-	{
-		return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
 	}
 
 	static rgb(color)

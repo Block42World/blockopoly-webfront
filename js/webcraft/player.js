@@ -174,7 +174,7 @@ Player.prototype.doBlockAction = function( x, y, destroy )
 			obj.setBlock( block.x + block.n.x, block.y + block.n.y, block.z + block.n.z, {
 				id: 19,
 				isColorful: true,
-				colorID: JPixels.colorID,
+				colorID: Palette.colorID,
 				x:block.x + block.n.x,
 				y:block.y + block.n.y,
 				z:block.z + block.n.z,
