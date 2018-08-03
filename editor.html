@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>hello</title>
+	<title>Editor</title>
 
 </head>
 <body>
@@ -19,12 +19,12 @@
 <script src="js/webcraft/player.js" type="text/javascript"></script>
 <script src="js/webcraft/sight.js" type="text/javascript"></script>
 <script src="js/webcraft/fullScreen.js" type="text/javascript"></script>
-<script src="js/block42/Editor.js" type="text/javascript"></script>
 <script src="js/block42/Palette.js" type="text/javascript"></script>
 
 <!--vox.js-->
 <script src="js/voxjs/vox.min.js"></script> 
 
+<script src="js/block42/Editor.js" type="text/javascript"></script>
 <!-- Render surface -->
 <canvas id="renderSurface"></canvas>
 
@@ -38,7 +38,7 @@
 		<br />
 			<button id="FullScreen">Full Screen </button>
 			<button id="Save" onclick="OnBtnSave()">Save </button>
-
+			<input id ="flyingMode" type="checkbox" onclick="OnCheckboxFlyingMode(this)"name="vehicle" value="Car" checked>flying Mode<br>
 	</div>
 
 </div>
@@ -49,183 +49,9 @@
 <div id= 'sight1'></div>
 <div id= 'sight2'></div>
 
-
-<!-- Initialisation code -->
-<script type="text/javascript">		
-
-	var fileName = "Shibuya";
-	Palette.init(8, 32, 10, true);
-
-	var world;
-	var render;
-	var physics;
-	var player;
-	var isPlaying = false;
-	var myVoxelData;
-    //init sight script
-    Sight.init();	
-
-
-	// Create a new flat world
-	world = new World( 128, 128, 128 );
-	world.createFlatWorld( 0 );
-
-	// Set up renderer
-	render = new Renderer( "renderSurface" );
-	render.setWorld( world, 100 );
-	render.setPerspective( 60, 0.01, 200 );
-	
-	// Create physics simulator
-	//physics = new Physics();
-	//physics.setWorld( world );
-	
-	// Create new local player
-	player = new Player();
-	player.setWorld( world );
-	player.setInputCanvas( "renderSurface" );
-	//player.setMaterialSelector( "materialSelector" );
-
-	// Render loop			
-	setInterval( function()
-	{
-		var time = new Date().getTime() / 1000.0;
-		
-		// Simulate physics
-		//physics.simulate();
-		
-		// Update local player
-		player.update();
-		
-		// Build a chunk
-		render.buildChunks( 1 );
-		
-		// Draw world
-		render.setCamera( player.getEyePos().toArray(), player.angles );
-		render.draw();
-		
-		while ( new Date().getTime() / 1000 - time < 0.016 );
-	}, 1 );
-	
-			
-	//Shibuya2    chr_rain   Road X
-	var parser = new vox.Parser();
-	parser.parse("assets/"+fileName+".vox").then(function(voxelData) {
-	    console.log(voxelData);
-		myVoxelData = voxelData;
-
-		for (var i = voxelData.voxels.length - 1; i >= 0; i--) {
-	    	world.blocks[voxelData.voxels[i].x][voxelData.voxels[i].y][voxelData.voxels[i].z] =// blank
-			{
-				id: 19,
-				spawnable: true,
-				transparent: false,
-				gravity: false,
-				fluid: false,
-				isColorful: true,
-				colorID: voxelData.voxels[i].colorIndex,
-				x:voxelData.voxels[i].x,
-				y:voxelData.voxels[i].y,
-				z:voxelData.voxels[i].z,
-				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
-			};
-			
-		}
-
-		//update all chuncks
-		for ( var i = 0; i < render.chunks.length; i++ )
-		{
-			render.chunks[i].dirty = true;
-		}
-	    
-	    //voxelData.voxels; // voxel position and color data
-	    //voxelData.size; // model size
-	    //voxelData.palette; // palette data
-	
-		
-	});
-
-	
-
-	var orginArray;
-	function OnBtnSave()
-	{
-	
-		myVoxelData = world.ToVoxelData();
-		console.log(myVoxelData);
-		
-		
-		var result = Editor.SaveToVox(myVoxelData);
-		
-		/*
-		//rgba
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("RGBA"));
-		
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(1024));
-		
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
-		
-		for (var i = myVoxelData.palette.length; i <=0; i--) {
-			uint8Array = addUint8Arrays(uint8Array, [
-			myVoxelData.palette[i].r, 
-			myVoxelData.palette[i].g, 
-			myVoxelData.palette[i].b, 
-			myVoxelData.palette[i].a]);
-		}
-		*/
-		console.log("finished encoding");
-		download(result, fileName+".vox", "text/plain");
-		//console.log(orginArray);
-		//console.log(uint8Array);
-		
-		//Editor.SaveToObj();
-		//download(Editor.vertexsOutput + Editor.FacesOutput, "city.obj", "text/plain");
-	}
-
-	
-
-	/*
-	//VOX
-		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(150));		//version
-	
-
-	//main
-		uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));//num bytes of chunk content (N)
-		uint8Array = addUint8Arrays(uint8Array, ToUint8((myVoxelData.voxels.length+ 10)*4));//num bytes of children chunks (M)
-	
-	//size
-		uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(12));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.x));//x 
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.y));//y
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.size.z));//z
-	
-	//xyzi
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("XYZI"));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.voxels.length*4));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(0));
-		uint8Array = addUint8Arrays(uint8Array, ToUint8(myVoxelData.voxels.length));
-		for (var i = 0; i < myVoxelData.voxels.length; i++) {
-			uint8Array = addUint8Arrays(uint8Array, [
-			myVoxelData.voxels[i].x, 
-			myVoxelData.voxels[i].y, 
-			myVoxelData.voxels[i].z, 
-			myVoxelData.voxels[i].colorIndex]);
-		}
-	*/
-
-
+<script type="text/javascript">
+	Editor.init();
 </script>
 
-
-
-
-
-
-<script type="text/javascript">	
-
-</script>
 </body>
 </html>

@@ -1,255 +1,127 @@
 class Editor
 {
-	static SaveToVox(data)
+	static init()
 	{
-		var encoder = new TextEncoder("utf-8");
-		
-		//https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
-	//VOX
-		var header = new Uint8Array(8);
-		header.set(encoder.encode("VOX "),				0);//"VOX "
-		header.set(ToUint8(150),						4);//version
-		
-	//SIZE
-		var size = new Uint8Array(24);
-		size.set(encoder.encode("SIZE"),				0);//"SIZE"
-		size.set(ToUint8(12),							4);//num bytes of chunk content (N)
-		size.set(ToUint8(0),							8);//num bytes of children chunks (M)
-		size.set(ToUint8(data.size.x),					12);//x 
-		size.set(ToUint8(data.size.y),					16);//y
-		size.set(ToUint8(data.size.z),					20);//z
+		Palette.init(8, 32, 10, true);
 
-	//XYZI
-		var xyzi = new Uint8Array((data.voxels.length+ 4)*4);
-		xyzi.set(encoder.encode("XYZI"),				0);//"XYZI"
-		xyzi.set(ToUint8((data.voxels.length+ 1)*4),	4);//num bytes of chunk content (N)
-		xyzi.set(ToUint8(0),							8);//num bytes of children chunks (M)
-		xyzi.set(ToUint8(data.voxels.length),			12);//num bytes of children chunks (M)
-		for (var i = 0; i < data.voxels.length; i++) 
-		{
-			xyzi.set([
-				data.voxels[i].x,			
-				data.voxels[i].y,
-				data.voxels[i].z,
-				data.voxels[i].colorIndex
-			],											16 + i*4);
-		}
-
-	//MAIN
-		var main = new Uint8Array(12);
-		main.set(encoder.encode("MAIN"),				0);//"MAIN"
-		main.set(ToUint8(0),							4);//num bytes of chunk content (N)
-		main.set(ToUint8(size.length + xyzi.length),			8);//num bytes of children chunks (M)
+		//init sight script
+		Sight.init();	
 
 
-		var result = addUint8Arrays(header, main);
-		console.log(result);
-		result = addUint8Arrays(result, size);
-		result = addUint8Arrays(result, xyzi);
-		return result;
-	}
+		// Create a new flat world
+		world = new World( 128, 128, 128 );
+		world.createFlatWorld( 0 );
 
+		// Set up renderer
+		render = new Renderer( "renderSurface" );
+		render.setWorld( world, 100 );
+		render.setPerspective( 60, 0.01, 200 );
 	
+		// Create physics simulator
+		//physics = new Physics();
+		//physics.setWorld( world );
+	
+		// Create new local player
+		player = new Player();
+		player.setWorld( world );
+		player.setInputCanvas( "renderSurface" );
+		//player.setMaterialSelector( "materialSelector" );
 
-
-	static SaveToObj()
-	{
+		// Render loop			
+		setInterval( function()
+		{
+			var time = new Date().getTime() / 1000.0;
 		
-		Editor.allvertexs = [];
+			// Simulate physics
+			//physics.simulate();
+		
+			// Update local player
+			player.update();
+		
+			// Build a chunk
+			render.buildChunks( 1 );
+		
+			// Draw world
+			render.setCamera( player.getEyePos().toArray(), player.angles );
+			render.draw();
+		
+			while ( new Date().getTime() / 1000 - time < 0.016 );
+		}, 1 );
+	
+			
+		//Shibuya2    chr_rain   Road X
+		var parser = new vox.Parser();
+		parser.parse("assets/"+fileName+".vox").then(function(voxelData) {
+			console.log(voxelData);
+			myVoxelData = voxelData;
 
-		Editor.faces =[[],[],[],[],[],[]];
-		Editor.vertexsOutput = '';
-		Editor.FacesOutput = '';
-		Editor.volume = [];
-		Editor.color = [];
-
-		for ( var x = 0; x < world.sx; x++ ){
-			for ( var y = 0; y < world.sy; y++ ){
-				for ( var z = 0; z < world.sz; z++ ){
-					/*
-					console.log(x+" "+y+" "+z+" "+ world.blocks[x][y][z].colorID);
-					if(typeof world.blocks[x][y][z].colorID === "undefined")
-						Editor.volume[world.blocks[x][y][z].colorID].push(false);
-					else
-						Editor.volume[world.blocks[x][y][z].colorID].push(true);
-					*/
-					var color = vox.defaultPalette[world.blocks[x][y][z].colorID];
-					//console.log(color);
-					
-					if(typeof color === "undefined")
-						console.error("color undefined")
-
-					Editor.volume.push(color.r+color.g*256+color.b*256*256);
-					//Editor.volume.push(world.blocks[x][y][z] != BLOCK.AIR);
-					//Editor.OnBlock(x, y, z);
-				}
+			for (var i = voxelData.voxels.length - 1; i >= 0; i--) {
+	    		world.blocks[voxelData.voxels[i].x][voxelData.voxels[i].y][voxelData.voxels[i].z] =// blank
+				{
+					id: 19,
+					spawnable: true,
+					transparent: false,
+					gravity: false,
+					fluid: false,
+					isColorful: true,
+					colorID: voxelData.voxels[i].colorIndex,
+					x:voxelData.voxels[i].x,
+					y:voxelData.voxels[i].y,
+					z:voxelData.voxels[i].z,
+					texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
+				};
+			
 			}
-		}
 
-
-		var result = MonotoneMesh(Editor.volume, [world.sx, world.sy, world.sz]);
-
-		for(var i=0; i<result.vertices.length; ++i)
-			Editor.vertexsOutput +='v ' + result.vertices[i][0] + ' ' + result.vertices[i][1] + ' ' + result.vertices[i][2] + "\n";
-
-		for(var i=0; i<result.faces.length; ++i) 
-			Editor.FacesOutput +='f ' + (result.faces[i][0]+1) + ' ' + (result.faces[i][1]+1) + ' ' + (result.faces[i][2]+1) + "\n";
-
-		/*
-		var result = GreedyMesh(Editor.volume, [world.sx, world.sy, world.sz]);
-
-		for(var i=0; i<result.length; ++i) {
-
-			var q = result[i]
-			for(var j=0; j<4; ++j) {
-				Editor.vertexsOutput += 'v ' + q[j][0] + ' ' + q[j][1] + ' ' + q[j][2] + '\n';
-			}
-			Editor.FacesOutput +='f ' + (i*4+1) + ' ' + (i*4+2) + ' ' + (i*4+3) +' '+ (i*4+4) + "\n";
-		}
-		*/
-		console.log(Editor.vertexsOutput + Editor.FacesOutput);
-		//console.log(Editor.allvertexs.length);
-		//console.log(Editor.faces);
-	}
-
-
-	static OnBlock(x, y, z)
-	{
-	// filter out the air blocks
-		if(world.blocks[x][y][z] == BLOCK.AIR){continue;}
-
-		//DIRECTION.UP
-		if ( z == world.sz - 1 || world.blocks[x][y][z+1].transparent)
-		{
-			Editor.SaveFace([
-				[ x,    y,    z+ 1, ],
-				[ x+ 1, y,    z+ 1, ],
-				[ x+ 1, y+ 1, z+ 1, ],
-				[ x,    y+ 1, z+ 1, ]],
-				DIRECTION.UP,
-				{	xPos:x,
-					yPos:y,
-					h:z}
-			);
-		}
-	
-		// DIRECTION.DOWN
-		if ( z == 0 || world.blocks[x][y][z-1].transparent )
-		{
-			Editor.SaveFace([
-				[ x,    y+ 1, z],
-				[ x+ 1, y+ 1, z],
-				[ x+ 1, y,    z],
-				[ x,    y,    z]],
-				DIRECTION.DOWN,
-				{	xPos:x,
-					yPos:y,
-					h:z}
-			);
-		}
-	
-		// DIRECTION.FORWARD
-		if ( y == 0 || world.blocks[x][y-1][z].transparent )
-		{
-			Editor.SaveFace([
-				[ x,    y, z   ],
-				[ x+ 1, y, z   ],
-				[ x+ 1, y, z+ 1],
-				[ x,    y, z+ 1]],
-				DIRECTION.FORWARD,
-				{	xPos:x,
-					yPos:z,
-					h:y}
-			);
-		}
-	
-		// Back
-		if ( y == world.sy - 1 || world.blocks[x][y+1][z].transparent )
-		{
-			Editor.SaveFace([
-				[ x,    y+ 1, z+ 1],
-				[ x+ 1, y+ 1, z+ 1],
-				[ x+ 1, y+ 1, z   ],
-				[ x,    y+ 1, z   ]],
-				DIRECTION.BACK,
-				{	xPos:x,
-					yPos:z,
-					h:y}
-			);
-		}
-	
-		// Left
-		if ( x == 0 || world.blocks[x-1][y][z].transparent )
-		{
-			Editor.SaveFace([
-				[ x, y,    z+ 1],
-				[ x, y+ 1, z+ 1],
-				[ x, y+ 1, z,  ],
-				[ x, y,    z,  ]],
-				DIRECTION.LEFT,
-				{	xPos:y,
-					yPos:z,
-					h:x}
-			);
-		}
-	
-		// Right
-		if ( x == world.sx - 1 || world.blocks[x+1][y][z].transparent )
-		{
-			Editor.SaveFace([
-				[ x+ 1, y,    z,  ],
-				[ x+ 1, y+ 1, z,  ],
-				[ x+ 1, y+ 1, z+ 1],
-				[ x+ 1, y,    z+ 1]],
-				DIRECTION.RIGHT,
-				{	xPos:y,
-					yPos:z,
-					h:x}
-			);
-		}
-	}
-
-
-	static SaveFace(vertexs, direction, position)
-	{
-		//DIRECTION start with 1, so i need to -1;
-		//Editor.faces[direction-1].push(0);
-		Editor.faces[direction-1].push(position);
-
-		Editor.OptimiseFaces(Editor.faces[DIRECTION.UP-1]);
-
-		var a = Editor.SaveVertex(vertexs[0]);
-		var b = Editor.SaveVertex(vertexs[1]);
-		var c = Editor.SaveVertex(vertexs[2]);
-		var d = Editor.SaveVertex(vertexs[3]);
-		Editor.FacesOutput +='f ' + a + ' ' + b + ' ' + c +' '+ d + "\n";
-		
-	}
-
-	static SaveVertex(vertex)
-	{
-		for ( var i = 0; i < Editor.allvertexs.length; i++ )
-		{
-			if(	Editor.allvertexs[i][0] ==vertex[0] &&
-				Editor.allvertexs[i][1] ==vertex[1] &&
-				Editor.allvertexs[i][2] ==vertex[2] )
+			//update all chuncks
+			for ( var i = 0; i < render.chunks.length; i++ )
 			{
-				//console.log("a");
-				return i+1;
+				render.chunks[i].dirty = true;
 			}
-		}
-
-		Editor.allvertexs.push(vertex);
-		Editor.vertexsOutput += 'v ' + vertex[0] + ' ' + vertex[1] + ' ' + vertex[2] + '\n';
-		return Editor.allvertexs.length;
-		//console.log("a");
-
-	}
-
-
-	static OptimiseFaces(faces){}
+	    
+			//voxelData.voxels; // voxel position and color data
+			//voxelData.size; // model size
+			//voxelData.palette; // palette data
 	
+		
+		});
+	}
 }
+//Initialisation code
+	var fileName = "Shibuya";
+
+
+	var world;
+	var render;
+	var physics;
+	var player;
+	var isPlaying = false;
+	var myVoxelData;
+
+	
+
+	
+
+
+
+function OnBtnSave()
+{
+	myVoxelData = world.ToVoxelData();
+	var result = Exporter.SaveToVox(myVoxelData);
+		
+	console.log("finished encoding");
+	download(result, fileName+".vox", "text/plain");
+
+	//Exporter.SaveToObj();
+	//download(Exporter.vertexsOutput + Exporter.FacesOutput, "city.obj", "text/plain");
+}
+
+function OnCheckboxFlyingMode(checkbox)
+{
+	player.isFlyingMode = checkbox.checked;
+	console.log(player.isFlyingMode);
+}
+
 
 function addUint8Arrays(a, b) {
 	var c = new Uint8Array(a.length + b.length);
