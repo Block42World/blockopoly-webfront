@@ -69,7 +69,7 @@ class ThreejsUtility {
     deltatime = time - lastTime;
 
     if (Index.worldLoaded == true) {
-      player.Update(deltatime); //Update our controls using a deltatime
+      player.Update(deltatime*1000); //Update our controls using a deltatime
       ThreejsUtility.UpdateSky();
     }
 

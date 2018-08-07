@@ -103,6 +103,8 @@ Player.prototype.InitializeOrbitControls = function() {
 
 Player.prototype.InitializeFPSControls = function() {
 	//Not Implemented Yet
+
+
 };
 
 //#endregion
@@ -116,6 +118,8 @@ Player.prototype.UpdateController = function(deltaTime) {
 			this.flightControls.update(deltaTime);
 			break;
 		case ControlTypeEnum.FPS:
+			//this.cameraObject.position.set(camera.position.x + deltaTime*1000,479,1039);// += new THREE.Vector3(deltaTime*10,0,0);
+			gameLoop(deltaTime);
 			//Do nothing since we dont have it yet
 			break;
 		case ControlTypeEnum.Orbit:
