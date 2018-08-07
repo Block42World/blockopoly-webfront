@@ -10,27 +10,25 @@ class ModelBuilder
 		ModelBuilder.loadingCount = 0;
 		for(var i = 0; i < lands.length; i++){
 		
-			ObjLoaderUtils.SpawnObjFromVox(lands[i]);
+			ObjLoaderUtils.SpawnObjFromVox(lands[i],
+			(number) => {if (number == 0) {Index.worldLoaded = true;}});
 		}
 		ModelBuilder.buildStreet(citySizeX, citySizeY);
-
-		Index.worldLoaded = true;
-
 	}
 
 
-	static buildFromData(lands)
-	{
-		var citySizeX = 10;
-		var citySizeY = 10;
-		Index.worldLoaded = false;
-		for(var i = 0; i < lands.length; i++){
-			ObjLoaderUtils.SpawnObjFromData(lands[i]);
-		}
-		ModelBuilder.buildStreet(citySizeX, citySizeY);
+	// static buildFromData(lands)
+	// {
+	// 	var citySizeX = 10;
+	// 	var citySizeY = 10;
+	// 	Index.worldLoaded = false;
+	// 	for(var i = 0; i < lands.length; i++){
+	// 		ObjLoaderUtils.SpawnObjFromData(lands[i]);
+	// 	}
+	// 	ModelBuilder.buildStreet(citySizeX, citySizeY);
 
-		Index.worldLoaded = true;
-	}
+	// 	Index.worldLoaded = true;
+	// }
 
 	static build()
 	{

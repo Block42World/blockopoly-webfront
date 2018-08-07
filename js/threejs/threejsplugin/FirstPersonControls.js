@@ -25,6 +25,8 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 	this.heightMin = 0.0;
 	this.heightMax = 1.0;
 
+	this.minimumHeight = 5;
+
 	this.constrainVertical = false;
 	this.verticalMin = 0;
 	this.verticalMax = Math.PI;
@@ -217,6 +219,8 @@ this.lookDirectionSet = function(direction){
 			this.autoSpeedFactor = 0.0;
 
 		}
+
+		this.object.position.y = Math.max(this.object.position.y,this.minimumHeight);
 
 		var actualMoveSpeed = delta * this.movementSpeed;
 

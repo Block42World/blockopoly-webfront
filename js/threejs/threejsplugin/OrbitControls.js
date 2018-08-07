@@ -52,16 +52,17 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// Set to false to disable zooming
 	this.enableZoom = true;
 	this.zoomSpeed = 1.0;
+	this.keyZoomSpeed = 0.01;	// pixels moved per arrow key push
 
 	// Set to false to disable rotating
 	this.enableRotate = true;
 	this.rotateSpeed = 1.0;
+	this.keyRotateSpeed = 0.01;	// pixels moved per arrow key push
 
 	// Set to false to disable panning
 	this.enablePan = true;
-	this.panSpeed = 1.0;
+	this.panSpeed = 20.0;
 	this.panningMode = THREE.ScreenSpacePanning; // alternate THREE.HorizontalPanning
-	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
 	this.panMaxHeight = 300;
 	this.panMinHeight = 0;
 
@@ -74,10 +75,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.enableKeys = true;
 
 	// The four arrow keys
-	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+	this.keys = { A: 65, W: 87, D: 68, S: 83, Q:81,E:69 };
 
 	// Mouse buttons
-	this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT };
+	this.mouseButtons = { ORBIT: THREE.MOUSE.RIGHT, PAN: THREE.MOUSE.MIDDLE };
 
 	// for reset
 	this.target0 = this.target.clone();
@@ -489,7 +490,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		rotateEnd.set( event.clientX, event.clientY );
 
-		rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );;
+		rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );
 
 		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
@@ -534,7 +535,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 		
 		panEnd.set( event.clientX, event.clientY );
 
-		panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );
+		panDelta.subVectors( panEnd, panStart );
+		panDelta.normalize();
+		panDelta.multiplyScalar( scope.panSpeed )
 
 		pan( panDelta.x, panDelta.y );
 
@@ -574,23 +577,33 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		switch ( event.keyCode ) {
 
-			case scope.keys.UP:
-				pan( 0, scope.keyPanSpeed );
+			case scope.keys.W:
+				dollyOut( getZoomScale() );
 				scope.update();
 				break;
 
-			case scope.keys.BOTTOM:
-				pan( 0, - scope.keyPanSpeed );
+			case scope.keys.S:
+				dollyIn( getZoomScale() );
 				scope.update();
 				break;
 
-			case scope.keys.LEFT:
-				pan( scope.keyPanSpeed, 0 );
+			case scope.keys.A:
+				rotateLeft(scope.keyRotateSpeed);
 				scope.update();
 				break;
 
-			case scope.keys.RIGHT:
-				pan( - scope.keyPanSpeed, 0 );
+			case scope.keys.D:
+				rotateLeft(-scope.keyRotateSpeed);
+				scope.update();
+				break;
+
+			case scope.keys.Q:
+				rotateUp(-scope.keyRotateSpeed);
+				scope.update();
+				break;
+
+			case scope.keys.E:
+				rotateUp(scope.keyRotateSpeed);
 				scope.update();
 				break;
 
@@ -719,16 +732,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 				handleMouseDownRotate( event );
 
 				state = STATE.ROTATE;
-
-				break;
-
-			case scope.mouseButtons.ZOOM:
-
-				if ( scope.enableZoom === false ) return;
-
-				handleMouseDownDolly( event );
-
-				state = STATE.DOLLY;
 
 				break;
 
