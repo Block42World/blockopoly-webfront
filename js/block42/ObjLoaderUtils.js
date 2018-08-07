@@ -46,7 +46,10 @@ class ObjLoaderUtils {
 
 	static SpawnObjFromVox(land){
 		var objPosition = { x:land._x, y:0, z:land._y };
-		ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description+".vox", objPosition, land);
+		if(land._description == "Land+4+sale" || land._description == "Apartment+combine")
+			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land);
+		else
+			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land);
 		
 	}
 
