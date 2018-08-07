@@ -1,3 +1,21 @@
+//Initialisation code
+
+console.log(fileName);
+
+if(typeof fileName === "undefined")
+{
+	var fileName = "Shibuya";
+}
+
+
+
+var world;
+var render;
+var physics;
+var player;
+var isPlaying = false;
+var myVoxelData;
+	
 class Editor
 {
 	static init()
@@ -87,16 +105,7 @@ class Editor
 		});
 	}
 }
-//Initialisation code
-	var fileName = "Shibuya";
 
-
-	var world;
-	var render;
-	var physics;
-	var player;
-	var isPlaying = false;
-	var myVoxelData;
 
 	
 

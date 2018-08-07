@@ -168,7 +168,8 @@ Player.prototype.onMouseEvent = function( x, y, type, rmb )
 Player.prototype.doBlockAction = function( x, y, destroy )
 {
 	var bPos = new Vector( Math.floor( this.pos.x ), Math.floor( this.pos.y ), Math.floor( this.pos.z ) );
-	var block = this.canvas.renderer.pickAt( new Vector( bPos.x - 4, bPos.y - 4, bPos.z - 4 ), new Vector( bPos.x + 4, bPos.y + 4, bPos.z + 4 ), x, y );
+	var range = 10;
+	var block = this.canvas.renderer.pickAt( new Vector( bPos.x - range, bPos.y - range, bPos.z - range ), new Vector( bPos.x + range, bPos.y + range, bPos.z + range ), x, y );
 
 	if ( block != false )
 	{
@@ -265,6 +266,7 @@ Player.prototype.update = function()
 			walkVelocity.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
 			walkVelocity.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
 		}
+
 		/*
 			if ( this.keys["w"] ) {
 				walkVelocity.x += this.speed;
@@ -279,7 +281,8 @@ Player.prototype.update = function()
 			if ( this.keys["d"] ) {
 				walkVelocity.y -= this.speed;
 			}
-			*/
+		*/
+
 		/*
 			if ( this.keys["w"] ) {
 				walkVelocity.x += Math.cos( Math.PI / 2 - this.angles[1]);
@@ -298,7 +301,8 @@ Player.prototype.update = function()
 				walkVelocity.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
 			}
 		*/
-			/*
+
+		/*
 			if ( this.keys["w"] ) {
 				this.pos.x += Math.cos( Math.PI / 2 - this.angles[1] );
 				this.pos.y += Math.sin( Math.PI / 2 - this.angles[1] );
@@ -314,11 +318,8 @@ Player.prototype.update = function()
 			if ( this.keys["d"] ) {
 				this.pos.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.angles[1] );
 				this.pos.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1] );
-			}
-			
+			}	
 		*/
-
-
 
 		velocity.x = walkVelocity.x * this.speed;
 		velocity.y = walkVelocity.y * this.speed;

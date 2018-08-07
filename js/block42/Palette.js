@@ -9,18 +9,11 @@ class Palette
 
 		//alert(document.documentElement.clientHeight +" "+document.documentElement.clientWidth+" "+rowY+" "+ colX);
 		
-		Palette.palette= document.createElement("div");
-		Palette.tab = document.createElement("table");
-		Palette.palette.appendChild(Palette.tab);
-		document.body.appendChild(Palette.palette);
+		Palette.tab = document.getElementById("paletteTable");
 
 		Palette.colorID = 0;
 		//tab.border = "0px";
-		Palette.tab.style.width = "200px";
-		Palette.tab.style.height = "500px";
-		Palette.tab.style.backgroundColor = "#000000";
-		Palette.palette.style.position = 'absolute';
-		Palette.palette.style.zIndex = 3;
+
 		if(haveLine)
 		{
 			Palette.tab.style.borderCollapse = "collapse";
@@ -44,11 +37,9 @@ class Palette
 		}
 
 
-		Palette.div = document.createElement("div");
-		Palette.palette.appendChild(Palette.div);
+		Palette.div = document.getElementById("colorBoard");
 		Palette.div.style.backgroundColor = Palette.rgb( {r:255,g:255,b:255});
-		Palette.div.style.width = "100px";
-		Palette.div.style.height = "100px";
+
 		console.log();
 	}
 

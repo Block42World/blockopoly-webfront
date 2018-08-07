@@ -1,13 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\docs",
     "\\js",
     "\\js\\block42",
-    "\\js\\threejs\\threejsplugin",
-    "\\js\\voxjs",
-    "\\js\\webcraft"
+    "\\js\\voxjs"
   ],
-  "SelectedNode": "\\docs\\dev.txt",
+  "SelectedNode": "\\js\\block42\\Land.js",
   "PreviewInSolutionExplorer": false
 }
