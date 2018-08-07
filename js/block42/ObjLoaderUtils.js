@@ -44,28 +44,6 @@ class ObjLoaderUtils {
             });
     }
 
-
-    // new THREE.MTLLoader()
-    // .setPath("assets/")
-    // .load('Free Land.mtl', function (materials) {
-    //     materials.preload();
-    //     new THREE.OBJLoader()
-    //         .setMaterials(materials)
-    //         .load('assets/Free Land.obj', function (object) {
-    //             object.position.x += LandPoslist[LandId][0];
-    //             object.position.z += LandPoslist[LandId][1];
-
-    //             if(!reomveList.includes(LandId))
-    //                 scene.add(object);
-                
-                
-    //             //object.id = 
-    //             LandId++;
-    //             //lands.push(obj);
-    //             console.log(LandId + '% downloaded');
-    //         });
-    // });
-
 	static SpawnObjFromVox(land){
 		var objPosition = { x:land._x, y:0, z:land._y };
 		ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description+".vox", objPosition, land);

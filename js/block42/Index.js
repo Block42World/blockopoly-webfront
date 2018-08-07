@@ -11,8 +11,12 @@ class Index {
 		ThreejsUtility.init();
 		//ModelBuilder.build();
 		ModelBuilder.buildFromData(Land.lands)
-		player = new Block42.Player(camera,ControlTypeEnum.Flight);
+		player = new Player(camera,ControlTypeEnum.Flight);
 		player.Initialize();
+
+		document.getElementById("fly-control").change = () => {player.SetControlType(ControlTypeEnum.Flight)};
+		document.getElementById("fps-control").change = () => {player.SetControlType(ControlTypeEnum.FPS)};
+		document.getElementById("orbit-control").change = () => {player.SetControlType(ControlTypeEnum.Orbit)};
 	}
 
 	static initOrbit()
@@ -20,7 +24,7 @@ class Index {
 		ThreejsUtility.init();
 		//ModelBuilder.build();
 		ModelBuilder.buildFromData(Land.lands)
-		player = new Block42.Player(camera,ControlTypeEnum.Orbit);
+		player = new Player(camera,ControlTypeEnum.Orbit);
 		player.Initialize();
 	}
 
@@ -30,7 +34,7 @@ class Index {
 		//ModelBuilder.build();
 		
 		ModelBuilder.buildFromVox(Land.lands)
-		player = new Block42.Player(camera,ControlTypeEnum.Orbit);
+		player = new Player(camera,ControlTypeEnum.Orbit);
 		player.Initialize();
 	}
 }
