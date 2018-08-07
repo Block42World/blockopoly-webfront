@@ -31,7 +31,7 @@ class ThreejsUtility {
       1,
       2000
     );
-    camera.position.set(576, 99, 867); // Set our position to look at the main building
+    camera.position.set(145, 716, 1050); // Set our position to look down on environment
 
     //
 

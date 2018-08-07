@@ -186,6 +186,17 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 	};
 
+this.lookDirectionSet = function(direction){
+	var spherical = new THREE.Spherical();
+	spherical.setFromVector3(direction)
+
+	// var degTheta = THREE.Math.radToDeg(spherical.theta);
+	// var degPhi = THREE.Math.radToDeg(spherical.phi);
+
+	this.lon = spherical.radius * Math.sin(spherical.theta) * Math.sin(spherical.phi)-90;
+	this.lat = (spherical.radius * Math.cos(spherical.phi));
+}
+
 	this.update = function( delta ) {
 
 		if ( this.freeze ) {
