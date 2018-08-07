@@ -16,7 +16,6 @@ class ObjLoaderUtils {
     static SpawnObjAtPosition(objUrl, position, onLoad){
 
 		ModelBuilder.loadingCount++;
-		console.log(ModelBuilder.loadingCount);
         //Create an instance of our toon material to apply to our object
 		if(typeof objTexture  === 'undefined')
 		{
@@ -42,27 +41,24 @@ class ObjLoaderUtils {
                 //Then we need to set our objects position
                 object.position.x = position.x;
                 object.position.y = position.y;
-                object.position.z = position.z;
-                onLoad(object);
-
+				object.position.z = position.z;
 				ModelBuilder.loadingCount--;
-				console.log(ModelBuilder.loadingCount);
+                onLoad(object,ModelBuilder.loadingCount);
             });
     }
 
-	static SpawnObjFromVox(land){
+	static SpawnObjFromVox(land, onLoad){
 		ModelBuilder.loadingCount++;
-		console.log(ModelBuilder.loadingCount);
 		var objPosition = { x:land._x, y:0, z:land._y };
 		if(land._description == "Land+4+sale" || land._description == "Apartment+combine")
-			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land);
+			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land,onLoad);
 		else
-			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land);
+			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land,onLoad);
 		
 	}
 
 	
-	static SpawnObjFromVox2(objUrl, position, land)
+	static SpawnObjFromVox2(objUrl, position, land,onLoad)
 	{
 		var parser = new vox.Parser();
 		parser.parse(objUrl).then(function(voxelData) {
@@ -119,7 +115,7 @@ class ObjLoaderUtils {
 			surfacemesh.position.set( land._x-31.5, 0, land._y-31.5 );
 			surfacemesh.userData.land = land;
 			ModelBuilder.loadingCount--;
-			console.log(ModelBuilder.loadingCount);
+			if (onLoad) {onLoad(ModelBuilder.loadingCount);}
 		});
     }
 }

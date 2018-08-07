@@ -16,6 +16,8 @@ function Player(cameraObject, controllerType) {
 	this.fpsControls;
 	this.orbitControls;
 
+	this.isActive = false;
+
 	this.Listen();
 }
 
@@ -27,6 +29,27 @@ Player.prototype.Initialize = function() {
 
 Player.prototype.Update = function(deltatime) {
 	this.UpdateController(deltatime);
+};
+
+//#endregion
+
+//#region Input
+
+Player.prototype.SetPlayerActive = function(bool) {
+	this.isActive = bool;
+
+	if (this.isActive) {
+		//Show swap controls
+		$("#control-toggle-group").show();
+
+		this.SetControlType(this.controlType);
+	} else {
+		//Hide swap controls
+		$("#control-toggle-group").hide();
+
+		this.flightControls.freeze = false;
+		this.orbitControls.enabled = false;
+	}
 };
 
 //#endregion
@@ -84,20 +107,22 @@ Player.prototype.InitializeControlType = function(controllerType) {
 Player.prototype.InitializeFlightControls = function() {
 	this.flightControls = new THREE.FirstPersonControls(this.cameraObject);
 	this.flightControls.target = new THREE.Vector3(206, 648, 1009);
-	this.flightControls.movementSpeed = 20;
-	this.flightControls.lookSpeed = 0.05;
+	this.flightControls.movementSpeed = 120;
+	this.flightControls.lookSpeed = 0.1;
 	this.flightControls.lookVertical = true;
 	this.flightControls.update(0.000001);
 };
 
 Player.prototype.InitializeOrbitControls = function() {
 	this.orbitControls = new THREE.OrbitControls(this.cameraObject);
+	this.orbitControls.panMinHeight = 5;
+	this.orbitControls.maxDistance = 1000;
 
 	//Set our initial position
-	this.cameraObject.position.set(210,479,1039);
-	this.orbitControls.target.set(404,300,900);
+	this.cameraObject.position.set(210, 479, 1039);
+	this.orbitControls.target.set(404, 300, 900);
 
-	this.orbitControls.maxPolarAngle = (Math.PI / 2)
+	this.orbitControls.maxPolarAngle = Math.PI / 2;
 	this.orbitControls.update();
 };
 
@@ -110,6 +135,10 @@ Player.prototype.InitializeFPSControls = function() {
 //#region Update Controller
 
 Player.prototype.UpdateController = function(deltaTime) {
+	if (!this.isActive) {
+		return;
+	}
+
 	switch (this.controlType) {
 		default:
 		case ControlTypeEnum.Flight:
@@ -141,6 +170,7 @@ Player.prototype.Listen = function() {
 	container.addEventListener(
 		"dblclick",
 		function(e) {
+			if (!this.isActive) {return;}
 			console.log("click");
 			//this is the highlighted obj
 			console.log(outlinePass.selectedObjects[0].userData);
@@ -153,7 +183,7 @@ Player.prototype.Listen = function() {
 			this.FocusCameraOnObject(
 				outlinePass.selectedObjects[0],
 				new THREE.Vector3(45, 45, 45),
-				200
+				20
 			);
 			console.log(camera.position);
 		}.bind(this),
@@ -187,11 +217,16 @@ Player.prototype.FocusCameraOnPosition = function(
 	eulerRotation,
 	distance
 ) {
+	if (!this.isActive) {
+		return;
+	}
+
 	//Calculate the direction Vector from our euler rotation
 	var directionVector = new THREE.Vector3();
 	directionVector.x = Math.cos(eulerRotation.y) * Math.cos(eulerRotation.x);
 	directionVector.y = Math.sin(eulerRotation.y) * Math.cos(eulerRotation.x);
 	directionVector.z = Math.sin(eulerRotation.x);
+	directionVector.normalize();
 
 	//Add our direction vector onto our rotation vectors
 	var targetCameraPos = new THREE.Vector3();
