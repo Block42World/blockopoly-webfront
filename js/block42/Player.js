@@ -92,6 +92,11 @@ Player.prototype.InitializeFlightControls = function() {
 
 Player.prototype.InitializeOrbitControls = function() {
 	this.orbitControls = new THREE.OrbitControls(this.cameraObject);
+
+	//Set our initial position
+	this.cameraObject.position.set(210,479,1039);
+	this.orbitControls.target.set(404,300,900);
+
 	this.orbitControls.maxPolarAngle = (Math.PI / 2)
 	this.orbitControls.update();
 };
