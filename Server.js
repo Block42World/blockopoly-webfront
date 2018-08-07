@@ -36,6 +36,23 @@ app.post('/editor.html', function (req, res) {
 			res.end();
 		});
     });
-
 });
 
+
+app.post('/uploadVox', function (req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+		console.log(fields);
+		console.log(files);
+
+		var oldpath = files.voxFile.path;
+		console.log(oldpath);
+		var newpath = 'C:/Users/John/Desktop/world-webfront/assets/' + files.voxFile.name;
+		fs.rename(oldpath, newpath, function (err) {
+			if (err) 
+				throw err;
+			res.write('File uploaded and moved!');
+			res.end();
+		});
+    });
+});

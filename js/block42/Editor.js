@@ -119,7 +119,11 @@ function OnBtnSave()
 	var result = Exporter.SaveToVox(myVoxelData);
 		
 	console.log("finished encoding");
+	
+	Upload(fileName+".vox", result);
 	download(result, fileName+".vox", "text/plain");
+
+
 
 	//Exporter.SaveToObj();
 	//download(Exporter.vertexsOutput + Exporter.FacesOutput, "city.obj", "text/plain");
@@ -147,6 +151,24 @@ function ToUint8(number)
 	number/Math.pow(256, 3)]
 }
 
+
+function Upload(fileName, blob)
+{
+	var formData = new FormData();
+
+	formData.append("username", "Groucho");
+	formData.append("accountnum", 123456);
+
+	//formData.append("vox", blob, fileName);
+
+	var file = new Blob([blob], {type: "text/plain"});
+	formData.append("voxFile", file, fileName);
+
+	var request = new XMLHttpRequest();
+	request.open("POST", "/uploadVox");
+	request.send(formData);
+	console.log("uploaded");
+}
 
 
 // Function to download data to a file
