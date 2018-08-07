@@ -7,6 +7,7 @@ class ModelBuilder
 		var citySizeY = 10;
 		Index.worldLoaded = false;
 		
+		ModelBuilder.loadingCount = 0;
 		for(var i = 0; i < lands.length; i++){
 		
 			ObjLoaderUtils.SpawnObjFromVox(lands[i]);
@@ -14,6 +15,7 @@ class ModelBuilder
 		ModelBuilder.buildStreet(citySizeX, citySizeY);
 
 		Index.worldLoaded = true;
+
 	}
 
 
@@ -197,6 +199,7 @@ class ModelBuilder
 
 		for (var xi = 0; xi < citySizeX; xi++) {
 			for (var yi = 0; yi < citySizeY + 1; yi++) {
+			
 			//record position
 			var pos = [xi * 149 + 31.5, yi * 149 - 43];
 			hStPoslist.push(pos);

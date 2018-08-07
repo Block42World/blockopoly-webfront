@@ -2,18 +2,21 @@
 class ObjLoaderUtils {
 
 	//var objTexture;
-
+	/*
 	static SpawnObjFromData(land){
+
 		var objPosition = { x:land._x, y:0, z:land._y };
 		ObjLoaderUtils.SpawnObjAtPosition('./assets/'+land._description+".obj", objPosition, function(object) {
 			scene.add(object);
 			object.userData.land = land;
 		});
 	}
-
+	*/
 
     static SpawnObjAtPosition(objUrl, position, onLoad){
 
+		ModelBuilder.loadingCount++;
+		console.log(ModelBuilder.loadingCount);
         //Create an instance of our toon material to apply to our object
 		if(typeof objTexture  === 'undefined')
 		{
@@ -41,10 +44,15 @@ class ObjLoaderUtils {
                 object.position.y = position.y;
                 object.position.z = position.z;
                 onLoad(object);
+
+				ModelBuilder.loadingCount--;
+				console.log(ModelBuilder.loadingCount);
             });
     }
 
 	static SpawnObjFromVox(land){
+		ModelBuilder.loadingCount++;
+		console.log(ModelBuilder.loadingCount);
 		var objPosition = { x:land._x, y:0, z:land._y };
 		if(land._description == "Land+4+sale" || land._description == "Apartment+combine")
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land);
@@ -110,15 +118,8 @@ class ObjLoaderUtils {
 			scene.add( surfacemesh );
 			surfacemesh.position.set( land._x-31.5, 0, land._y-31.5 );
 			surfacemesh.userData.land = land;
-
+			ModelBuilder.loadingCount--;
+			console.log(ModelBuilder.loadingCount);
 		});
     }
-}
-
-function asd ()
-{
-	for(var i=0; i<scene.children.length; ++i) 
-	{
-		scene.children[i]
-	}
 }
