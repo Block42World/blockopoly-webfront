@@ -64,15 +64,18 @@ Player.prototype.SetControlType = function(controlType) {
 		case ControlTypeEnum.Flight:
 			this.flightControls.freeze = false;
 			this.orbitControls.enabled = false;
+			this.fpsControl.SetActive(false);
 			break;
 		case ControlTypeEnum.FPS:
 			//Do nothing since we dont have it yet
 			this.flightControls.freeze = true;
 			this.orbitControls.enabled = false;
+			this.fpsControl.SetActive(true);
 			break;
 		case ControlTypeEnum.Orbit:
 			this.flightControls.freeze = true;
 			this.orbitControls.enabled = true;
+			this.fpsControl.SetActive(false);
 			break;
 	}
 };
@@ -100,7 +103,6 @@ Player.prototype.InitializeControlType = function(controllerType) {
 	this.InitializeFlightControls();
 	this.InitializeFPSControls();
 	this.InitializeOrbitControls();
-
 	this.SetControlType(controllerType);
 };
 
@@ -128,7 +130,7 @@ Player.prototype.InitializeOrbitControls = function() {
 
 Player.prototype.InitializeFPSControls = function() {
 	//Not Implemented Yet
-
+	this.fpsControl = new CustomFPS3(this.cameraObject);
 
 };
 
@@ -147,8 +149,7 @@ Player.prototype.UpdateController = function(deltaTime) {
 			this.flightControls.update(deltaTime);
 			break;
 		case ControlTypeEnum.FPS:
-			//this.cameraObject.position.set(camera.position.x + deltaTime*1000,479,1039);// += new THREE.Vector3(deltaTime*10,0,0);
-			gameLoop(deltaTime);
+			this.fpsControl.update(deltaTime);
 			//Do nothing since we dont have it yet
 			break;
 		case ControlTypeEnum.Orbit:
