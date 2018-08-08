@@ -31,7 +31,7 @@ class ThreejsUtility {
       1,
       2000
     );
-    camera.position.set(576, 99, 867); // Set our position to look at the main building
+    camera.position.set(145, 716, 1050); // Set our position to look down on environment
 
     //
 
@@ -69,7 +69,7 @@ class ThreejsUtility {
     deltatime = time - lastTime;
 
     if (Index.worldLoaded == true) {
-      player.Update(deltatime); //Update our controls using a deltatime
+      player.Update(deltatime*1000); //Update our controls using a deltatime
       ThreejsUtility.UpdateSky();
     }
 

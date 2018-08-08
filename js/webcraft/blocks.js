@@ -18,6 +18,7 @@ BLOCK = {};
 // Air
 BLOCK.AIR = {
 	id: 0,
+	colorID: -1,
 	spawnable: false,
 	transparent: true
 };
@@ -66,23 +67,21 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	var blocks = world.blocks;
 	var blockLit = z >= lightmap[x][y];
 	var block = blocks[x][y][z];
-	var bH = block.fluid && ( z == world.sz - 1 || !blocks[x][y][z+1].fluid ) ? 0.9 : 1.0;
 	
-	
-
 	//console.log(x+" "+y+" "+z);
 	var r = myVoxelData.palette[block.colorID].r/255;
 	var g = myVoxelData.palette[block.colorID].g/255;
 	var b = myVoxelData.palette[block.colorID].b/255;
 	//console.log(blocks[x][y][z].colorID);
 	// Top
-	if ( z == world.sz - 1 || world.blocks[x][y][z+1].transparent || block.fluid )
+	if ( z == world.sz - 1 || world.blocks[x][y][z+1].transparent)
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.UP );
 		
-		var lightMultiplier = z >= lightmap[x][y] ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
-		
+		//var lightMultiplier = z >= lightmap[x][y] ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier = 1.0;
+
 		pushQuad(
 			vertices,
 			[ x,    y,    z+ 1, c[0], c[1], r*lightMultiplier, g*lightMultiplier, b*lightMultiplier, 1.0 ],
@@ -97,7 +96,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.DOWN );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier =0.75;// block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,							
@@ -113,8 +112,8 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.FORWARD );
 		
-		var lightMultiplier = ( y == 0 || z >= lightmap[x][y-1] ) ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier =0.95;// ( y == 0 || z >= lightmap[x][y-1] ) ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
 		
 		pushQuad(
 			vertices,
@@ -130,7 +129,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.BACK );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier = 0.8;//block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,
@@ -146,7 +145,7 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.LEFT );
 		
-		var lightMultiplier = block.selflit ? 1.0 : 0.6;
+		var lightMultiplier =0.9;// block.selflit ? 1.0 : 0.6;
 		
 		pushQuad(
 			vertices,
@@ -162,8 +161,8 @@ BLOCK.pushVertices = function( vertices, world, lightmap, x, y, z )
 	{
 		var c = block.texture( world, lightmap, blockLit, x, y, z, DIRECTION.RIGHT );
 		
-		var lightMultiplier = ( x == world.sx - 1 || z >= lightmap[x+1][y] ) ? 1.0 : 0.6;
-		if ( block.selflit ) lightMultiplier = 1.0;
+		var lightMultiplier =0.85;// ( x == world.sx - 1 || z >= lightmap[x+1][y] ) ? 1.0 : 0.6;
+		//if ( block.selflit ) lightMultiplier = 1.0;
 		
 		pushQuad(
 			vertices,

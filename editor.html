@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>hello</title>
+	<title>Editor</title>
 
 </head>
 <body>
@@ -19,17 +19,15 @@
 <script src="js/webcraft/player.js" type="text/javascript"></script>
 <script src="js/webcraft/sight.js" type="text/javascript"></script>
 <script src="js/webcraft/fullScreen.js" type="text/javascript"></script>
+<script src="js/block42/Palette.js" type="text/javascript"></script>
 
-	<!--vox.js-->
-	<script src="js/voxjs/vox.min.js"></script> 
+<!--vox.js-->
+<script src="js/voxjs/vox.min.js"></script> 
 
+<script src="js/block42/Exporter.js" type="text/javascript"></script>
+<script src="js/block42/Editor.js" type="text/javascript"></script>
 <!-- Render surface -->
 <canvas id="renderSurface"></canvas>
-
-<!-- Material selection -->
-<table id="materialSelector">
-	<tr></tr>
-</table>
 
 <!-- main UI -->
 <div id="blocker">
@@ -41,241 +39,30 @@
 		<br />
 			<button id="FullScreen">Full Screen </button>
 			<button id="Save" onclick="OnBtnSave()">Save </button>
-
+			<input id ="flyingMode" type="checkbox" onclick="OnCheckboxFlyingMode(this)"name="vehicle" value="Car" checked>flying Mode<br>
 	</div>
 
 </div>
 
+<!-- Palette -->
+<div id="palette">
+	<table id="paletteTable"></table>
+	<div id ="colorBoard"></div>
+</div>
 
 
 <!-- cross hair -->
-<div id= 'sight1'></div>A
+<div id= 'sight1'></div>
 <div id= 'sight2'></div>
 
-
-<!-- Initialisation code -->
-<script type="text/javascript">		
-
-	var world;
-	var render;
-	var physics;
-	var player;
-	var isPlaying = false;
-	var myVoxelData;
-    //init sight script
-    Sight.init();	
-
-
-	// Create a new flat world
-	world = new World( 128, 128, 128 );
-	world.createFlatWorld( 0 );
-
-	// Set up renderer
-	render = new Renderer( "renderSurface" );
-	render.setWorld( world, 100 );
-	render.setPerspective( 60, 0.01, 200 );
-	
-	// Create physics simulator
-	//physics = new Physics();
-	//physics.setWorld( world );
-	
-	// Create new local player
-	player = new Player();
-	player.setWorld( world );
-	player.setInputCanvas( "renderSurface" );
-	player.setMaterialSelector( "materialSelector" );
-	
-	// Render loop			
-	setInterval( function()
-	{
-		var time = new Date().getTime() / 1000.0;
-		
-		// Simulate physics
-		//physics.simulate();
-		
-		// Update local player
-		player.update();
-		
-		// Build a chunk
-		render.buildChunks( 1 );
-		
-		// Draw world
-		render.setCamera( player.getEyePos().toArray(), player.angles );
-		render.draw();
-		
-		while ( new Date().getTime() / 1000 - time < 0.016 );
-	}, 1 );
-	
-
-	//Shibuya2    chr_rain
-	var parser = new vox.Parser();
-	parser.parse("assets/Shibuya.vox").then(function(voxelData) {
-	    console.log(voxelData);
-		myVoxelData = voxelData;
-
-		for (var i = voxelData.voxels.length - 1; i >= 0; i--) {
-	    	world.blocks[voxelData.voxels[i].x][voxelData.voxels[i].y][voxelData.voxels[i].z] =// blank
-			{
-				id: 19,
-				spawnable: true,
-				transparent: false,
-				selflit: true,
-				gravity: false,
-				fluid: false,
-				isColorful: true,
-				colorID: voxelData.voxels[i].colorIndex,
-				x:voxelData.voxels[i].x,
-				y:voxelData.voxels[i].y,
-				z:voxelData.voxels[i].z,
-				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
-			};
-			
-		}
-
-		//update all chuncks
-		for ( var i = 0; i < render.chunks.length; i++ )
-		{
-			render.chunks[i].dirty = true;
-		}
-	    /*
-	    voxelData.voxels; // voxel position and color data
-	    voxelData.size; // model size
-	    voxelData.palette; // palette data
-	*/
-		
-	});
-
-
-
-	var orginArray;
-	function OnBtnSave()
-	{
-		myVoxelData = world.ToVoxelData();
-		console.log(myVoxelData);
-
-		var encoder = new TextEncoder("utf-8");
-		
-		//https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
-		//"VOX "
-		var uint8Array = addUint8Arrays(new Uint8Array(), encoder.encode("VOX "));
-		//version
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(150));
-		
-		//main
-		uint8Array = addUint8Arrays(uint8Array, encoder.encode("MAIN"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));//num bytes of chunk content (N)
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte((myVoxelData.voxels.length+ 9)*4));//num bytes of children chunks (M)
-
-		/* optional
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("PACK"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(4));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1));
-		*/
-		//size
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("SIZE"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(12));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.x));//x 
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.y));//y
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.size.z));//z
-		
-		//xyzi
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("XYZI"));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length*4));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(myVoxelData.voxels.length));
-		for (var i = 0; i < myVoxelData.voxels.length; i++) {
-			uint8Array = addUint8Arrays(uint8Array, [
-			myVoxelData.voxels[i].x, 
-			myVoxelData.voxels[i].y, 
-			myVoxelData.voxels[i].z, 
-			myVoxelData.voxels[i].colorIndex]);
-		}
-		/*
-		//rgba
-		var uint8Array = addUint8Arrays(uint8Array, encoder.encode("RGBA"));
-		
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(1024));
-		
-		uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		
-		for (var i = myVoxelData.palette.length; i <=0; i--) {
-			uint8Array = addUint8Arrays(uint8Array, [
-			myVoxelData.palette[i].r, 
-			myVoxelData.palette[i].g, 
-			myVoxelData.palette[i].b, 
-			myVoxelData.palette[i].a]);
-		}
-		*/
-		
-		
-		//end
-		//uint8Array = addUint8Arrays(uint8Array, intTo4byte(0));
-		
-		/*
-		for(var i = 0; i < uint8Array.length; i++)
-		{
-			if(orginArray[i]!= uint8Array[i])
-			{
-
-				console.log(i+" "+orginArray[i] +" "+uint8Array[i]);
-				//uint8Array[i] = orginArray[i];
-			}
-		}
-		*/
-		
-		download(uint8Array, "test.vox", vox);
-		console.log(orginArray);
-		console.log(uint8Array);
-	}
-
-	function addUint8Arrays(a, b) {
-		var c = new Uint8Array(a.length + b.length);
-		c.set(a, 0);
-		c.set(b, a.length);
-		return c;
-	}
-
-	function intTo4byte(number)
-	{
-		return [number, 
-		number/Math.pow(256, 1), 
-		number/Math.pow(256, 2), 
-		number/Math.pow(256, 3)]
-	}
-
-
-
-	// Function to download data to a file
-	function download(data, filename, type) {
-		var file = new Blob([data], {type: type});
-		if (window.navigator.msSaveOrOpenBlob) // IE10+
-			window.navigator.msSaveOrOpenBlob(file, filename);
-		else { // Others
-			var a = document.createElement("a"),
-					url = URL.createObjectURL(file);
-			a.href = url;
-			a.download = filename;
-			document.body.appendChild(a);
-			a.click();
-			setTimeout(function() {
-				document.body.removeChild(a);
-				window.URL.revokeObjectURL(url);  
-			}, 0); 
-		}
-	}
-
-
+<script type="text/javascript">
+	Editor.init();
 </script>
 
 
-
-
-
-
-<script type="text/javascript">	
-
-</script>
+<form action="./uploadVox" method="post" id="editForm">
+	<input type="text" name="fileName" id="fileName">
+	<input type="text" name="contect" id="fileName">
+</form>
 </body>
 </html>

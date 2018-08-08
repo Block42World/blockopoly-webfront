@@ -35,6 +35,8 @@ Player.prototype.setWorld = function( world )
 	this.eventHandlers = {};
 	this.targetPitch = 0;
 	this.targetYaw = 0;
+	this.speed = 10;
+	this.isFlyingMode = false;
 }
 
 // setClient( client )
@@ -69,6 +71,8 @@ Player.prototype.setInputCanvas = function( id )
 	document.addEventListener("mousemove", function (e) {t.onMouseEvent(e.movementX, e.movementY, MOUSE.MOVE, e.which == 3);return false;}, false);                                
 }
 
+
+/*
 // setMaterialSelector( id )
 //
 // Sets the table with the material selectors.
@@ -107,6 +111,8 @@ Player.prototype.setMaterialSelector = function( id )
 		}
 	}
 }
+*/
+
 
 // on( event, callback )
 //
@@ -162,7 +168,8 @@ Player.prototype.onMouseEvent = function( x, y, type, rmb )
 Player.prototype.doBlockAction = function( x, y, destroy )
 {
 	var bPos = new Vector( Math.floor( this.pos.x ), Math.floor( this.pos.y ), Math.floor( this.pos.z ) );
-	var block = this.canvas.renderer.pickAt( new Vector( bPos.x - 4, bPos.y - 4, bPos.z - 4 ), new Vector( bPos.x + 4, bPos.y + 4, bPos.z + 4 ), x, y );
+	var range = 10;
+	var block = this.canvas.renderer.pickAt( new Vector( bPos.x - range, bPos.y - range, bPos.z - range ), new Vector( bPos.x + range, bPos.y + range, bPos.z + range ), x, y );
 
 	if ( block != false )
 	{
@@ -171,7 +178,15 @@ Player.prototype.doBlockAction = function( x, y, destroy )
 		if ( destroy )
 			obj.setBlock( block.x, block.y, block.z, BLOCK.AIR );
 		else
-			obj.setBlock( block.x + block.n.x, block.y + block.n.y, block.z + block.n.z, this.buildMaterial );
+			obj.setBlock( block.x + block.n.x, block.y + block.n.y, block.z + block.n.z, {
+				id: 19,
+				isColorful: true,
+				colorID: Palette.colorID,
+				x:block.x + block.n.x,
+				y:block.y + block.n.y,
+				z:block.z + block.n.z,
+				texture: function( world, lightmap, lit, x, y, z, dir ) { return [ 2.1/16, 4.1/16, 2.9/16, 4.9/16 ]; }
+			});
 	}
 }
 
@@ -209,18 +224,85 @@ Player.prototype.update = function()
 		}
 
 		
-		// Gravity
-		if ( this.falling ){}
-			//velocity.z += -0.5;
+
+
+
+		if( this.isFlyingMode)
+		{
+			if ( this.keys["q"] )
+				velocity.z = this.speed;
+			else if ( this.keys["e"]) 
+				velocity.z = -this.speed;
+			else 
+				velocity.z = 0; 
+		}
+		else
+		{
+			// Gravity
+			if ( this.falling)
+				velocity.z += -0.5;
 			
-		// Jumping
-		if ( this.keys[" "] && !this.falling )
-			velocity.z = 8;
+			// Jumping
+			if ( this.keys[" "])
+				velocity.z = 10;
+		}
 
 		// Walking
 		var walkVelocity = new Vector( 0, 0, 0 );
-		//if ( !this.falling )
-		{
+
+		if ( this.keys["w"] ) {
+			walkVelocity.x += Math.cos( Math.PI / 2 - this.angles[1]);
+			walkVelocity.y += Math.sin( Math.PI / 2 - this.angles[1]);
+		}
+		if ( this.keys["s"] ) {
+			walkVelocity.x += Math.cos( Math.PI + Math.PI / 2 - this.angles[1]);
+			walkVelocity.y += Math.sin( Math.PI + Math.PI / 2 - this.angles[1]);
+		}
+		if ( this.keys["a"] ) {
+			walkVelocity.x += Math.cos( Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+			walkVelocity.y += Math.sin( Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+		}
+		if ( this.keys["d"] ) {
+			walkVelocity.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+			walkVelocity.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+		}
+
+		/*
+			if ( this.keys["w"] ) {
+				walkVelocity.x += this.speed;
+
+			}
+			if ( this.keys["s"] ) {
+				walkVelocity.x -= this.speed;
+			}
+			if ( this.keys["a"] ) {
+				walkVelocity.y += this.speed;
+			}
+			if ( this.keys["d"] ) {
+				walkVelocity.y -= this.speed;
+			}
+		*/
+
+		/*
+			if ( this.keys["w"] ) {
+				walkVelocity.x += Math.cos( Math.PI / 2 - this.angles[1]);
+				walkVelocity.y += Math.sin( Math.PI / 2 - this.angles[1]);
+			}
+			if ( this.keys["s"] ) {
+				walkVelocity.x += Math.cos( Math.PI + Math.PI / 2 - this.angles[1]);
+				walkVelocity.y += Math.sin( Math.PI + Math.PI / 2 - this.angles[1]);
+			}
+			if ( this.keys["a"] ) {
+				walkVelocity.x += Math.cos( Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+				walkVelocity.y += Math.sin( Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+			}
+			if ( this.keys["d"] ) {
+				walkVelocity.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+				walkVelocity.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1]);
+			}
+		*/
+
+		/*
 			if ( this.keys["w"] ) {
 				this.pos.x += Math.cos( Math.PI / 2 - this.angles[1] );
 				this.pos.y += Math.sin( Math.PI / 2 - this.angles[1] );
@@ -236,24 +318,20 @@ Player.prototype.update = function()
 			if ( this.keys["d"] ) {
 				this.pos.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.angles[1] );
 				this.pos.y += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.angles[1] );
-			}
-			if ( this.keys["q"] ) {
-				this.pos.z += 1;
-			}
-			if ( this.keys["e"] ) {
-				this.pos.z -= 1;
-			}
-		}
+			}	
+		*/
 
+		velocity.x = walkVelocity.x * this.speed;
+		velocity.y = walkVelocity.y * this.speed;
+		/*
 		if ( walkVelocity.length() > 0 ) {
 				walkVelocity = walkVelocity.normal();
-				velocity.x = walkVelocity.x * 4;
-				velocity.y = walkVelocity.y * 4;
+
 		} else {
 			velocity.x /= this.falling ? 1.01 : 1.5;
 			velocity.y /= this.falling ? 1.01 : 1.5;
 		}
-
+		*/
 		// Resolve collision
 		this.pos = this.resolveCollision( pos, bPos, velocity.mul( delta ) );
 	}

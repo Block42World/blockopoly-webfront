@@ -40,7 +40,7 @@
     <script src="js/threejs/threejsplugin/RenderPass.js"></script>
     <script src="js/threejs/threejsplugin/ShaderPass.js"></script>
     <script src="js/threejs/threejsplugin/OutlinePass.js"></script>
-
+		<script src="js/threejs/threejsplugin/ObjExporter.js"></script>
     <!--the library we write-->
     <script src="js/Block42.js"></script>
     
@@ -54,6 +54,11 @@
 	<script src="js/block42/UIManager.js"></script>
 
     <script src="js/bundle.js"></script>
+
+	<!--vox.js-->
+	<script src="js/voxjs/vox.min.js"></script> 
+
+	<script src="js/mikolalysenko(optMesh)/monotone.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -251,7 +256,7 @@
     
     <script type="text/javascript">
 	
-        Index.initFromData();
+        Index.initVox();
     </script>
 </body>
 

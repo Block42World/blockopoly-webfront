@@ -1,17 +1,34 @@
 class ModelBuilder
 {
-	static buildFromData(lands)
+
+	static buildFromVox(lands)
 	{
 		var citySizeX = 10;
 		var citySizeY = 10;
 		Index.worldLoaded = false;
+		
+		ModelBuilder.loadingCount = 0;
 		for(var i = 0; i < lands.length; i++){
-			ObjLoaderUtils.SpawnObjFromData(lands[i]);
+		
+			ObjLoaderUtils.SpawnObjFromVox(lands[i],
+			(number) => {if (number == 0) {Index.worldLoaded = true;}});
 		}
 		ModelBuilder.buildStreet(citySizeX, citySizeY);
-
-		Index.worldLoaded = true;
 	}
+
+
+	// static buildFromData(lands)
+	// {
+	// 	var citySizeX = 10;
+	// 	var citySizeY = 10;
+	// 	Index.worldLoaded = false;
+	// 	for(var i = 0; i < lands.length; i++){
+	// 		ObjLoaderUtils.SpawnObjFromData(lands[i]);
+	// 	}
+	// 	ModelBuilder.buildStreet(citySizeX, citySizeY);
+
+	// 	Index.worldLoaded = true;
+	// }
 
 	static build()
 	{
@@ -21,13 +38,12 @@ class ModelBuilder
 		    var data = [];
 		}
 
-
 		Index.worldLoaded = false;
-
-		ModelBuilder.buildStreet(citySizeX, citySizeY);
 
 		var citySizeX = 10;
 		var citySizeY = 10;
+
+		ModelBuilder.buildStreet(citySizeX, citySizeY);
 
 			var reomveList = [
 				 55, 155, 255, 355
@@ -164,9 +180,9 @@ class ModelBuilder
 		});
 
 	  
-	  	console.log(data);
-		var myJSON = JSON.stringify(data);
-		console.log(myJSON);
+	  	//console.log(data);
+		//var myJSON = JSON.stringify(data);
+		//console.log(myJSON);
 		//download(myJSON, "Lands-auto-generated.json", JSON);
 		
 	}
@@ -174,13 +190,14 @@ class ModelBuilder
 
 	static buildStreet(citySizeX, citySizeY)
 	{
-	
+		console.log("buildStreet"+citySizeX);
 		//121 street
 		var hStPoslist = [];
 		var hStId = 0;
 
 		for (var xi = 0; xi < citySizeX; xi++) {
 			for (var yi = 0; yi < citySizeY + 1; yi++) {
+			
 			//record position
 			var pos = [xi * 149 + 31.5, yi * 149 - 43];
 			hStPoslist.push(pos);
@@ -243,7 +260,7 @@ class ModelBuilder
 				);
 
 				ObjLoaderUtils.SpawnObjAtPosition("assets/Road2.obj",objPosition,function(object) {
-					object.rotateY(Math.PI / 2);
+
 					scene.add(object);
 					}
 				);

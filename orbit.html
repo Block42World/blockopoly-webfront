@@ -49,16 +49,11 @@
     <script src="js/block42/Index.js"></script>
     <script src="js/block42/ObjLoaderUtils.js"></script>
 	<script src="js/block42/ModelBuilder.js"></script>
-    <script src="js/block42/Player.js"></script>
+	<script src="js/block42/Player.js"></script>
     <script src="js/block42/Land.js"></script>
 	<script src="js/block42/UIManager.js"></script>
-	<script src="js/block42/customFPS3.js"></script>
+
     <script src="js/bundle.js"></script>
-
-	<!--vox.js-->
-	<script src="js/voxjs/vox.min.js"></script> 
-
-	<script src="js/mikolalysenko(optMesh)/monotone.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -149,7 +144,6 @@
                 </table>
             </div>
         </div>
-
         <div class="text-center">
             <a href="#"><p class="center">View Full History</p></a>
             <img src="img/money.png" alt="$" width="35px" height="35px" style="vertical-align: middle; max-height: 35px; max-width: 35px;">
@@ -157,10 +151,7 @@
         </div>
         <div class="button">
             <button type="button" class="btn btn-lg btn-block btn-dark">Buy</button>
-			<form action="./editor.html" method="post" id="editForm">
-				<input type="text" name="fileName" id="fileName">
-			</form>
-			<button type="button" class="btn btn-lg btn-block btn-dark" onclick="document.getElementById('editForm').submit();">Edit</button>
+			<button type="button" class="btn btn-lg btn-block btn-dark">Edit</button>
         </div>
     </div>
 
@@ -180,7 +171,7 @@
             <div class="single_left_coloum floatleft">
                 <img src="img/single_featured.png" alt=""  class="news"/>
                 <h3 class="news_coloum">Bitcoin's Future Looks Bright for the First Time in 2018</h3>
-                <p>Catalysts can lead any currency higher. However, in the cryptocurrency market, Bitcoin is the â€˜pegâ€™ for other currencies when it comes to trading. BTC also dominates the market cap of the total cryptocurrency space while being the only cryptocurrency futures are traded for through major commodity exchanges like the CBOE. This week saw Bitcoin hover in the low $6,000 range before mysteriously popping to above $7,500.</p>
+                <p>Catalysts can lead any currency higher. However, in the cryptocurrency market, Bitcoin is the ‘peg’ for other currencies when it comes to trading. BTC also dominates the market cap of the total cryptocurrency space while being the only cryptocurrency futures are traded for through major commodity exchanges like the CBOE. This week saw Bitcoin hover in the low $6,000 range before mysteriously popping to above $7,500.</p>
                 <a class="readmore" target="_blank" href="https://bitcoinist.com/bitcoins-future-looks-bright-for-the-first-time-in-2018/">read more</a>
             </div>
             <div class="single_left_coloum floatleft">
@@ -192,17 +183,6 @@
         </div>
     </div>
 
-    <div class="control-type-box btn-group btn-group-toggle" data-toggle="buttons" id="control-toggle-group">
-            <label class="btn btn-secondary active">
-                    <input type="radio" name="options" id="orbit-control" autocomplete="off" checked><i class="fa fa-globe" aria-hidden="true"></i>
-                  </label>
-            <label class="btn btn-secondary">
-              <input type="radio" name="options" id="fps-control" autocomplete="off"><i class="fa fa-user" aria-hidden="true"></i>
-            </label>
-            <label class="btn btn-secondary">
-                    <input type="radio" name="options" id="fly-control" autocomplete="off"><i class="fa fa-plane" aria-hidden="true"></i>
-                  </label>
-          </div>
 
     <div id="price-bar">
         <div id="scroll-content">
@@ -266,7 +246,7 @@
     <!-- Footer -->
     <footer class="page-footer font-small bg-dark fixed-bottom">
         <!-- Copyright -->
-        <div class="footer-copyright text-center py-1">Â© 2018 Copyright:
+        <div class="footer-copyright text-center py-1">© 2018 Copyright:
             <a target="_blank" href="https://www.block42.world/"><span class="text-white pre"> block42.com</span></a>
         </div>
         <!-- Copyright -->
@@ -275,7 +255,7 @@
     
     <script type="text/javascript">
 	
-        Index.initVox();
+        Index.initOrbit();
     </script>
 </body>
 

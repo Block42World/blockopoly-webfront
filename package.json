@@ -26,5 +26,9 @@
     "url": "https://github.com/Block42World/world-frontend/issues"
   },
   "homepage": "https://github.com/Block42World/world-frontend#readme",
-  "dependencies": {}
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "formidable": "^1.2.1"
+  }
 }

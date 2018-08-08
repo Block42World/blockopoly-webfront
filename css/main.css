@@ -193,5 +193,18 @@ span.price-tag {
     font-size: 11px;
 }
 
+div.control-type-box {
+	position: fixed;
+    width: 100px;
+    height: 40px;
+    bottom: 7%;
+    right: 1%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-fill{
+    flex: 1;
+}
 
 
