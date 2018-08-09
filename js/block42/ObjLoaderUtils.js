@@ -96,7 +96,7 @@ class ObjLoaderUtils {
 			}
 			
 			geometry.computeFaceNormals();
-      
+			geometry.computeVertexNormals();
 			geometry.verticesNeedUpdate = true;
 			geometry.elementsNeedUpdate = true;
 			geometry.normalsNeedUpdate = true;
@@ -105,12 +105,12 @@ class ObjLoaderUtils {
 			geometry.computeBoundingSphere();
       
 			//Create surface mesh
-			var material	= new THREE.MeshBasicMaterial({
+			var material	= new THREE.MeshLambertMaterial({
 				vertexColors: true
 			});
 			var surfacemesh	= new THREE.Mesh( geometry, material );
 			surfacemesh.doubleSided = true;
-      
+
 			scene.add( surfacemesh );
 			surfacemesh.position.set( land._x-31.5, 0, land._y-31.5 );
 			surfacemesh.userData.land = land;

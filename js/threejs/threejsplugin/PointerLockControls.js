@@ -54,9 +54,10 @@ THREE.PointerLockControls = function ( camera ) {
 			THREE.SceneUtils.attach( pitchObject, scene, yawObject );
 
 			pitchObject.rotation.set( 0, 0, 0 );
-			yawObject.rotation.set( 0, 0, 0 );
-			yawObject.position.set( 0, 0, 0 );
+			yawObject.rotation.set(   0, 0, 0 );
 			pitchObject.position.set( 0, 0, 0 );
+			yawObject.position.set(   0, 9, 0 );
+
 
 		}
 		else if(pitchObject.parent == yawObject)//if it was active before
