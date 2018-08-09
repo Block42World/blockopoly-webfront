@@ -52,6 +52,10 @@ class ObjLoaderUtils {
 		var objPosition = { x:land._x, y:0, z:land._y };
 		if(land._description == "Land+4+sale" || land._description == "Apartment+combine")
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land,onLoad);
+		else if(land._description.endsWith('_2')){
+			objPosition.y=126;
+			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land,onLoad);
+		}
 		else
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land,onLoad);
 		
@@ -101,8 +105,7 @@ class ObjLoaderUtils {
 			geometry.elementsNeedUpdate = true;
 			geometry.normalsNeedUpdate = true;
       
-			geometry.computeBoundingBox();
-			geometry.computeBoundingSphere();
+
       
 			//Create surface mesh
 			var material	= new THREE.MeshLambertMaterial({
@@ -112,9 +115,19 @@ class ObjLoaderUtils {
 			surfacemesh.doubleSided = true;
 
 			scene.add( surfacemesh );
-			surfacemesh.position.set( land._x-31.5, 0, land._y-31.5 );
+			surfacemesh.position.set( land._x-31.5, position.y, land._y-31.5 );
 			surfacemesh.userData.land = land;
 			ModelBuilder.loadingCount--;
+
+
+			/*
+			geometry.computeBoundingBox();
+			geometry.computeBoundingSphere();
+			var sphere = new THREE.SphereGeometry();
+			var object = new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( 0xff0000 ) );
+			var box = new THREE.BoxHelper( surfacemesh, 0xffff00 );
+			scene.add( box );
+			*/
 			if (onLoad) {onLoad(ModelBuilder.loadingCount);}
 		});
     }
