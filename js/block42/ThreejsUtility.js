@@ -70,12 +70,12 @@ class ThreejsUtility {
 
 		ThreejsUtility.UpdateSky();
 
-		if (player) {     //If our player exists
-			if (Index.worldLoaded) {    //And our world is loaded
+		if (player ) {     //If our player exists
+
+			if (Index.worldLoaded && !player.isActive) {    //And our world is loaded
 				player.SetPlayerActive(true); //Set our player to active
-			} else {
-				player.SetPlayerActive(false);  //Set our player to inactive
 			}
+
 
 			if (player.isActive) {
 				player.Update(deltatime);//Update our controls using a deltatime

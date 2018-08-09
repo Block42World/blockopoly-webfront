@@ -41,7 +41,6 @@ Player.prototype.SetPlayerActive = function(bool) {
 	if (this.isActive) {
 		//Show swap controls
 		$("#control-toggle-group").show();
-
 		this.SetControlType(this.controlType);
 	} else {
 		//Hide swap controls
@@ -58,6 +57,7 @@ Player.prototype.SetPlayerActive = function(bool) {
 
 Player.prototype.SetControlType = function(controlType) {
 	//Set our control type
+		console.log(this.cameraObject.position);
 	this.controlType = controlType;
 	switch (this.controlType) {
 		default:
@@ -84,6 +84,7 @@ Player.prototype.IncrementControlType = function() {
 	var tempControlType = this.controlType;
 	tempControlType = (tempControlType % 3) + 1; //Since our enum is in the value range of 1-3 we can simply modulo our number to get its value plus 1
 	this.SetControlType(tempControlType);
+
 };
 
 Player.prototype.DecrementControlType = function() {
@@ -139,6 +140,7 @@ Player.prototype.InitializeFPSControls = function() {
 //#region Update Controller
 
 Player.prototype.UpdateController = function(deltaTime) {
+	
 	if (!this.isActive) {
 		return;
 	}
@@ -150,12 +152,14 @@ Player.prototype.UpdateController = function(deltaTime) {
 			break;
 		case ControlTypeEnum.FPS:
 			this.fpsControl.update(deltaTime);
-			//Do nothing since we dont have it yet
 			break;
 		case ControlTypeEnum.Orbit:
 			this.orbitControls.update();
 			break;
 	}
+
+
+
 };
 
 //#endregion

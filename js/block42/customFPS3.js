@@ -3,15 +3,14 @@
 	this.camera = camera;
 	this.pointerLockControls = new THREE.PointerLockControls(camera);
 	this.pointerLockControls.enabled = false;
-	scene.add( this.pointerLockControls.getObject() );
+	
 
 	this.SetActive = function(isActive)
 	{
 		this.pointerLockControls.enabled = isActive;
-
+		this.pointerLockControls.reset(isActive);
 		if(isActive)
 		{
-			//this.pointerLockControls.reset();
 			var element = document.body;
 			element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 			element.requestPointerLock();
@@ -19,7 +18,6 @@
 	}
 
 	this.update = function(deltaTime) {
-
 		this.resetPlayer();
 		this.keyboardControls();
 		this.applyPhysics(deltaTime*1000);
@@ -69,11 +67,6 @@
 
 			if( !this.motion.airborne ) 
 			{
-				// look around
-				var sx = keysPressed[keys.UP] ? 0.03 : ( keysPressed[keys.DN] ? -0.03 : 0 );
-				var sy = keysPressed[keys.LT] ? 0.03 : ( keysPressed[keys.RT] ? -0.03 : 0 );
-				if( Math.abs( sx ) >= Math.abs( this.motion.spinning.x ) ) this.motion.spinning.x = sx;
-				if( Math.abs( sy ) >= Math.abs( this.motion.spinning.y ) ) this.motion.spinning.y = sy;
 				// move around
 				forward.set( Math.sin( this.motion.rotation.y ), 0, Math.cos( this.motion.rotation.y ) );
 				sideways.set( forward.z, 0, -forward.x );
@@ -102,52 +95,71 @@
 		var angles = new THREE.Vector2();
 		var displacement = new THREE.Vector3();
 		return function( dt ) {
-			var platform = scene.getObjectByName( "platform", true );
-			if( true ) {
 
-				timeLeft += dt;
-				// run several fixed-step iterations to approximate varying-step
-				dt = 5;
-				//console.log(timeLeft);
-				while( timeLeft >= dt ) {
-					var time = 0.3;
-					damping = 0.93;
-					gravity = 0.01;
-					tau = 2 * Math.PI;
-					raycaster.ray.origin.copy( this.motion.position );
-					raycaster.ray.origin.y += birdsEye;
-					var hits = raycaster.intersectObjects( [ scene ], true );
-					this.motion.airborne = true;
-					// are we above, or at most knee deep in, the platform?
-					if( ( hits.length > 0 ) && ( hits[0].face.normal.y > 0 ) ) {
-						var actualHeight = hits[0].distance - birdsEye;
-						// collision: stick to the surface if landing on it
-						if( ( this.motion.velocity.y <= 0 ) && ( Math.abs( actualHeight ) < kneeDeep ) ) {
-							this.motion.position.y -= actualHeight;
-							this.motion.velocity.y = 0;
-							this.motion.airborne = false;
-						}
+			timeLeft += dt;
+			// run several fixed-step iterations to approximate varying-step
+			dt = 5;
+			//console.log(timeLeft);
+			while( timeLeft >= dt ) {
+				var time = 0.3;
+				damping = 0.93;
+				gravity = 0.01;
+				tau = 2 * Math.PI;
+				raycaster.ray.origin.copy( this.motion.position );
+				raycaster.ray.origin.y += birdsEye;
+				var hits = raycaster.intersectObjects( [ scene ], true );
+				this.motion.airborne = true;
+				// are we above, or at most knee deep in, the platform?
+				if( ( hits.length > 0 ) && ( hits[0].face.normal.y > 0 ) ) {
+					var actualHeight = hits[0].distance - birdsEye;
+					// collision: stick to the surface if landing on it
+					if( ( this.motion.velocity.y <= 0 ) && ( Math.abs( actualHeight ) < kneeDeep ) ) {
+						this.motion.position.y -= actualHeight;
+						this.motion.velocity.y = 0;
+						this.motion.airborne = false;
 					}
-					if( this.motion.airborne ) this.motion.velocity.y -= gravity;
-					angles.copy( this.motion.spinning ).multiplyScalar( time );
-					if( !this.motion.airborne ) this.motion.spinning.multiplyScalar( damping );
-					displacement.copy( this.motion.velocity ).multiplyScalar( time );
-					if( !this.motion.airborne ) this.motion.velocity.multiplyScalar( damping );
-					this.motion.rotation.add( angles );
-					this.motion.position.add( displacement );
-					// limit the tilt at ±0.4 radians
-					this.motion.rotation.x = Math.max( -0.4, Math.min ( +0.4, this.motion.rotation.x ) );
-					// wrap horizontal rotation to 0...2π
-					this.motion.rotation.y += tau; this.motion.rotation.y %= tau;
-					timeLeft -= dt;
-					//console.log(this.motion.velocity);
 				}
+
+				/*
+					var dir = this.camera.localToWorld(this.motion.velocity);
+					dir.y = 0;
+					dir.normalize();
+
+					var raycaster2 = new THREE.Raycaster( this.motion.position, dir, 0, 5 );
+					//raycaster2.ray.origin.y -= 9;
+					var infrontofObject = raycaster2.intersectObjects( [ scene ] ).length > 0;
+					//console.log(controls.getObject());
+					if(infrontofObject)
+					{
+						this.motion.velocity.z = 0;
+						this.motion.velocity.x = 0;
+					}
+
+*/
+
+
+
+
+
+
+
+				if( this.motion.airborne ) this.motion.velocity.y -= gravity;
+				angles.copy( this.motion.spinning ).multiplyScalar( time );
+				if( !this.motion.airborne ) this.motion.spinning.multiplyScalar( damping );
+				displacement.copy( this.motion.velocity ).multiplyScalar( time );
+				if( !this.motion.airborne ) this.motion.velocity.multiplyScalar( damping );
+				this.motion.rotation.add( angles );
+				this.motion.position.add( displacement );
+				timeLeft -= dt;
+				//console.log(this.motion.velocity);
 			}
+			
 		};
 	})();
 
 	this.updateCamera = (function() {
 		return function() {
+		console.log(this.motion.position);
 			this.camera.position.copy( this.motion.position );
 			this.camera.position.y += 3.0;
 		};
