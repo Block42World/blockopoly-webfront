@@ -17,6 +17,7 @@ class Index {
 		document.getElementById("fly-control").change = () => {player.SetControlType(ControlTypeEnum.Flight)};
 		document.getElementById("fps-control").change = () => {player.SetControlType(ControlTypeEnum.FPS)};
 		document.getElementById("orbit-control").change = () => {player.SetControlType(ControlTypeEnum.Orbit)};
+		Index.initUI();
 	}
 
 	static initVox()
@@ -31,8 +32,27 @@ class Index {
 		document.getElementById("fly-control").change = () => {player.SetControlType(ControlTypeEnum.Flight)};
 		document.getElementById("fps-control").change = () => {player.SetControlType(ControlTypeEnum.FPS)};
 		document.getElementById("orbit-control").change = () => {player.SetControlType(ControlTypeEnum.Orbit)};
+
+
+		Index.initUI();
+	}
+
+
+	static initUI()
+	{
+		$('input[type="radio"]').keydown(function(e)
+		{
+			var arrowKeys = [37, 38, 39, 40];
+			if (arrowKeys.indexOf(e.which) !== -1)
+			{
+				$(this).blur();
+				return false;
+			}
+		});
 	}
 }
+
+
 
 function showElementById(id) {
   document.getElementById(id).style.display = "block";

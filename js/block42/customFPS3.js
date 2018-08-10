@@ -12,6 +12,9 @@
 	var velocity = new THREE.Vector3();
 	var direction = new THREE.Vector3();
 
+
+
+
 	this.SetActive = function(isActive)
 	{
 		this.pointerLockControls.enabled = isActive;
@@ -80,6 +83,12 @@
 			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
 			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
 		}
+
+
+		console.log(camera.position);
+
+
+
 	};
 
 	var onKeyDown = function ( event ) {
@@ -105,7 +114,7 @@
 				break;
 
 			case 32: // space
-				if ( canJump === true ) velocity.y += 50;
+				if ( canJump === true ) velocity.y += 10;
 				canJump = false;
 				break;
 		}
@@ -140,4 +149,28 @@
 
 	document.addEventListener( 'keydown', onKeyDown, false );
 	document.addEventListener( 'keyup', onKeyUp, false );
+			
+
+
+
+	var pointerlockchange = function ( event ) 
+	{
+	
+		var element = document.body;
+		if ( document.pointerLockElement === element 
+		|| document.mozPointerLockElement === element 
+		|| document.webkitPointerLockElement === element ) 
+		{
+		//when enter pointer-lock mode
+
+		} else {
+
+		//when exit pointer-lock mode, change to orbit-control mode
+			$("#orbit-control").prop("checked", true).trigger("click");;
+		}
+	};
+	// Hook pointer lock state change events
+	document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
 };

@@ -57,7 +57,6 @@ Player.prototype.SetPlayerActive = function(bool) {
 
 Player.prototype.SetControlType = function(controlType) {
 	//Set our control type
-		console.log(this.cameraObject.position);
 	this.controlType = controlType;
 	switch (this.controlType) {
 		default:

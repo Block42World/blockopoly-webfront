@@ -7,7 +7,6 @@ THREE.PointerLockControls = function ( camera ) {
 	var scope = this;
 	var myCamera = camera;
 	//camera.rotation.set( 0, 0, 0 );
-	console.log("sdfsd");
 	
 	var pitchObject = camera;
 
