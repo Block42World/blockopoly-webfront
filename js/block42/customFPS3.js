@@ -68,7 +68,7 @@
 			canJump = true;
 		}
 
-
+		//Raycaster for XZ 
 		var vel = new THREE.Vector3().copy(velocity);
 		var dir = camera.localToWorld(vel);
 		dir.y = 0;

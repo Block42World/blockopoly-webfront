@@ -3,6 +3,7 @@ class ModelBuilder
 
 	static buildFromVox(lands)
 	{
+	console.log("buildFromVox");
 		var citySizeX = 10;
 		var citySizeY = 10;
 		Index.worldLoaded = false;
@@ -32,7 +33,7 @@ class ModelBuilder
 
 	static build()
 	{
-
+	console.log("build");
 		if(typeof data  === 'undefined')
 		{
 		    var data = [];
@@ -63,8 +64,9 @@ class ModelBuilder
 		var LandId = 0;
 		var loadedLandCount = 0;
 		//4 lands every block
-		for (var xa = 0; xa < 2; xa++) {
-			for (var ya = 0; ya < 2; ya++) {
+		//for (var xa = 0; xa < 2; xa++) {
+			//for (var ya = 0; ya < 2; ya++) {
+			
 				//100 blocks
 				for (var xi = 0; xi < citySizeX; xi++) {
 					for (var yi = 0; yi < citySizeY; yi++) {
@@ -76,12 +78,13 @@ class ModelBuilder
 						}
 
 						var objPosition = new THREE.Vector3(
-							xi * 149 + xa * 63,
+							xi * 149,
 							0,
-							yi * 149 + ya * 63
+							yi * 149
 						);
-
+						
 						var fileName;
+						/*
 						if(Math.random()> 0.3){
 							fileName = "Land+4+sale";
 							data.push(new Land(xi * 149 + xa * 63, yi * 149 + ya * 63, 63, 63, false, true, "Land+4+sale"));
@@ -89,7 +92,9 @@ class ModelBuilder
 							fileName = "Apartment+combine";
 							data.push(new Land(xi * 149 + xa * 63, yi * 149 + ya * 63, 63, 63, false, true, "Apartment+combine"));
 						}
-					
+						*/
+						fileName = "Land+4+sale_Big";
+						data.push(new Land(objPosition.x, objPosition.z, 126, 126, false, true, fileName));
 						ObjLoaderUtils.SpawnObjAtPosition("assets/"+fileName+".obj", objPosition, function(object) {
 							scene.add(object);
 							//console.log(loadedLandCount + "/400 loaded");
@@ -100,12 +105,12 @@ class ModelBuilder
 						LandId++;
 					}
 				}
-			}
-		}
+			//}
+		//}
 
 
 
-
+		/*
 		//central building
 		//Shibuya
 		var objPosition = new THREE.Vector3(
@@ -178,12 +183,12 @@ class ModelBuilder
 		ObjLoaderUtils.SpawnObjAtPosition("assets/ugly+building+2.obj", objPosition, function(object){
 				scene.add(object);
 		});
-
+		*/
 	  
-	  	//console.log(data);
-		//var myJSON = JSON.stringify(data);
-		//console.log(myJSON);
-		//download(myJSON, "Lands-auto-generated.json", JSON);
+	  	console.log(data);
+		var myJSON = JSON.stringify(data);
+		console.log(myJSON);
+		download(myJSON, "Lands-auto-generated.json", JSON);
 		
 	}
 

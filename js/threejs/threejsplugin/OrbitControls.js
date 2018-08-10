@@ -101,6 +101,20 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	};
 
+	this.getSphericalRadius = function () {
+
+		return spherical.radius;
+
+	};
+
+	this.setSphericalRadius = function (newRadius) {
+
+		spherical.radius = newRadius;
+
+	};
+
+
+
 	this.saveState = function () {
 
 		scope.target0.copy( scope.target );
@@ -268,7 +282,12 @@ THREE.OrbitControls = function ( object, domElement ) {
 		}
 
 	};
-
+	
+	this.getDolly = function() {
+		//console.log(scale);
+		//return scale;
+	};
+	
 	//
 	// internals
 	//
@@ -304,6 +323,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	var dollyStart = new THREE.Vector2();
 	var dollyEnd = new THREE.Vector2();
 	var dollyDelta = new THREE.Vector2();
+
 
 	function getAutoRotationAngle() {
 
@@ -419,7 +439,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 		if ( scope.object.isPerspectiveCamera ) {
 
 			scale /= dollyScale;
-			
+
 		} else if ( scope.object.isOrthographicCamera ) {
 		
 			scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom * dollyScale ) );
@@ -438,7 +458,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	function dollyOut( dollyScale ) {
 
 		if ( scope.object.isPerspectiveCamera ) {
-
+			
 			scale *= dollyScale;
 
 		} else if ( scope.object.isOrthographicCamera ) {

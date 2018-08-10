@@ -8,14 +8,15 @@ if(typeof fileName === "undefined")
 }
 
 
-
 var world;
 var render;
 var physics;
 var player;
 var isPlaying = false;
 var myVoxelData;
-	
+var orbitControls;
+var threeJsPlayer;
+
 class Editor
 {
 	static init()
@@ -35,9 +36,6 @@ class Editor
 		render.setWorld( world, 100 );
 		render.setPerspective( 60, 0.01, 200 );
 	
-		// Create physics simulator
-		//physics = new Physics();
-		//physics.setWorld( world );
 	
 		// Create new local player
 		player = new Player();
@@ -45,13 +43,13 @@ class Editor
 		player.setInputCanvas( "renderSurface" );
 		//player.setMaterialSelector( "materialSelector" );
 
+		threeJsPlayer = new THREE.Object3D();
+		orbitControls = new THREE.OrbitControls(threeJsPlayer);
+
 		// Render loop			
 		setInterval( function()
 		{
 			var time = new Date().getTime() / 1000.0;
-		
-			// Simulate physics
-			//physics.simulate();
 		
 			// Update local player
 			player.update();
@@ -60,7 +58,9 @@ class Editor
 			render.buildChunks( 1 );
 		
 			// Draw world
-			render.setCamera( player.getEyePos().toArray(), player.angles );
+			//render.setCamera( player.getEyePos().toArray(), player.angles );
+			render.setCamera( threeJsPlayer.position.toArray(), threeJsPlayer.rotation.toArray());//[-0.4439981878515318, 0.5049579584189791, 0] );
+			console.log(threeJsPlayer.position);
 			render.draw();
 		
 			while ( new Date().getTime() / 1000 - time < 0.016 );

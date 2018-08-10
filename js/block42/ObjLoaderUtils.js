@@ -50,7 +50,8 @@ class ObjLoaderUtils {
 	static SpawnObjFromVox(land, onLoad){
 		ModelBuilder.loadingCount++;
 		var objPosition = { x:land._x, y:0, z:land._y };
-		if(land._description == "Land+4+sale" || land._description == "Apartment+combine")
+		console.log(land);
+		if(land._description == "Land+4+sale_Big" || land._description == "Apartment+combine")
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land,onLoad);
 		else if(land._description.endsWith('_2')){
 			objPosition.y=126;

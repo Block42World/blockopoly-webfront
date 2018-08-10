@@ -17,8 +17,16 @@ function Player(cameraObject, controllerType) {
 	this.orbitControls;
 
 	this.isActive = false;
-
+	
 	this.Listen();
+
+
+	//for lerp
+	this.isLerping = false;
+	this.myTargetCameraPos = new THREE.Vector3();
+	this.lerpTargetPos = new THREE.Vector3();
+	this.lerpSpeed = 1.2;
+
 }
 
 //#region Main Methods
@@ -29,9 +37,44 @@ Player.prototype.Initialize = function() {
 
 Player.prototype.Update = function(deltatime) {
 	this.UpdateController(deltatime);
+	
+	this.UpdateLerp(deltatime);
+
 };
 
 //#endregion
+
+Player.prototype.UpdateLerp = function(deltatime) 
+{
+	if(this.isLerping)
+	{
+		//lerp camera position and target position
+		if(this.orbitControls.target.distanceTo(this.lerpTargetPos) > 1)
+		{
+			this.cameraObject.position.lerp(this.myTargetCameraPos, this.lerpSpeed*deltatime);
+			this.orbitControls.target.lerp(this.lerpTargetPos, this.lerpSpeed*deltatime);
+		}
+
+		//lerp dolly 
+		var offset = Math.abs(this.orbitControls.getSphericalRadius() -400);
+
+		if(Math.abs(this.orbitControls.getSphericalRadius() -400)>1)
+		{
+			if(this.orbitControls.getSphericalRadius() >400)
+				this.orbitControls.dollySet(1-(1+offset*0.02)*deltatime);
+			else
+				this.orbitControls.dollySet(1+(1+offset*0.02)*deltatime);
+		}
+
+		this.orbitControls.update();
+
+
+		if(this.orbitControls.target.distanceTo(this.lerpTargetPos) < 2 && Math.abs(this.orbitControls.getSphericalRadius() -400)<10)
+		{
+			this.isLerping = false;
+		}
+	}
+}
 
 //#region Input
 
@@ -153,7 +196,7 @@ Player.prototype.UpdateController = function(deltaTime) {
 			this.fpsControl.update(deltaTime);
 			break;
 		case ControlTypeEnum.Orbit:
-			this.orbitControls.update();
+			//this.orbitControls.update();
 			break;
 	}
 
@@ -176,12 +219,13 @@ Player.prototype.GetLandsAroundPlayer = function() {
 
 Player.prototype.Listen = function() {
 	container.addEventListener(
-		"dblclick",
+		"click",//"dblclick",
 		function(e) {
 			if (!this.isActive) {return;}
 			console.log("click");
+
 			//this is the highlighted obj
-			console.log(outlinePass.selectedObjects[0].userData);
+			//console.log(outlinePass.selectedObjects[0].userData);
 			ShowInfoBox(outlinePass.selectedObjects[0].userData.land);
 
 			//Set our camera to orbit camera for preview
@@ -193,7 +237,7 @@ Player.prototype.Listen = function() {
 				new THREE.Vector3(45, 45, 45),
 				20
 			);
-			console.log(camera.position);
+			
 		}.bind(this),
 		false
 	);
@@ -241,6 +285,7 @@ Player.prototype.FocusCameraOnPosition = function(
 	targetCameraPos.add(position);
 	targetCameraPos.addScaledVector(directionVector, distance);
 
+	/*
 	switch (this.controlType) {
 		default:
 		case ControlTypeEnum.Flight:
@@ -248,6 +293,7 @@ Player.prototype.FocusCameraOnPosition = function(
 			var vector = new THREE.Vector3().copy(eulerRotation);
 			this.flightControls.lookDirectionSet(vector.negate());
 			this.flightControls.update(0.0000001);
+			
 			break;
 
 		case ControlTypeEnum.FPS:
@@ -257,10 +303,20 @@ Player.prototype.FocusCameraOnPosition = function(
 		case ControlTypeEnum.Orbit:
 			this.orbitControls.dollySet(distance);
 			this.orbitControls.target.copy(position);
+			//console.log(targetCameraPos);
 			this.cameraObject.position.copy(targetCameraPos);
 			this.orbitControls.update();
+			console.log(this.orbitControls.target);
 			break;
 	}
+	*/
+	
+	this.isLerping = true;
+	this.myTargetCameraPos.copy(targetCameraPos);
+	this.lerpTargetPos.copy(position);
+
+
+	
 };
 
 //#endregion
