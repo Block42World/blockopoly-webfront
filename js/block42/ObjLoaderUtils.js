@@ -85,8 +85,8 @@ class ObjLoaderUtils {
 			//console.log(points);
 			for (var i = voxelData.voxels.length - 1; i >= 0; i--){
 				var v = voxelData.voxels[i];
-				points[(size.x -v.x) + v.y *size.x * size.z + v.z*size.x ] = v.colorIndex;
-				vectors[v.x][v.y][v.z] = v;
+				points[(size.x -v.x-1) + v.y *size.x * size.z + v.z*size.x ] = v.colorIndex;
+				vectors[(size.x -v.x)-1][v.y][v.z] = v;
 			}
 
 			//console.log([size.x, size.y, size.z]);

@@ -9,6 +9,7 @@
 	var moveLeft = false;
 	var moveRight = false;
 	var canJump = false;
+	var collisionRadius = 0.1;// NEVER set this to bigger than 0.5, otherwise player will go though walls. Recommend : 0.1
 
 	var velocity = new THREE.Vector3();
 
@@ -26,19 +27,21 @@
 
 	this.update = function(deltaTime) 
 	{
-
-		velocity.y -= 9.8 * 5.0 * deltaTime; // 100.0 = mass
-
 		//shot a ray right down from where player position
-		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 400 );
+		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 1000 );
 		raycaster.ray.origin.copy(this.pointerLockControls.getObject().position);
 		//raycaster.ray.origin.add(velocity * deltaTime );
 		//console.log(raycaster.ray.origin);
-		raycaster.ray.origin.y = 300;
+		raycaster.ray.origin.y += 3;
 
 		var intersections = raycaster.intersectObjects( [scene], true );
 		var onObject = intersections.length > 0;
 		
+		//to make sure player won't falling more then 1 block every frame
+		if((velocity.y - 9.8 * 5.0 * deltaTime)* deltaTime > -1)
+		{
+			velocity.y -= 9.8 * 5.0 * deltaTime;
+		}
 
 		velocity.x = 0;
 		velocity.z = 0;
@@ -60,15 +63,35 @@
 			velocity.z += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.pointerLockControls.getYawAngle());
 		}
 
+		//normalise the XZ only
+		var velY = velocity.y;
+		velocity.y = 0;
+		velocity = velocity.normalize();
 		velocity.x *= speed;
 		velocity.z *= speed;
+		velocity.y = velY;
+
+
+		if(this.pointerLockControls.getObject().position.y < 1)
+		{
+			velocity.y = Math.max( 0, velocity.y );
+			this.pointerLockControls.getObject().position.y = 1;
+		}
 
 		//if player is not on map, apply velocity and end update
 		if(!onObject)
 		{
-			this.pointerLockControls.getObject().translateY( velocity.y * deltaTime );
-			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
-			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
+			//shoot the ray from sky, if it hit anything, teleport to there.
+			raycaster.ray.origin.y = 200;
+			intersections = raycaster.intersectObjects( [scene], true );
+			if(intersections.length > 0)
+			{
+				this.pointerLockControls.getObject().position.y = intersections[0].point.y +5;
+			}
+			else
+			this.pointerLockControls.getObject().translateY( velocity.y * deltaTime);
+			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
+			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
 			console.log("not on map");
 			return;
 		}
@@ -76,54 +99,73 @@
 		var groundUserData = intersections[0].object.userData;
 		var size = groundUserData.size;
 
-		var pos = {x:Math.floor(this.pointerLockControls.getObject().position.x + velocity.x * deltaTime )
-				  ,y:Math.floor(this.pointerLockControls.getObject().position.y)
-				  ,z:Math.floor(this.pointerLockControls.getObject().position.z + velocity.z * deltaTime )};
 		//console.log(intersections[0]);
-		pos.x -= groundUserData.position.x;
-		pos.y -= groundUserData.position.z+2;
-		pos.z -= groundUserData.position.y+1;
+		var lastPosX = this.pointerLockControls.getObject().position.x - groundUserData.position.x;
+		var lastPosY = this.pointerLockControls.getObject().position.y - groundUserData.position.z-2;
+		var lastPosZ = this.pointerLockControls.getObject().position.z - groundUserData.position.y;
 
-		//if player is not on current vox field, apply XZ velocity and end update
-		if(pos.x >= groundUserData.size.x || pos.z >= groundUserData.size.y  ||pos.x < 0 || pos.z < 0)
+		var newPosX = lastPosX + velocity.x * deltaTime;
+		var newposY = lastPosY + velocity.y * deltaTime;
+		var newposZ = lastPosZ + velocity.z * deltaTime;
+
+
+
+
+		//WARNING: since MagicaVoxel is Z-UP, so the the order is X, Z, Y 
+		var isAir = function(x, z, y)
 		{
-			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
-			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
+			x = Math.floor(x);
+			y = Math.floor(y);
+			z = Math.floor(z);
+			return 	typeof groundUserData.vectors[x] == "undefined" ||
+					typeof groundUserData.vectors[x][z] == "undefined" ||
+			   		typeof groundUserData.vectors[x][z][y] == "undefined";
+		}
+
+		//if player standing in a block, rise up.
+		if(!isAir(lastPosX, lastPosZ, lastPosY))
+		{
+			this.pointerLockControls.getObject().position.y ++;
+			console.log("the Dark Night Rise");
 			return;
 		}
 
-		//if the block below player is not empty, stop falling
-		if(typeof groundUserData.vectors[pos.x][pos.z] == "undefined" ||
-		   typeof groundUserData.vectors[pos.x][pos.z][pos.y-1] == "undefined" || 
-				  groundUserData.vectors[pos.x][pos.z][pos.y-1].colorIndex==0)
+		//if player is not on current vox field, apply XZ velocity and end update
+		if(newPosX >= groundUserData.size.x || newposZ >= groundUserData.size.y  ||newPosX < 0 || newposZ < 0)
 		{
-			console.log("not on ground");
+			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
+			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
+			return;
 		}
-		else
+
+
+
+
+		//if the block below player is not empty, stop falling
+		if(!isAir(lastPosX, lastPosZ, lastPosY-1) && !isAir(newPosX, newposZ, lastPosY-1))
 		{
 			velocity.y = Math.max( 0, velocity.y );
 			canJump = true;
-		}
-		this.pointerLockControls.getObject().translateY( velocity.y * deltaTime );
+		}else{console.log("not on ground" + velocity.y);}
+
 
 		//if the block on player is not empty, player can go
-		if(typeof groundUserData.vectors[pos.x][pos.z] == "undefined" ||
-		   typeof groundUserData.vectors[pos.x][pos.z][pos.y] == "undefined" || 
-				  groundUserData.vectors[pos.x][pos.z][pos.y].colorIndex==0)
+		if(isAir(lastPosX+collisionRadius, newposZ+collisionRadius, newposY) && isAir(lastPosX-collisionRadius, newposZ-collisionRadius, newposY))
 		{
-			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
-			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
+			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
 		}
-		else
+
+		if(isAir(newPosX+collisionRadius, lastPosZ+collisionRadius, newposY) && isAir(newPosX-collisionRadius, lastPosZ-collisionRadius, newposY))
 		{
-			console.log(groundUserData.vectors[pos.x][pos.z][pos.y]);
+			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
 		}
+
+		this.pointerLockControls.getObject().translateY( velocity.y * deltaTime);
 	};
 
-	var isAir = function(x, y, z)
-	{
-		
-	}
+
+
+
 
 	this.isBlock = function(x, y, z)
 	{

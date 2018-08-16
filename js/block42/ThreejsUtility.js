@@ -27,7 +27,7 @@ class ThreejsUtility {
 		camera = new THREE.PerspectiveCamera(
 			40,
 			window.innerWidth / window.innerHeight,
-			1,
+			0.1,
 			2000
 		);
 		camera.position.set(145, 716, 1050); // Set our position to look down on environment
