@@ -3,7 +3,7 @@ class ModelBuilder
 
 	static buildFromVox(lands)
 	{
-	console.log("buildFromVox");
+
 		var citySizeX = 10;
 		var citySizeY = 10;
 		Index.worldLoaded = false;
@@ -185,94 +185,57 @@ class ModelBuilder
 		});
 		*/
 	  
-	  	console.log(data);
-		var myJSON = JSON.stringify(data);
-		console.log(myJSON);
-		download(myJSON, "Lands-auto-generated.json", JSON);
+
 		
 	}
 
 
 	static buildStreet(citySizeX, citySizeY)
 	{
+		var data = [];
 		console.log("buildStreet"+citySizeX);
 		//121 street
-		var hStPoslist = [];
-		var hStId = 0;
 
 		for (var xi = 0; xi < citySizeX; xi++) {
 			for (var yi = 0; yi < citySizeY + 1; yi++) {
-			
-			//record position
-			var pos = [xi * 149 + 31.5, yi * 149 - 43];
-			hStPoslist.push(pos);
 
-			var objPosition = new THREE.Vector3(
-				hStPoslist[hStId][0],
-				-1,
-				hStPoslist[hStId][1]
-			);
-
-			ObjLoaderUtils.SpawnObjAtPosition(
-				"assets/Road.obj",
-				objPosition,
-				function(object) {
-				scene.add(object);
-				}
-			);
-			hStId++;
+				ObjLoaderUtils.SpawnObjFromVox2(
+					"assets/Road.vox",
+					{x:xi * 149, y:yi * 149-23, z:0},{},
+					(number) => {if (number == 0) {Index.worldLoaded = true;}
+					//
+				});
+				//data.push({x:objPosition.x, y:objPosition.z, w:23, h:126, owned:false, sale:false, description:"Road"});
 			}
 		}
 
-		var vStPoslist = [];
-		var vStId = 0;
 
 		//121 street
 
-			for (var xi = 0; xi < citySizeX + 1; xi++) {
-				for (var yi = 0; yi < citySizeY; yi++) {
-				//record position
-				var pos = [xi * 149 - 43, yi * 149 + 31.5];
-				vStPoslist.push(pos);
+		for (var xi = 0; xi < citySizeX + 1; xi++) {
+			for (var yi = 0; yi < citySizeY; yi++) {
 
-				var objPosition = new THREE.Vector3(
-					vStPoslist[vStId][0],
-					-1,
-					vStPoslist[vStId][1]
-				);
-
-				ObjLoaderUtils.SpawnObjAtPosition("assets/Road.obj",objPosition,function(object) {
-					object.rotateY(Math.PI / 2);
-					scene.add(object);
-					}
-				);
-				vStId++;
-				}
+				ObjLoaderUtils.SpawnObjFromVox2(
+					"assets/RoadY.vox",
+					{x:xi * 149 - 23, y:yi * 149, z:0},{},
+					(number) => {if (number == 0) {Index.worldLoaded = true;}});
 			}
+		}
 
-			var cPoslist = [];
-			var cId = 0;
-			for (var xi = 0; xi < citySizeX + 1; xi++) {
-				for (var yi = 0; yi < citySizeY + 1; yi++) {
-				//record position
-				var pos = [xi * 149 - 43, yi * 149 - 43];
-				cPoslist.push(pos);
 
-				var objPosition = new THREE.Vector3(
-					cPoslist[cId][0],
-					-1,
-					cPoslist[cId][1]
-				);
+		for (var xi = 0; xi < citySizeX + 1; xi++) {
+			for (var yi = 0; yi < citySizeY + 1; yi++) {
 
-				ObjLoaderUtils.SpawnObjAtPosition("assets/Road2.obj",objPosition,function(object) {
 
-					scene.add(object);
-					}
-				);
-				cId++;
-				}
+				ObjLoaderUtils.SpawnObjFromVox2(
+					"assets/Road2.vox",
+					{x:xi * 149 - 23, y:yi * 149 - 23, z:0},{},
+					(number) => {if (number == 0) {Index.worldLoaded = true;}});
 			}
+		}
+		
 	}
+	
 }
 
 

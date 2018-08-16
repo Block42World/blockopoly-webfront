@@ -219,8 +219,12 @@ Player.prototype.update = function()
 		{
 			this.angles[0] += ( this.targetPitch - this.angles[0] ) * 30 * delta;
 			this.angles[1] += ( this.targetYaw - this.angles[1] ) * 30 * delta;
-			if ( this.angles[0] < -Math.PI/2 ) this.angles[0] = -Math.PI/2;
-			if ( this.angles[0] > Math.PI/2 ) this.angles[0] = Math.PI/2;
+			
+			if ( this.angles[0] < -Math.PI/2 ) 
+				this.angles[0] = -Math.PI/2;
+
+			if ( this.angles[0] > Math.PI/2 ) 
+				this.angles[0] = Math.PI/2;
 		}
 
 		

@@ -49,12 +49,16 @@ class ObjLoaderUtils {
 
 	static SpawnObjFromVox(land, onLoad){
 		ModelBuilder.loadingCount++;
-		var objPosition = { x:land._x, y:0, z:land._y };
-		console.log(land);
-		if(land._description == "Land+4+sale_Big" || land._description == "Apartment+combine")
+		var objPosition = { x:land._x, y:land._y, z:0 };
+		//console.log(land);
+		if(land._description == "Land+4+sale_Big"
+		|| land._description == "Road"
+		|| land._description == "Road2"
+		|| land._description == "RoadY"
+		)
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +".vox", objPosition, land,onLoad);
 		else if(land._description.endsWith('_2')){
-			objPosition.y=126;
+			objPosition.z=126;
 			ObjLoaderUtils.SpawnObjFromVox2('./assets/'+land._description +"_x"+land._x+"_y"+land._y+".vox", objPosition, land,onLoad);
 		}
 		else
@@ -65,16 +69,24 @@ class ObjLoaderUtils {
 	
 	static SpawnObjFromVox2(objUrl, position, land,onLoad)
 	{
+		
 		var parser = new vox.Parser();
 		parser.parse(objUrl).then(function(voxelData) {
 
-
 			var size = voxelData.size;
 			var points = new Int32Array(size.x * size.y * size.z); 
+			var vectors = new Array(size.x);
+			for (var i = 0; i < size.x; i++) {
+			 	vectors[i] = new Array(size.y);
+			 	for (var j = 0; j < size.y; j++) {
+			 		vectors[i][j] = new Array(size.z);
+			 	}
+			} 
 			//console.log(points);
 			for (var i = voxelData.voxels.length - 1; i >= 0; i--){
 				var v = voxelData.voxels[i];
-				points[(size.x -v.x) + v.y *size.x * size.z + v.z*size.y ] = v.colorIndex;
+				points[(size.x -v.x) + v.y *size.x * size.z + v.z*size.x ] = v.colorIndex;
+				vectors[v.x][v.y][v.z] = v;
 			}
 
 			//console.log([size.x, size.y, size.z]);
@@ -116,11 +128,18 @@ class ObjLoaderUtils {
 			surfacemesh.doubleSided = true;
 
 			scene.add( surfacemesh );
-			surfacemesh.position.set( land._x-31.5, position.y, land._y-31.5 );
+			surfacemesh.position.set( position.x, position.z, position.y);
 			surfacemesh.userData.land = land;
+			land.vectors = vectors;
+			surfacemesh.userData.points = points;
+			surfacemesh.userData.vectors = vectors;
+			surfacemesh.userData.size = voxelData.size;
+			surfacemesh.userData.position = position;
+			surfacemesh.userData.name = objUrl;
 			ModelBuilder.loadingCount--;
 
-
+			if(ModelBuilder.loadingCount % 50 == 0)
+				console.log(ModelBuilder.loadingCount);
 			/*
 			geometry.computeBoundingBox();
 			geometry.computeBoundingSphere();

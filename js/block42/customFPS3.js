@@ -3,6 +3,7 @@
 	this.camera = camera;
 	this.pointerLockControls = new THREE.PointerLockControls(camera);
 	this.pointerLockControls.enabled = false;
+	var speed = 10;
 	var moveForward = false;
 	var moveBackward = false;
 	var moveLeft = false;
@@ -10,10 +11,6 @@
 	var canJump = false;
 
 	var velocity = new THREE.Vector3();
-	var direction = new THREE.Vector3();
-
-
-
 
 	this.SetActive = function(isActive)
 	{
@@ -27,72 +24,125 @@
 		}
 	}
 
-	this.update = function(deltaTime) {
-
-		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 3 );
-		raycaster.ray.origin.copy( this.pointerLockControls.getObject().position );
-		//raycaster.ray.origin.y -= 10;
-
-		var intersections = raycaster.intersectObjects( [scene], true );
-
-		var onObject = intersections.length > 0;
-		
+	this.update = function(deltaTime) 
+	{
 
 		velocity.y -= 9.8 * 5.0 * deltaTime; // 100.0 = mass
 
-		direction.z = Number( moveForward ) - Number( moveBackward );
-		direction.x = Number( moveLeft ) - Number( moveRight );
-		direction.normalize(); // this ensures consistent movements in all directions
+		//shot a ray right down from where player position
+		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 400 );
+		raycaster.ray.origin.copy(this.pointerLockControls.getObject().position);
+		//raycaster.ray.origin.add(velocity * deltaTime );
+		//console.log(raycaster.ray.origin);
+		raycaster.ray.origin.y = 300;
 
-		if ( moveForward || moveBackward ) 
-			velocity.z = -direction.z * 1000.0 * deltaTime;
+		var intersections = raycaster.intersectObjects( [scene], true );
+		var onObject = intersections.length > 0;
+		
+
+		velocity.x = 0;
+		velocity.z = 0;
+
+		if (moveBackward ) {
+			velocity.x += Math.cos( Math.PI / 2 - this.pointerLockControls.getYawAngle());
+			velocity.z += Math.sin( Math.PI / 2 - this.pointerLockControls.getYawAngle());
+		}
+		if (moveForward) {
+			velocity.x += Math.cos( Math.PI + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+			velocity.z += Math.sin( Math.PI + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+		}
+		if (moveLeft) {
+			velocity.x += Math.cos( Math.PI / 2 + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+			velocity.z += Math.sin( Math.PI / 2 + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+		}
+		if (moveRight) {
+			velocity.x += Math.cos( -Math.PI / 2 + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+			velocity.z += Math.sin( -Math.PI / 2 + Math.PI / 2 - this.pointerLockControls.getYawAngle());
+		}
+
+		velocity.x *= speed;
+		velocity.z *= speed;
+
+		//if player is not on map, apply velocity and end update
+		if(!onObject)
+		{
+			this.pointerLockControls.getObject().translateY( velocity.y * deltaTime );
+			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
+			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
+			console.log("not on map");
+			return;
+		}
+
+		var groundUserData = intersections[0].object.userData;
+		var size = groundUserData.size;
+
+		var pos = {x:Math.floor(this.pointerLockControls.getObject().position.x + velocity.x * deltaTime )
+				  ,y:Math.floor(this.pointerLockControls.getObject().position.y)
+				  ,z:Math.floor(this.pointerLockControls.getObject().position.z + velocity.z * deltaTime )};
+		//console.log(intersections[0]);
+		pos.x -= groundUserData.position.x;
+		pos.y -= groundUserData.position.z+2;
+		pos.z -= groundUserData.position.y+1;
+
+		//if player is not on current vox field, apply XZ velocity and end update
+		if(pos.x >= groundUserData.size.x || pos.z >= groundUserData.size.y  ||pos.x < 0 || pos.z < 0)
+		{
+			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
+			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
+			return;
+		}
+
+		//if the block below player is not empty, stop falling
+		if(typeof groundUserData.vectors[pos.x][pos.z] == "undefined" ||
+		   typeof groundUserData.vectors[pos.x][pos.z][pos.y-1] == "undefined" || 
+				  groundUserData.vectors[pos.x][pos.z][pos.y-1].colorIndex==0)
+		{
+			console.log("not on ground");
+		}
 		else
-			velocity.z = 0;
-
-		if ( moveLeft || moveRight ) 
-			velocity.x = -direction.x * 1000.0 * deltaTime;
-		else
-			velocity.x = 0;
-
-		if ( onObject === true ) {
+		{
 			velocity.y = Math.max( 0, velocity.y );
 			canJump = true;
 		}
-
 		this.pointerLockControls.getObject().translateY( velocity.y * deltaTime );
-	
 
-		if ( this.pointerLockControls.getObject().position.y < 0 ) {
-			velocity.y = 0;
-			this.pointerLockControls.getObject().position.y = 0;
-			canJump = true;
-		}
-
-		//Raycaster for XZ 
-		var vel = new THREE.Vector3().copy(velocity);
-		var dir = camera.localToWorld(vel);
-		dir.y = 0;
-		dir.normalize();
-		var pos = new THREE.Vector3().copy(this.pointerLockControls.getObject().position);
-		var raycaster2 = new THREE.Raycaster(pos, dir, 0, 5 );
-		raycaster2.ray.origin.y -= 2.5;
-		var infrontofObject = raycaster2.intersectObjects( [scene], true ).length > 0;
-		//console.log(infrontofObject);
-		if(!infrontofObject)
+		//if the block on player is not empty, player can go
+		if(typeof groundUserData.vectors[pos.x][pos.z] == "undefined" ||
+		   typeof groundUserData.vectors[pos.x][pos.z][pos.y] == "undefined" || 
+				  groundUserData.vectors[pos.x][pos.z][pos.y].colorIndex==0)
 		{
 			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime );
 			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime );
 		}
-
-
-		console.log(camera.position);
-
-
-
+		else
+		{
+			console.log(groundUserData.vectors[pos.x][pos.z][pos.y]);
+		}
 	};
 
-	var onKeyDown = function ( event ) {
-		switch ( event.keyCode ) {
+	var isAir = function(x, y, z)
+	{
+		
+	}
+
+	this.isBlock = function(x, y, z)
+	{
+		for (var i = 0; i < Land.lands.length; i++) 
+		{
+			var land = Land.lands[i];
+			if(	   land._x<=x && land._x+land._w >=x 
+				&& land._y<=z && land._y+land._h >=z )
+			{
+				return land.vectors[x][y][z].colorIndex != 0;
+			}
+		}
+		return false;
+	}
+
+	var onKeyDown = function ( event )
+	{
+		switch ( event.keyCode ) 
+		{
 			case 38: // up
 			case 87: // w
 				moveForward = true;
@@ -142,9 +192,7 @@
 			case 68: // d
 				moveRight = false;
 				break;
-
 		}
-
 	};
 
 	document.addEventListener( 'keydown', onKeyDown, false );
@@ -173,4 +221,5 @@
 	document.addEventListener( 'pointerlockchange', pointerlockchange, false );
 	document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
 	document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+
 };

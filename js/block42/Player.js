@@ -56,14 +56,14 @@ Player.prototype.UpdateLerp = function(deltatime)
 		}
 
 		//lerp dolly 
-		var offset = Math.abs(this.orbitControls.getSphericalRadius() -400);
+		var offset =1+ Math.abs(this.orbitControls.getSphericalRadius() -400)*0.02;
 
 		if(Math.abs(this.orbitControls.getSphericalRadius() -400)>1)
 		{
 			if(this.orbitControls.getSphericalRadius() >400)
-				this.orbitControls.dollySet(1-(1+offset*0.02)*deltatime);
+				this.orbitControls.dollySet(1-offset*deltatime);
 			else
-				this.orbitControls.dollySet(1+(1+offset*0.02)*deltatime);
+				this.orbitControls.dollySet(1+offset*deltatime);
 		}
 
 		this.orbitControls.update();
@@ -72,6 +72,7 @@ Player.prototype.UpdateLerp = function(deltatime)
 		if(this.orbitControls.target.distanceTo(this.lerpTargetPos) < 2 && Math.abs(this.orbitControls.getSphericalRadius() -400)<10)
 		{
 			this.isLerping = false;
+			$("#control-toggle-group").show();
 		}
 	}
 }
@@ -314,6 +315,8 @@ Player.prototype.FocusCameraOnPosition = function(
 	this.isLerping = true;
 	this.myTargetCameraPos.copy(targetCameraPos);
 	this.lerpTargetPos.copy(position);
+
+	$("#control-toggle-group").hide();
 
 
 	

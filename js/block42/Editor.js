@@ -43,8 +43,8 @@ class Editor
 		player.setInputCanvas( "renderSurface" );
 		//player.setMaterialSelector( "materialSelector" );
 
-		threeJsPlayer = new THREE.Object3D();
-		orbitControls = new THREE.OrbitControls(threeJsPlayer);
+		//threeJsPlayer = new THREE.Object3D();
+		//orbitControls = new THREE.OrbitControls(threeJsPlayer);
 
 		// Render loop			
 		setInterval( function()
@@ -58,9 +58,9 @@ class Editor
 			render.buildChunks( 1 );
 		
 			// Draw world
-			//render.setCamera( player.getEyePos().toArray(), player.angles );
-			render.setCamera( threeJsPlayer.position.toArray(), threeJsPlayer.rotation.toArray());//[-0.4439981878515318, 0.5049579584189791, 0] );
-			console.log(threeJsPlayer.position);
+			render.setCamera( player.getEyePos().toArray(), player.angles );
+			//render.setCamera( threeJsPlayer.position.toArray(), threeJsPlayer.rotation.toArray());//[-0.4439981878515318, 0.5049579584189791, 0] );
+			//console.log(threeJsPlayer.position);
 			render.draw();
 		
 			while ( new Date().getTime() / 1000 - time < 0.016 );

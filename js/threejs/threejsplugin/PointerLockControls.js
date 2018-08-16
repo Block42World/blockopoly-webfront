@@ -10,9 +10,10 @@ THREE.PointerLockControls = function ( camera ) {
 	
 	var pitchObject = camera;
 
+	var rootObject = new THREE.Object3D();
 	var yawObject = new THREE.Object3D();
-
-	scene.add( yawObject);
+	rootObject.add(yawObject);
+	scene.add( rootObject);
 
 	var prevPos = new THREE.Vector3();
 	var prevRot = new THREE.Euler();
@@ -54,8 +55,9 @@ THREE.PointerLockControls = function ( camera ) {
 
 			pitchObject.rotation.set( 0, 0, 0 );
 			yawObject.rotation.set(   0, 0, 0 );
+
 			pitchObject.position.set( 0, 0, 0 );
-			yawObject.position.set(   0, 9, 0 );
+			rootObject.position.set(   500, 90, 500 );
 
 
 		}
@@ -72,7 +74,12 @@ THREE.PointerLockControls = function ( camera ) {
 
 	this.getObject = function () 
 	{
-		return yawObject;
+		return rootObject;
+	};
+
+	this.getYawAngle = function () 
+	{
+		return yawObject.rotation.y;
 	};
 
 	this.getDirection = function() 
