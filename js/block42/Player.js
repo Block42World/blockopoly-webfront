@@ -43,11 +43,12 @@ Player.prototype.Update = function(deltatime) {
 };
 
 //#endregion
-
+//for left click focus
 Player.prototype.UpdateLerp = function(deltatime) 
 {
 	if(this.isLerping)
 	{
+
 		//lerp camera position and target position
 		if(this.orbitControls.target.distanceTo(this.lerpTargetPos) > 1)
 		{
@@ -65,13 +66,13 @@ Player.prototype.UpdateLerp = function(deltatime)
 			else
 				this.orbitControls.dollySet(1+offset*deltatime);
 		}
-
+		this.orbitControls.enabled = false;
 		this.orbitControls.update();
-
 
 		if(this.orbitControls.target.distanceTo(this.lerpTargetPos) < 2 && Math.abs(this.orbitControls.getSphericalRadius() -400)<10)
 		{
 			this.isLerping = false;
+			this.orbitControls.enabled = true;
 			$("#control-toggle-group").show();
 		}
 	}
