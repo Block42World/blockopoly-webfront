@@ -9,7 +9,7 @@
 	var moveLeft = false;
 	var moveRight = false;
 	var canJump = false;
-	var collisionRadius = 0.1;// NEVER set this to bigger than 0.5, otherwise player will go though walls. Recommend : 0.1
+	var collisionRadius = 0;// NEVER set this to bigger than 0.5, otherwise player will go though walls. Recommend : 0.1
 
 	var velocity = new THREE.Vector3();
 
@@ -17,25 +17,40 @@
 	{
 		this.pointerLockControls.enabled = isActive;
 		this.pointerLockControls.reset(isActive);
+
 		if(isActive)
 		{
+			var result = this.CheckGround();
+
+			if(!result.isOnGround || !result.isAir(result.playerPos.x, result.playerPos.y, result.playerPos.z))
+			{
+				this.TeleportToTop();
+			}
+
 			var element = document.body;
 			element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 			element.requestPointerLock();
 		}
 	}
 
-	this.update = function(deltaTime) 
+
+	this.TeleportToTop = function()
 	{
-		//shot a ray right down from where player position
+		//co
+		//shoot the ray from sky, if it hit anything, teleport to there.
 		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 1000 );
 		raycaster.ray.origin.copy(this.pointerLockControls.getObject().position);
-		//raycaster.ray.origin.add(velocity * deltaTime );
-		//console.log(raycaster.ray.origin);
-		raycaster.ray.origin.y += 3;
-
+		raycaster.ray.origin.y = 300;
 		var intersections = raycaster.intersectObjects( [scene], true );
-		var onObject = intersections.length > 0;
+		if(intersections.length > 0)
+		{
+			this.pointerLockControls.getObject().position.y = intersections[0].point.y +5;
+		}
+	}
+
+	this.update = function(deltaTime) 
+	{
+		
 		
 		//to make sure player won't falling more then 1 block every frame
 		if((velocity.y - 9.8 * 5.0 * deltaTime)* deltaTime > -1)
@@ -45,6 +60,7 @@
 
 		velocity.x = 0;
 		velocity.z = 0;
+
 
 		if (moveBackward ) {
 			velocity.x += Math.cos( Math.PI / 2 - this.pointerLockControls.getYawAngle());
@@ -78,17 +94,11 @@
 			this.pointerLockControls.getObject().position.y = 1;
 		}
 
+
+		var result = this.CheckGround();
 		//if player is not on map, apply velocity and end update
-		if(!onObject)
+		if(!result.isOnGround)
 		{
-			//shoot the ray from sky, if it hit anything, teleport to there.
-			raycaster.ray.origin.y = 200;
-			intersections = raycaster.intersectObjects( [scene], true );
-			if(intersections.length > 0)
-			{
-				this.pointerLockControls.getObject().position.y = intersections[0].point.y +5;
-			}
-			else
 			this.pointerLockControls.getObject().translateY( velocity.y * deltaTime);
 			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
 			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
@@ -96,66 +106,57 @@
 			return;
 		}
 
-		var groundUserData = intersections[0].object.userData;
-		var size = groundUserData.size;
+		//this is the current position of the player
+		var lastPosX = result.playerPos.x;
+		var lastPosY = result.playerPos.y;
+		var lastPosZ = result.playerPos.z;
 
-		//console.log(intersections[0]);
-		var lastPosX = this.pointerLockControls.getObject().position.x - groundUserData.position.x;
-		var lastPosY = this.pointerLockControls.getObject().position.y - groundUserData.position.z-2;
-		var lastPosZ = this.pointerLockControls.getObject().position.z - groundUserData.position.y;
-
+		//this is the position player will be
 		var newPosX = lastPosX + velocity.x * deltaTime;
 		var newposY = lastPosY + velocity.y * deltaTime;
 		var newposZ = lastPosZ + velocity.z * deltaTime;
 
-
-
-
-		//WARNING: since MagicaVoxel is Z-UP, so the the order is X, Z, Y 
-		var isAir = function(x, z, y)
-		{
-			x = Math.floor(x);
-			y = Math.floor(y);
-			z = Math.floor(z);
-			return 	typeof groundUserData.vectors[x] == "undefined" ||
-					typeof groundUserData.vectors[x][z] == "undefined" ||
-			   		typeof groundUserData.vectors[x][z][y] == "undefined";
-		}
-
-		//if player standing in a block, rise up.
-		if(!isAir(lastPosX, lastPosZ, lastPosY))
-		{
-			this.pointerLockControls.getObject().position.y ++;
-			console.log("the Dark Night Rise");
-			return;
-		}
-
 		//if player is not on current vox field, apply XZ velocity and end update
-		if(newPosX >= groundUserData.size.x || newposZ >= groundUserData.size.y  ||newPosX < 0 || newposZ < 0)
+		if(newPosX >= result.data.size.x || newposZ >= result.data.size.y  ||newPosX < 0 || newposZ < 0)
 		{
+			console.log("on edge");
 			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
 			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
 			return;
 		}
 
-
-
-
+/*
+        //if player standing in a block, rise up.
+        if(!result.isAir(lastPosX, lastPosZ, lastPosY))
+        {
+            this.pointerLockControls.getObject().position.y ++;
+            console.log("Rise");
+            return;
+        }
+*/
 		//if the block below player is not empty, stop falling
-		if(!isAir(lastPosX, lastPosZ, lastPosY-1) && !isAir(newPosX, newposZ, lastPosY-1))
+		if( !result.isAir(lastPosX, lastPosY-1, lastPosZ) && 
+			!result.isAir(newPosX,  lastPosY-1, newposZ))
 		{
 			velocity.y = Math.max( 0, velocity.y );
 			canJump = true;
-		}else{console.log("not on ground" + velocity.y);}
+		}
+		//else{console.log("not on ground" + velocity.y);}
 
 
-		//if the block on player is not empty, player can go
-		if(isAir(lastPosX+collisionRadius, newposZ+collisionRadius, newposY) && isAir(lastPosX-collisionRadius, newposZ-collisionRadius, newposY))
+		//to able slide effect(player can still move side way when he next to the wall)
+		//need to check the X and Z axis sepatately
+
+		//check Z axis
+		if( result.isAir(lastPosX+collisionRadius, newposY, newposZ+collisionRadius) && 
+			result.isAir(lastPosX-collisionRadius, newposY, newposZ-collisionRadius))
 		{
 			this.pointerLockControls.getObject().translateZ( velocity.z * deltaTime);
 		}
 
-		if(isAir(newPosX+collisionRadius, lastPosZ+collisionRadius, newposY) && isAir(newPosX-collisionRadius, lastPosZ-collisionRadius, newposY))
+		//check X axis
+		if( result.isAir(newPosX+collisionRadius, newposY, lastPosZ+collisionRadius) && 
+			result.isAir(newPosX-collisionRadius, newposY, lastPosZ-collisionRadius))
 		{
 			this.pointerLockControls.getObject().translateX( velocity.x * deltaTime);
 		}
@@ -164,8 +165,51 @@
 	};
 
 
+	this.CheckGround = function()
+	{
+		//shot a ray right down from where player position
+		var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 1000 );
+		var rayPosition = this.pointerLockControls.getObject().position;
+		raycaster.ray.origin.copy(rayPosition);
+		//raycaster.ray.origin.add(velocity * deltaTime );
+		//console.log(raycaster.ray.origin);
+		raycaster.ray.origin.y += 3;
+
+		var intersections = raycaster.intersectObjects( [scene], true );
+		//var onObject = intersections.length > 0;
+
+		if(intersections.length > 0)
+		{
+			var result = { 
+				isOnGround : true, 
+				intersection : intersections[0],
+				data: intersections[0].object.userData,
+				playerPos://this is the LOCAL position of player inside the chunk
+				{
+					x: rayPosition.x - intersections[0].object.userData.position.x,
+					y: rayPosition.y - intersections[0].object.userData.position.z-2,
+					z: rayPosition.z - intersections[0].object.userData.position.y
+				}
+			};
+
+			result.isAir = function(x, y, z)
+			{
+				x = Math.floor(x);
+				y = Math.floor(y);
+				z = Math.floor(z);
+				//WARNING: since MagicaVoxel is Z-UP, so the the order of getting block in data.vectors is X, Z, Y 
+				return 	typeof this.data.vectors[x] == "undefined" ||
+						typeof this.data.vectors[x][z] == "undefined" ||
+				   		typeof this.data.vectors[x][z][y] == "undefined";
+			}
 
 
+			return result;
+		}
+		else
+			return { isOnGround : false};
+
+	}
 
 	this.isBlock = function(x, y, z)
 	{

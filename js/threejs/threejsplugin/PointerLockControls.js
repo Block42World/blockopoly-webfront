@@ -55,13 +55,8 @@ THREE.PointerLockControls = function ( camera ) {
 			yawObject.rotation.set( 0, 0, 0 );
 			pitchObject.rotation.set( 0,0,0 );
 
-
 			pitchObject.position.set( 0, 0, 0 );
-
 			rootObject.position.copy(prevPos);
-
-			var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 300 );
-			raycaster.ray.origin.copy(prevPos);
 		}
 		else if(pitchObject.parent == yawObject)//if it was active before
 		{
@@ -73,6 +68,8 @@ THREE.PointerLockControls = function ( camera ) {
 		}
 
 	};
+
+	
 
 	this.getObject = function () 
 	{

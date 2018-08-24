@@ -47,7 +47,7 @@ app.post('/uploadVox', function (req, res) {
 
 		var oldpath = files.voxFile.path;
 		console.log(oldpath);
-		var newpath = 'C:/Users/John/Desktop/world-webfront/assets/' + files.voxFile.name;
+		var newpath = './assets/' + files.voxFile.name;
 		fs.rename(oldpath, newpath, function (err) {
 			if (err) 
 				throw err;

@@ -121,7 +121,7 @@ function OnBtnSave()
 	console.log("finished encoding");
 	
 	Upload(fileName+".vox", result);
-	download(result, fileName+".vox", "text/plain");
+	//download(result, fileName+".vox", "text/plain");
 
 
 
