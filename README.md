@@ -1,6 +1,6 @@
 ![Block42](http://assets.block42.world/images/icons/block42_logo_200.png)
 
-# Block42 web client frontend
+# Blockopoly web client frontend
 
 ## About
 - Blockopoly is a team-based property auctioning game.
