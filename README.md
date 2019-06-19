@@ -8,7 +8,7 @@
 - The team with the highest score wins ownership of the entire City and claims the Jackpot.
 - Each Team has their own set of Rules, which can change how the game is played.
 
-This is an dApp version of Block42, that allow players to buy and sell lands, customize their own buildings, and just browse around the city in Block42, which players build togather.
+This is an dApp version of Block42, that allow players to buy and sell lands, customize their own buildings, and just browse around the city in Block42, which players build together.
 
 A client version will provide more interactive functionalities and MMO-gameplay, using the same assets built by players in the web app version.
 
