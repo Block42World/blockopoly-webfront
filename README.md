@@ -26,3 +26,6 @@ Please note that this is still in prototype and under heavy development. The fin
 
 ### Start web server in localhost
 `npm start`
+
+## Demo
+http://app.block42.world/
